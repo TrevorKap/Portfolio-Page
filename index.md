@@ -4,7 +4,7 @@
 
 ### Category Name 1 
 
-[Project 1 Title](/projects/TODAssignment_Kapuvari.html)
+[Evaluating Transit-Oriented Development in San Francisco & Bay Area](/projects/TODAssignment_Kapuvari.html)
 <img src="images/dummy_thumbnail.jpg?raw=true"/>
 
 ---
