@@ -2,7 +2,7 @@
 
 ---
 
-### Category Name 1 
+### Public Policy Analytics 
 
 [Evaluating Transit-Oriented Development in San Francisco & Bay Area](/projects/TODAssignment_Kapuvari.html)
 <img src="images/dummy_thumbnail.jpg?raw=true"/>
