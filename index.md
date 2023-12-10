@@ -32,7 +32,7 @@
 
 ---
 
-### Category Name 2
+### Statistics and Data Mining
 
 - [Project 1 Title](http://example.com/)
 - [Project 2 Title](http://example.com/)
