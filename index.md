@@ -34,15 +34,27 @@
 
 ### Statistics and Data Mining
 
-- [Project 1 Title](http://example.com/)
-- [Project 2 Title](http://example.com/)
-- [Project 3 Title](http://example.com/)
-- [Project 4 Title](http://example.com/)
-- [Project 5 Title](http://example.com/)
+[HW1](/projects/TODAssignment_Kapuvari.html)
+<img src="images/dummy_thumbnail.jpg?raw=true"/>
+
+---
+[HW2](/projects/MidtermAssignment.html)
+<img src="images/dummy_thumbnail.jpg?raw=true"/>
+
+---
+[HW3](/projects/TargetingaHousingSubsidyKapuvari.html)
+<img src="images/dummy_thumbnail.jpg?raw=true"/>
 
 ---
 
+[HW5](/projects/TODAssignment_Kapuvari.html)
+<img src="images/dummy_thumbnail.jpg?raw=true"/>
 
+---
+[HW6](/projects/TODAssignment_Kapuvari.html)
+<img src="images/dummy_thumbnail.jpg?raw=true"/>
+
+---
 
 
 ---
