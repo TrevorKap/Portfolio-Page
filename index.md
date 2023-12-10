@@ -8,11 +8,26 @@
 <img src="images/dummy_thumbnail.jpg?raw=true"/>
 
 ---
-[Project 2 Title](/pdf/sample_presentation.pdf)
+[Predicting Home Prices based on Zillow Data](/projects/MidtermAssignment.html)
 <img src="images/dummy_thumbnail.jpg?raw=true"/>
 
 ---
-[Project 3 Title](http://example.com/)
+[Calculating Probability of Housing Subsidy Users](/projects/TargetingaHousingSubsidyKapuvari.html)
+<img src="images/dummy_thumbnail.jpg?raw=true"/>
+
+---
+
+### Python
+
+[Final Project lmao idk](/projects/TODAssignment_Kapuvari.html)
+<img src="images/dummy_thumbnail.jpg?raw=true"/>
+
+---
+[Yuh yuh](/projects/MidtermAssignment.html)
+<img src="images/dummy_thumbnail.jpg?raw=true"/>
+
+---
+[FWTG](/projects/TargetingaHousingSubsidyKapuvari.html)
 <img src="images/dummy_thumbnail.jpg?raw=true"/>
 
 ---
