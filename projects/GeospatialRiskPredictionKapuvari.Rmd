@@ -1,0 +1,659 @@
+---
+title: 'Geospatial Risk Predictions'
+author: "Trevor Kapuvari"
+date: "10/18/2023"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+    code_folding: hide
+    number_sections: yes
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning=FALSE)
+
+library(tidyverse)
+library(sf)
+library(RSocrata)
+library(viridis)
+library(spatstat.explore)
+library(raster)
+library(spdep)
+library(FNN)
+library(grid)
+library(gridExtra)
+library(knitr)
+library(kableExtra)
+library(tidycensus)
+library(classInt)   
+source("https://raw.githubusercontent.com/urbanSpatial/Public-Policy-Analytics-Landing/master/functions.r")
+
+```
+
+## Reading Data from Chicago
+
+
+```{r message=FALSE, warning=FALSE, results='hide'}
+
+policeDistricts <- 
+  st_read("https://data.cityofchicago.org/api/geospatial/fthy-xz3r?method=export&format=GeoJSON") %>%
+  st_transform('ESRI:102271') %>%
+  dplyr::select(District = dist_num)
+
+drugArrest <- 
+  read.socrata("https://data.cityofchicago.org/Public-Safety/Crimes-2017/d62x-nvdr") %>% 
+    filter(Primary.Type == "NARCOTICS" & Description == "POSS: CANNABIS 30GMS OR LESS" | Description == "POSS: CANNABIS MORE THAN 30GMS") %>%
+    mutate(x = gsub("[()]", "", Location)) %>%
+    separate(x,into= c("Y","X"), sep=",") %>%
+    mutate(X = as.numeric(X),Y = as.numeric(Y)) %>% 
+    na.omit() %>%
+    st_as_sf(coords = c("X", "Y"), crs = 4326, agr = "constant")%>%
+    st_transform('ESRI:102271') %>% 
+    distinct()
+
+
+chicagoBoundary <- 
+  st_read("https://data.cityofchicago.org/api/geospatial/ewy2-6yfk?method=export&format=GeoJSON") %>%
+  st_transform('ESRI:102271') 
+```
+
+# Introduction 
+
+
+Cannabis is a drug that has become a national debate regarding its safety, community effects, and purpose in society. The high number of cannabis arrests, despite legalization in many states, has been attributed to issues with accessibility and high taxes on recreational cannabis, which have led many consumers to turn to the black market.
+
+This brief aims to create a risk prediction model for cannabis arrests in Chicago using 2017 as the reference year. The goal is to identify if predicting cannabis arrests shows inherent bias, and whether through data collection or law enforcement's discretion/discrimination. The selection bias that is possible here is because it only shows where arrests were made, and not mere police encounters, possession, sale, or distribution of cannabis. Another factor regarding cannabis arrests is that drug offenses often are under-reported and suffer additional selection bias in terms of racial and geographic profiling. What is important to note is the decriminalization of cannabis "in small amounts" in Illinois one year prior, yet arrests were still occurring (source provided). This data proves an ineffectiveness of the policy and police discretion on how and when the decriminalization is enforced. These arrests were heavily enforced in the west and south side. 
+
+Source: https://fortune.com/2016/07/30/illinois-marijuana-decriminalized/
+
+
+
+# Outcome of Interest Points 
+  
+This figure shows the locations of 2017 Chicago Cannabis possession arrests. There is noticeable spatial clustering in the west of the city and somewhat more in the southside, notably the impoverished neighborhoods of the city. This data proves an ineffectiveness of the policy and police discretion on how and when the decriminalization is enforced. These arrests were heavily enforced in the west and south side. 
+
+
+```{r fig.width=6, fig.height=4, results='hide'}
+
+grid.arrange(ncol=2,
+ggplot() + 
+  geom_sf(data = chicagoBoundary) +
+  geom_sf(data = drugArrest, colour="blue", size=0.1, show.legend = "point") +
+  labs(title= "Cannabis Arrests, Chicago 2017") +
+  mapTheme(title_size = 14))
+
+```
+
+
+# Fishnet Grid of Cannabis Arrests
+
+
+```{r, results='hide'}
+
+fishnet <- 
+  st_make_grid(chicagoBoundary,
+               cellsize = 500, 
+               square = TRUE) %>%
+  .[chicagoBoundary] %>%            # fast way to select intersecting polygons
+  st_sf() %>%
+  mutate(uniqueID = 1:n())
+
+```
+
+### Aggregate points to the fishnet
+
+Cannabis arrests are displayed through a fishnet grid, which breaks the Chicago boundary into square plots that accounts for geographies and the density of values. The fishnet displays a concentration of arrests for cannabis possession because of the dedicated resources in a specific area. While the previous map showed cannabis arrests occurring all over the city, the areas had a low frequency of cannabis arrests and could not be described the same way as shown here. Here, the map displays the frequency of cannabis arrests. 
+
+We prefer to use fishnet grid data for these kind of visualizations as it allows for squared division of space.
+
+```{r, results='hide'}
+
+crime_net <- 
+  dplyr::select(drugArrest) %>% 
+  mutate(countNarco = 1) %>% 
+  aggregate(., fishnet, sum) %>%
+  mutate(countNarco = replace_na(countNarco, 0),
+         uniqueID = 1:n(),
+         cvID = sample(round(nrow(fishnet) / 24), 
+                       size=nrow(fishnet), replace = TRUE))
+
+ggplot() +
+  geom_sf(data = crime_net, aes(fill = countNarco), color = NA) +
+  scale_fill_viridis() +
+  labs(title = "Count of Nacro Arrests for the fishnet") +
+  mapTheme()
+
+```
+
+
+# A small multiple map of your risk factors in the fishnet (counts, distance and/or other feature engineering approaches).
+
+The model will make predictions on future cannabis arrests based on previous arrests and independent variables. The variables in questions are murals, sanitation, non-working street lights, fast food place density, and abandoned buildings. Murals are a sign of vibrancy, sense of community, and urban aesthetic. The hypothesis here is that murals will reduce police enforcement of cannabis possession because of the peaceful atmosphere that exists. On the contrary, abandoned buildings can signal for "broken window policing" and would make misdemeanors such as drug possession enforced to harsher extents. Sanitation is a great indicator because dirtiness reflects the character of a community by any who observe it. Lasltly, street lights indicate the maintenance and funding provided in a neighborhood and a lack of light in an area is susceptible for larger amounts of crime. 
+
+
+```{r message=FALSE, warning=FALSE, results='hide'}
+
+registeredMurals <- 
+  read.socrata("https://data.cityofchicago.org/Historic-Preservation/Mural-Registry/we8h-apcf") %>%
+    dplyr::select(Y = latitude, X = longitude) %>%
+    na.omit() %>%
+    st_as_sf(coords = c("X", "Y"), crs = 4326, agr = "constant") %>%
+    st_transform(st_crs(fishnet)) %>%
+    mutate(Legend = "Registered_Murals") %>%
+    mutate(uniqueID = 1:n(),) %>%
+    filter(uniqueID != 439) %>%
+    filter(uniqueID != 440) %>%
+    filter(uniqueID != 441) %>%
+    filter(uniqueID != 442) %>%
+    filter(uniqueID != 443) %>%
+    group_by(Legend)
+
+registeredMurals <- registeredMurals %>%
+  dplyr::select(geometry, Legend)
+
+
+parks <- 
+  st_read("https://github.com/TrevorKap/MUSA5000/raw/main/lowkeyPPA/Geospatial/Parks%20-%20Chicago%20Park%20District%20Facilities%20(current).geojson") %>%
+  st_transform(st_crs(fishnet)) 
+parks <- parks %>%
+  group_by(park) %>%
+  rename(Legend = park) %>%
+  summarise()
+
+parks$Legend = "park"
+
+
+neighborhoods <- 
+  st_read("https://raw.githubusercontent.com/blackmad/neighborhoods/master/chicago.geojson") %>%
+  st_transform(st_crs(fishnet)) 
+
+abandoned_buildings <- 
+  read.socrata("https://data.cityofchicago.org/Service-Requests/311-Service-Requests-Vacant-and-Abandoned-Building/7nii-7srd") %>%
+  mutate(year = substr(date_service_request_was_received,1,4)) %>%  filter(year == "2017") %>%
+  dplyr::select(Y = latitude, X = longitude) %>%
+  na.omit() %>%
+  st_as_sf(coords = c("X", "Y"), crs = 4326, agr = "constant") %>%
+  st_transform(st_crs(fishnet)) %>%
+  mutate(Legend = "Abandoned_Buildings")
+
+
+streetLightsOut <- 
+  read.socrata("https://data.cityofchicago.org/Service-Requests/311-Service-Requests-Street-Lights-All-Out/zuxi-7xem") %>%
+    mutate(year = substr(creation_date,1,4)) %>% filter(year == "2017") %>%
+    dplyr::select(Y = latitude, X = longitude) %>%
+    na.omit() %>%
+    st_as_sf(coords = c("X", "Y"), crs = 4326, agr = "constant") %>%
+    st_transform(st_crs(fishnet)) %>%
+    mutate(Legend = "Street_Lights_Out")
+
+sanitation <-
+  read.socrata("https://data.cityofchicago.org/Service-Requests/311-Service-Requests-Sanitation-Code-Complaints-Hi/me59-5fac") %>%
+    mutate(year = substr(creation_date,1,4)) %>% filter(year == "2017") %>%
+    dplyr::select(Y = latitude, X = longitude) %>%
+    na.omit() %>%
+    st_as_sf(coords = c("X", "Y"), crs = 4326, agr = "constant") %>%
+    st_transform(st_crs(fishnet)) %>%
+    mutate(Legend = "Sanitation")
+
+tracts17 <- 
+  get_acs(geography = "tract", variables = c("B01001_001E","B01001A_001E"), 
+          year = 2017, state=17, county=031, geometry=T) %>%
+  st_transform('ESRI:102271')  %>% 
+  dplyr::select(variable, estimate, GEOID) %>%
+  spread(variable, estimate) %>%
+  rename(TotalPop = B01001_001,
+         NumberWhites = B01001A_001) %>%
+  mutate(percentWhite = NumberWhites / TotalPop,
+         raceContext = ifelse(percentWhite > .5, "Majority_White", "Majority_Non_White")) 
+```
+
+
+```{r, results='hide'}
+
+vars_net <- 
+  rbind(registeredMurals, parks, abandoned_buildings, streetLightsOut, sanitation) %>%
+  st_join(fishnet, join=st_within) %>%
+  st_drop_geometry() %>%
+  group_by(uniqueID, Legend) %>%
+  summarize(count = n()) %>%
+  left_join(fishnet, ., by = "uniqueID") %>%
+  spread(Legend, count, fill=0) %>%
+  dplyr::select(-`<NA>`) %>%
+  ungroup()
+
+```
+
+## Nearest Neighbor & Count
+
+Nearest Neighbor is a way of finding similar data points to new data points that are nearby. This technique in machine learning helps conclude spatial autocorrelation, determining if clusters are valued together. 
+
+For the k-folds, this validation technique evaluates the performance of the machine learning, it divides the training set into "k" number of times. 
+
+```{r, results='hide'}
+
+st_c    <- st_coordinates
+st_coid <- st_centroid
+
+vars_net <- vars_net %>%
+    mutate(Registered_Murals.nn = nn_function(st_c(st_coid(vars_net)), 
+                                           st_c(registeredMurals),
+                                           k = 8))
+
+vars_net <- vars_net %>%
+    mutate(abandoned_buildings.nn = nn_function(st_c(st_coid(vars_net)), 
+                                           st_c(abandoned_buildings),
+                                           k = 8))
+
+
+```
+
+
+```{r, results='hide'}
+
+vars_net.long.nn <- 
+  dplyr::select(vars_net, ends_with(".nn")) %>%
+    gather(Variable, value, -geometry)
+
+```
+
+
+```{r, results='hide'}
+
+final_net <-
+  left_join(crime_net, st_drop_geometry(vars_net), by="uniqueID") 
+
+```
+
+
+```{r, results='hide'}
+
+final_net <-
+  st_centroid(final_net) %>%
+    st_join(dplyr::select(neighborhoods, name), by = "uniqueID") %>%
+    st_join(dplyr::select(policeDistricts, District), by = "uniqueID") %>%
+      st_drop_geometry() %>%
+      left_join(dplyr::select(final_net, geometry, uniqueID)) %>%
+      st_sf() %>%
+  na.omit()
+
+
+```
+The maps depict the density of our independent variables throughout Chicago. Each of these are used in the model to predict if they increase or decrease the likelihood of cannabis arrests, and will eventually predict the amount of arrests in each square based on that information.
+Two factored considered in terms of geography is the "count", which measures the frequency of the independent variable present in that cell, and the nearest neighbor. The nearest neighbor measures how close an independent variable is from another one of itself (ex, how far murals are from one another). This can also be used in predictions because it factors whether a "stand-alone" of an independent variable creates a change or if there needs to be multiple, concentrated in that area. 
+
+```{r Maps, results='hide'}
+
+ggplot() +
+      geom_sf(data = vars_net.long.nn, aes(fill=value), colour=NA) +
+      scale_fill_viridis(name="NN Distance") +
+      labs(title="Nearest Neighbor of Abandon Buildings") +
+      mapTheme()
+
+
+ggplot() +
+  geom_sf(data = vars_net, aes(fill=Registered_Murals), colour=NA) +
+  scale_fill_viridis() +
+  labs(title = "Count of Murals in Fishnet") +
+  mapTheme()
+
+ggplot() +
+  geom_sf(data = vars_net, aes(fill=Sanitation), colour=NA) +
+  scale_fill_viridis() +
+  labs(title = "Sanitation Count") +
+  mapTheme()
+
+ggplot() +
+  geom_sf(data = vars_net, aes(fill=Street_Lights_Out), colour=NA) +
+  scale_fill_viridis() +
+  labs(title = "Count of Outted Street Lights") +
+  mapTheme()
+
+ggplot() +
+      geom_sf(data = final_net, aes(fill=countNarco), colour=NA) +
+      scale_fill_viridis() +
+      labs(title="Cannabis Arrests in Fishnet 2017") +
+      mapTheme()
+
+```
+
+# Local Moran's I
+
+Local Moran's I measures spatial autocorrelation for each box on the fishnet grid. Having a Moran's I on the fishnet specifically helps identify hotpots of predicted cannabis arrests. 
+
+```{r, results='hide'}
+
+final_net.nb <- poly2nb(as_Spatial(final_net), queen=TRUE)
+
+final_net.weights <- nb2listw(final_net.nb, style="W", zero.policy=TRUE)
+
+
+```
+
+```{r, results='hide'}
+
+local_morans <- localmoran(final_net$Registered_Murals, final_net.weights, zero.policy=TRUE) %>% 
+  as.data.frame()
+
+
+final_net.localMorans <- 
+  cbind(local_morans, as.data.frame(final_net)) %>% 
+  st_sf() %>%
+  dplyr::select(Registered_Murals_Count = Registered_Murals, 
+                Local_Morans_I = Ii, 
+                P_Value = `Pr(z != E(Ii))`) %>%
+  mutate(Significant_Hotspots = ifelse(P_Value <= 0.001, 1, 0)) %>%
+  gather(Variable, Value, -geometry)
+  
+```
+
+## Plotting local Moran's I results
+
+The first maps displays the raw number of murals in each cell. Most areas of Chicago do not have any murals to begin with. The second shows the Moran's I of the Murals. Just as with the raw number itself, these are almost identical. Areas that have murals will often have multiple while the vast majority have nothing. 
+
+The third maps shows the P_value which indicates statistical significance of spatial autocorrelation. We notice that there are values above 0.05 (dark blue to yellow) well throughout the city. That shows that there is a signficance between have zero murals all together in areas vs the areas that have only a few murals throughout its area. Each little ring you see on the map shows one mural, showing its impact on the area around it. 
+
+The fourth map shows the hotspots, where the murals are most concentrated. There is a clear difference between where the murals are concentrated. 
+
+```{r, results='hide'}
+
+vars <- unique(final_net.localMorans$Variable)
+varList <- list()
+
+for(i in vars){
+  varList[[i]] <- 
+    ggplot() +
+      geom_sf(data = filter(final_net.localMorans, Variable == i), 
+              aes(fill = Value), colour=NA) +
+      scale_fill_viridis(name="") +
+      labs(title=i) +
+      mapTheme(title_size = 14) + theme(legend.position="bottom")}
+
+do.call(grid.arrange,c(varList, ncol = 4, top = "Local Morans I statistics, Cannabis"))
+```
+
+```{r, results='hide'}
+
+final_net <- final_net %>% 
+  mutate(Mural.isSig = 
+           ifelse(local_morans[,5] <= 0.001, 1, 0)) %>%
+  mutate(Mural.isSig.dist = 
+           nn_function(st_c(st_coid(final_net)),
+                       st_c(st_coid(filter(final_net, 
+                                           Mural.isSig == 1))), k = 1))
+
+```
+
+
+
+# Multiple Scatterplot with Correlation
+
+As can see from the scatterplots, Abandoned Buildings, Sanitation, and Streets Lights Out provide a positive correlation and correlate with stricter cannabis enforcement. 
+
+We see hardly any difference from murals and parks, one likelihood can be because of insufficient amounts of data (not a lot of parks or murals to begin with). 
+
+```{r Scatterplot, results='hide'}
+final_net_nongeom <- final_net %>% st_drop_geometry()
+
+final_net_nongeom %>%
+  dplyr::select(countNarco, Registered_Murals, park, Abandoned_Buildings, Sanitation, Street_Lights_Out) %>%
+  gather(Variable, Value, -countNarco) %>% 
+  ggplot(aes(Value, countNarco)) +
+     geom_point(size = .5) + geom_smooth(method = "lm", colour = "#FA7800") +
+     facet_wrap(~Variable, nrow = 1, scales = "free") +
+     labs(title = "Correlation between Cannabis Arrests and Independent Variables") +
+     plotTheme()
+
+```
+
+# Histogram of Dependent Varaible (Cannabis Arrests)
+
+The histogram shows that majority of areas do not have many cannabis arrests, hence the large 0 value. Yet the right skewedness proves there are only a few areas that have significantly more cannabis arrests, showing a concentration in enforcement. As shown from the first map, arrests occurred all over the city, yet the biggest cluster observed and now detected have a strong density that outweights the rest of the city. 
+
+
+
+
+```{r Histogram, results='hide'}
+
+  ggplot(final_net, aes(x=countNarco)) + 
+  geom_histogram(color='white',fill="orange", bins=50)+
+  scale_x_continuous()+
+  scale_y_continuous()
+
+```
+
+
+# small multiple map of model errors by random k-fold and spatial cross validation
+
+
+```{r Crossvalidate, message=FALSE, warning=TRUE, include=FALSE, results='hide'}
+
+
+reg.ss.vars <- c("Registered_Murals.nn", "Mural.isSig.dist")
+
+
+reg.ss.spatialCV <- crossValidate(
+  dataset = final_net,
+  id = "name",                           
+  dependentVariable = "countNarco",
+  indVariables = reg.ss.vars) %>%
+    dplyr::select(cvID = name, countNarco, Prediction, geometry)
+
+```
+
+
+Our model is somewhat accurate in where cannabis arrests are going to occur, but also predicts generally the same pattern as the year prior. What is noticed by the first map is that it predicts either 0 or 1 arrest in most cells. Yet the area that is known for the highest concentration of cannabis enforcement is where the model falls short. In the west side that had the most arrests, the model had its largest error, significantly under predicting the arrests that'll occur there. 
+
+The second map better depicts that critical error through that single red dot. Showing excellent accuracy in almost all areas of Chicago except for the west, yet only in a few countable amount of cells. 
+
+The third map shows percentage which can be misleading. Because of the low frequency of arrests and the fact the model is predicting single digit numbers in most cells, the percentage shows a large residual in error because of its relativity. Many cells in the net would have no arrests or 1 arrest, so when the model predicts either 0 or 1 (and is wrong), the residual has a value of infinity (shown in gray). 
+
+```{r map of errors by random k fold and spatial cross validation, results='hide'}
+
+reg.ss.spatialCV <-
+  reg.ss.spatialCV %>%
+  mutate(
+         countNarco.Error = Prediction - countNarco,
+         countNarco.AbsError = abs(Prediction - countNarco),
+         countNarco.APE = (abs(Prediction - countNarco)) / countNarco)
+
+ ggplot(reg.ss.spatialCV)+
+  geom_sf(aes(fill = countNarco.Error))+
+  scale_fill_gradient(low = "black", high = "yellow", name = "Error of Predicted Cannabis Arrests")+
+  mapTheme()
+
+ ggplot(reg.ss.spatialCV)+
+  geom_sf(aes(fill = countNarco.AbsError))+
+  scale_fill_gradient(low = "black", high = "red", name = "Absolute Error of Predicted Cannabis Arrests")+
+  mapTheme()
+
+ ggplot(reg.ss.spatialCV)+
+  geom_sf(aes(fill = countNarco.APE))+
+  scale_fill_gradient(low = "black", high = "blue", name = "Absolute Percentage Error of Predicted Cannabis Arrests")+
+  mapTheme()
+# Gray represents infinitely off 
+
+```
+
+
+# A table of MAE and standard deviation MAE by regression.
+
+
+The graph shows the mean absolute error (MAE) and the mean absolute error standard deviation (MAESTD) of the model for cannabis arrest predictions. The MAE is a measure of the average difference between the predicted and actual values of the dependent variable. The MAESTD is a measure of the variability of the MAE.
+
+```{r MAE and MAE Standard Deviation, cache=TRUE, message=FALSE, warning=FALSE}
+
+reg.ss.spatialCV_nogeom <- reg.ss.spatialCV %>%
+  st_drop_geometry() %>%
+  summarise(MAE = mean(countNarco.AbsError),
+            MAESTD = sd(countNarco.AbsError)) %>%
+  kbl(col.name=c('Mean Absolute Error','Mean Absolute Error Standard Deviation')) %>%
+  kable_classic()
+
+reg.ss.spatialCV_nogeom
+```
+
+
+
+
+# The map comparing kernel density to risk predictions for the next year’s crime.
+
+## Get 2018 crime data
+
+
+```{r, results='hide', warning=FALSE, message=FALSE}
+narcs18 <- 
+  read.socrata("https://data.cityofchicago.org/Public-Safety/Crimes-2018/3i3m-jwuy") %>% 
+  filter(Primary.Type == "NARCOTICS") %>%
+  mutate(x = gsub("[()]", "", Location)) %>%
+  separate(x,into= c("Y","X"), sep=",") %>%
+  mutate(X = as.numeric(X),
+         Y = as.numeric(Y)) %>% 
+  na.omit %>%
+  st_as_sf(coords = c("X", "Y"), crs = 4326, agr = "constant") %>%
+  st_transform('ESRI:102271') %>% 
+  distinct() %>%
+  .[fishnet,]
+```
+
+```{r, results='hide'}
+narc_ppp <- as.ppp(st_coordinates(drugArrest), W = st_bbox(final_net))
+narc_KD.1000 <- spatstat.explore::density.ppp(narc_ppp, 1000)
+narc_KD.1500 <- spatstat.explore::density.ppp(narc_ppp, 1500)
+narc_KD.2000 <- spatstat.explore::density.ppp(narc_ppp, 2000)
+narc_KD.df <- rbind(
+  mutate(data.frame(rasterToPoints(mask(raster(narc_KD.1000), as(neighborhoods, 'Spatial')))), Legend = "1000 Ft."),
+  mutate(data.frame(rasterToPoints(mask(raster(narc_KD.1500), as(neighborhoods, 'Spatial')))), Legend = "1500 Ft."),
+  mutate(data.frame(rasterToPoints(mask(raster(narc_KD.2000), as(neighborhoods, 'Spatial')))), Legend = "2000 Ft.")) 
+
+narc_KD.df$Legend <- factor(narc_KD.df$Legend, levels = c("1000 Ft.", "1500 Ft.", "2000 Ft."))
+
+narc_KDE_sum <- as.data.frame(narc_KD.1000) %>%
+  st_as_sf(coords = c("x", "y"), crs = st_crs(final_net)) %>%
+  aggregate(., final_net, mean) 
+kde_breaks <- classIntervals(narc_KDE_sum$value, 
+                             n = 5, "fisher")
+narc_KDE_sf <- narc_KDE_sum %>%
+  mutate(label = "Kernel Density",
+         Risk_Category = classInt::findCols(kde_breaks),
+         Risk_Category = case_when(
+           Risk_Category == 5 ~ "5th",
+           Risk_Category == 4 ~ "4th",
+           Risk_Category == 3 ~ "3rd",
+           Risk_Category == 2 ~ "2nd",
+           Risk_Category == 1 ~ "1st")) %>%
+  cbind(
+    aggregate(
+      dplyr::select(narcs18) %>% mutate(countNarco = 1), ., sum) %>%
+    mutate(countNarco = replace_na(countNarco, 0))) %>%
+  dplyr::select(label, Risk_Category, countNarco)
+```
+
+
+
+```{r, results='hide'}
+ml_breaks <- classIntervals(reg.ss.spatialCV$Prediction, 
+                             n = 5, "fisher")
+narc_risk_sf <-
+  reg.ss.spatialCV %>%
+  mutate(label = "Risk Predictions",
+         Risk_Category =classInt::findCols(ml_breaks),
+         Risk_Category = case_when(
+           Risk_Category == 5 ~ "5th",
+           Risk_Category == 4 ~ "4th",
+           Risk_Category == 3 ~ "3rd",
+           Risk_Category == 2 ~ "2nd",
+           Risk_Category == 1 ~ "1st")) %>%
+  cbind(
+    aggregate(
+      dplyr::select(narcs18) %>% mutate(countNarco = 1), ., sum) %>%
+      mutate(countNarco = replace_na(countNarco, 0))) %>%
+  dplyr::select(label,Risk_Category, countNarco)
+```
+
+
+## Kernel Density to Predict Next Year's Narcotic Arrests
+
+The first map shows kernel density of equal densities while the second map breaks them down into categories for a test set. The Kernel Density maps acts like a hotspot map in a way where it shows where all the points are most concentrated, requiring a test set of its own. The prediction risk categories uses each as a model to predict how at risk you are for being arrested for cannabis possession based on where you live. 
+
+For the risk predictions map, while each category alone doesn't signify the risk, these are broken down into areas that all had the same density of clusters, hence why the third category is broken into two, it is covering where both of the major clusters were, the west and south side. 
+
+
+```{r, results='hide'}
+rbind(narc_KDE_sf, narc_risk_sf) %>%
+  na.omit() %>%
+  gather(Variable, Value, -label, -Risk_Category, -geometry) %>%
+  ggplot() +
+    geom_sf(aes(fill = Risk_Category), colour = NA) +
+    facet_wrap(~label, ) +
+    scale_fill_viridis(discrete = TRUE) +
+    labs(title="Comparison of Kernel Density and Risk Predictions",
+         subtitle="2018 Cannabis risk predictions; 2017 Cannabis arrests") +
+    mapTheme(title_size = 14)
+```
+
+# Bar Plot Comparison of 2017 vs 2018
+
+The graph shows that the risk predictions are lower than the kernel density for almost all risk categories. This means that the model is predicting a under-predicted risk of cannabis arrest for people almost all areas except the 3rd category. Referencing the map before, the third category has all the major spatial clusters while the rest had hardly anything. That is why the model is under predicting risk outside of the "hot spot" while over predicting in the third category. Basically, the model is telling us "if you're going to get arrested for cannabis possession, it will most likely be in that category area. 
+
+```{r, results='hide', warning=FALSE, message=FALSE}
+rbind(narc_KDE_sf, narc_risk_sf) %>%
+  st_drop_geometry() %>%
+  na.omit() %>%
+  gather(Variable, Value, -label, -Risk_Category) %>%
+  group_by(label, Risk_Category) %>%
+  summarize(countNarco = sum(Value)) %>%
+  ungroup() %>%
+  group_by(label) %>%
+  mutate(Pcnt_of_test_set_crimes = countNarco / sum(countNarco)) %>%
+    ggplot(aes(Risk_Category,Pcnt_of_test_set_crimes)) +
+      geom_bar(aes(fill=label), position="dodge", stat="identity") +
+      scale_fill_viridis(discrete = TRUE, name = "Model") +
+      labs(title = "Risk prediction vs. Kernel density, 2018",
+           y = "% of Test Set Cannabis Arrests (per model)",
+           x = "Risk Category") +
+  theme_bw() +
+      theme(axis.text.x = element_text(angle = 45, vjust = 0.5))
+```
+
+# A table of raw errors by race context for a random k-fold vs. spatial cross validation regression.
+
+```{r, results='hide'}
+
+joined_data <- st_join(reg.ss.spatialCV, tracts17, join = st_intersects)
+narc_risk_sf2 <- narc_risk_sf %>%
+  dplyr::select("Risk_Category")
+
+joined_data <- st_join(joined_data, narc_risk_sf2, join = st_intersects) %>% 
+  dplyr::filter(countNarco.AbsError > 0.01)
+
+
+```
+
+The table, put in racial context, shows the disproportionate effect on non-white populations in terms of cannabis arrests. In categories 1,2,4, and 5, the probability of cannabis possession enforcement is roughly the same, slightly in favor of white populations. But in the third category, you are more than twice as likely to get arrested for cannabis possession if you are a non-white person. 
+
+```{r, cache=TRUE, message=FALSE, warning=FALSE}
+
+joined_data %>%
+  st_centroid() %>%
+  na.omit() %>%
+  st_drop_geometry() %>%
+  group_by(raceContext, Risk_Category) %>%
+  summarize(mean.MAE = mean(countNarco.AbsError)) %>%
+  spread(Risk_Category, mean.MAE) %>%
+  mutate(across(everything(), function(x) ifelse(is.numeric(x), round(x, 2), x))) %>%
+  kable(caption = "Mean Error by neighborhood racial context") %>%
+  kable_styling("striped", full_width = F)
+
+
+
+```
+
+# Conclusion
+
+We can reasonably conclude that our model has systemic flaws in racial bias and cannot accurately predict cannabis arrests based on the indicators provided. One way to improve this model is providing different independent variables through quantity or quality. This does not accurately predict where cannabis arrests are going to be concentrated. Any model can go off previous patterns and say that this trend is going to be scattered throughout a city, but it is important to find where police enforcement will be dedicated the most, which it failed to do. 
+
+
