@@ -5,7 +5,7 @@
 ### Public Policy Analytics 
 
 [Predicting Home Prices based on Zillow Data](/projects/MidtermAssignment.html)
-<img src="images/dummy_thumbnail.jpg?raw=true"/>
+<img src="images/ZillowPredictionsDashboard.png?raw=true"/>
 
 
 ---
