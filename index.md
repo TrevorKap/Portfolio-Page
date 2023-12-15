@@ -26,12 +26,12 @@
 #### Python Mini-Projects 
 ###### (Downloadable Links, Only)
 
-[Measuring the Donut Effect in Philadelphia](/projects/assignment-1.ipynb)
-[Visualizations using Matplotlib, Altair, & Seaborn](/projects/Assignment2Kapuvari.ipynb)
-[Evaluating Evictions Across Philadelphia](/projects/assignment-3.ipynb)
-[Street Networks & Web-Scrapping](/projects/assignment-4.ipynb)
-[Exploring Yelp Reviews](/projects/assignment-5.ipynb)
-[Predictive Modeling of Housing Prices in Philadelphia](/projects/assignment-6.ipynb)
+-[Measuring the Donut Effect in Philadelphia](/projects/assignment-1.ipynb)
+-[Visualizations using Matplotlib, Altair, & Seaborn](/projects/Assignment2Kapuvari.ipynb)
+-[Evaluating Evictions Across Philadelphia](/projects/assignment-3.ipynb)
+-[Street Networks & Web-Scrapping](/projects/assignment-4.ipynb)
+-[Exploring Yelp Reviews](/projects/assignment-5.ipynb)
+-[Predictive Modeling of Housing Prices in Philadelphia](/projects/assignment-6.ipynb)
 ---
 
 ### Statistics and Data Mining (Artificial Intelligence & Machine Learning)
