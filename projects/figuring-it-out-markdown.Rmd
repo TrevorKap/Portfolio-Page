@@ -517,7 +517,6 @@ plotReturnData <- may_w_stations[yday(may_w_stations$interval60)==138,] %>%
   st_transform(crs = st_crs(nj_trans_stations))
 ```
 
-### Timelapse 1 
 
 ```{r depart_animation,eval=F,include=F}
 ggplot()+
@@ -537,8 +536,6 @@ ggplot()+
 
 ```
 
-
-### Timelapse 2
 
 ```{r return_animation, eval=F,include=F}
 
