@@ -32,6 +32,7 @@
 - [Street Networks & Web-Scrapping](/projects/assignment-4.ipynb)
 - [Exploring Yelp Reviews](/projects/assignment-5.ipynb)
 - [Predictive Modeling of Housing Prices in Philadelphia](/projects/assignment-6.ipynb)
+
 ---
 
 ### Statistics and Data Mining (Artificial Intelligence & Machine Learning)
