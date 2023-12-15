@@ -2,7 +2,7 @@
 
 ---
 
-### Public Policy Analytics 
+### Public Policy Analytics (R)
 
 [Predicting Home Prices based on Zillow Data](/projects/MidtermAssignment.html)
 <img src="images/ZillowPredictionsDashboard.png?raw=true"/>
@@ -27,13 +27,12 @@
 [Yuh yuh](/projects/MidtermAssignment.html)
 <img src="images/dummy_thumbnail.jpg?raw=true"/>
 
----
-[FWTG](/projects/TargetingaHousingSubsidyKapuvari.html)
-<img src="images/dummy_thumbnail.jpg?raw=true"/>
+
+[Measuring the Donut Effect in Philadelphia](/projects/assignment-1.ipynb))
 
 ---
 
-### Statistics and Data Mining
+### Statistics and Data Mining (Artificial Intelligence & Machine Learning)
 
 [HW1](/projects/TODAssignment_Kapuvari.html)
 <img src="images/dummy_thumbnail.jpg?raw=true"/>
