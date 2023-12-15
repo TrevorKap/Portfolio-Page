@@ -4,6 +4,11 @@
 
 ### Public Policy Analytics (R)
 
+[TrainTracker: Predicting Train Delays for New Jersey Transit & Amtrak](/projects/figuring-it-out-markdown.html)
+<img src="images/dummy_thumbnail.jpg?raw=true"/>
+
+
+---
 [Predicting Home Prices based on Zillow Data](/projects/MidtermAssignment.html)
 <img src="images/ZillowPredictionsDashboard.png?raw=true"/>
 
