@@ -9,7 +9,7 @@
 
 
 ---
-[Predicting Home Prices based on Zillow Data](/projects/MidtermAssignment.html)
+[Calculating Home Prices based on Zillow Data](/projects/MidtermAssignment.html)
 <img src="images/ZillowPredictionsDashboard.png?raw=true"/>
 
 
@@ -18,7 +18,7 @@
 <img src="images/TODSanFranBay.png?raw=true"/>
 
 ---
-[Calculating Probability of Housing Subsidy Users](/projects/TargetingaHousingSubsidyKapuvari.html)
+[Analyzing Probability of Housing Subsidy Users](/projects/TargetingaHousingSubsidyKapuvari.html)
 <img src="images/dummy_thumbnail.jpg?raw=true"/>
 
 ---
