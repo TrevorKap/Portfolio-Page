@@ -5,7 +5,7 @@
 ### Public Policy Analytics (R)
  
 [TrainTracker: Predicting Train Delays for New Jersey Transit & Amtrak](/projects/figuring-it-out-markdown.html)
-<img src="TrainsGraphs.png?raw=true"/>
+<img src="TrainsGraphs.jpg?raw=true"/>
 
 
 ---
