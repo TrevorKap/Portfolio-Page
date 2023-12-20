@@ -41,8 +41,8 @@
 
 ### Statistics and Data Mining (Artificial Intelligence & Machine Learning)
 
-[HW1](/projects/TODAssignment_Kapuvari.html)
-<img src="images/dummy_thumbnail.jpg?raw=true"/>
+[Leveraging Ordinary Least Squares Regression on House Prices](/projects/HW01_OLSRegression_MUSA5000.html)
+<img src="images/homework1statspic.png?raw=true"/>
 
 ---
 [HW2](/projects/MidtermAssignment.html)
@@ -50,7 +50,7 @@
 
 ---
 [HW3](/projects/TargetingaHousingSubsidyKapuvari.html)
-<img src="images/dummy_thumbnail.jpg?raw=true"/>
+<img src="images/homework1statspic.png?raw=true"/>
 
 ---
 
