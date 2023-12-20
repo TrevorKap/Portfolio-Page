@@ -41,25 +41,28 @@
 
 ### Statistics and Data Mining (Artificial Intelligence & Machine Learning)
 
+[Reading Sentiment using Artifical Intelligence](/projects/TODAssignment_Kapuvari.html)
+<img src="images/dummy_thumbnail.jpg?raw=true"/>
+
+---
+
+[Examining Housing Using Spatial Regression](/projects/MidtermAssignment.html)
+<img src="images/dummy_thumbnail.jpg?raw=true"/>
+
+---
+
+[Predicting Alcohol-Related Car Accidents with Logisitical Regression](/projects/TargetingaHousingSubsidyKapuvari.html)
+<img src="images/homework1statspic.png?raw=true"/>
+
+---
+
+[Cluster Analysis](/projects/TODAssignment_Kapuvari.html)
+<img src="images/dummy_thumbnail.jpg?raw=true"/>
+
+---
+
 [Leveraging Ordinary Least Squares Regression on House Prices](/projects/HW01_OLSRegression_MUSA5000.html)
 <img src="images/homework1statspic.png?raw=true"/>
-
----
-[HW2](/projects/MidtermAssignment.html)
-<img src="images/dummy_thumbnail.jpg?raw=true"/>
-
----
-[HW3](/projects/TargetingaHousingSubsidyKapuvari.html)
-<img src="images/homework1statspic.png?raw=true"/>
-
----
-
-[HW5](/projects/TODAssignment_Kapuvari.html)
-<img src="images/dummy_thumbnail.jpg?raw=true"/>
-
----
-[HW6](/projects/TODAssignment_Kapuvari.html)
-<img src="images/dummy_thumbnail.jpg?raw=true"/>
 
 ---
 <meta http-equiv='cache-control' content='no-cache'> 
