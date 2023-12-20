@@ -1,0 +1,808 @@
+---
+title: "**Leverage Ordinary Least Squares Regression on Median House Prices**"
+output:
+  html_document:
+    keep_md: yes
+    toc: yes
+    theme: flatly
+    toc_float: yes
+    code_folding: hide
+    number_sections: no
+    css: style.css
+---
+
+<br>
+
+**Members: Trevor Kapuvari, Nohman Akthtari, Alec Jacobs  | 11.08.2023**
+
+
+<br>
+
+```{r clear_environment, cache = TRUE, include = FALSE}
+
+# Lists All Of The Objects In The Work Space
+
+rm(list=ls())
+
+```
+
+```{r knitting_options, include = FALSE}
+
+# Global Options For Knitting Chunks
+
+knitr::opts_chunk$set(echo = T, cache = T, messages = F, warning = F, error = F)
+
+```
+
+```{r import_libraries, include = FALSE}
+
+# Loading In Project Specific Library Packages
+
+library(sf)
+library(sp)
+library(ggplot2)
+library(viridis)
+library(dplyr)
+library(MASS)
+library(DAAG)
+library(corrr)
+library(gridExtra)
+library(stargazer)
+library(kableExtra)
+library(corrplot)
+
+```
+
+```{r data_directory, include = FALSE}
+
+# Set Functions And Data Directory
+
+root.dir = "https://github.com/TrevorKap/Classes/raw/main/stats/"
+
+```
+
+```{r read_data, warning=FALSE, include=FALSE}
+
+# Loading In Data For Analysis
+
+RegD = read.csv("RegressionData.csv")
+
+#Reg_db <- st_read("C:/Users/alecj/Desktop/Folder/Statistics Assignment_HW01/RegressionData.dbf")
+Reg_shp <- st_read("C:/Users/Owner/Documents/RStudio/MUSAStatistics/Lecture1RegressionData/RegressionData.shp")
+
+```
+
+# **INTRODUCTION** 
+
+<br>
+
+In our study, we analyze the correlation between select neighborhood socioeconomic variables and median house value in Philadelphia, Pennsylvania. Accurately predicting median house value significantly benefits a variety of stakeholders – prospective homeowners, property owners, real estate investors, policy makers, and urban planners. Knowledge of reliable predictions empowers and informs invested parties on topics regarding financial planning and security; lucrative or wise investment; real estate transaction; and housing policy. Furthermore, homebuyers can use predictions to inform budget decisions while real estate investors can effectively target market opportunity. Insights related to housing could also help policymakers and urban planners craft housing policy and produce development strategies leading to critical outcomes like housing affordability and ultimately, community prosperity.
+
+We speculate that the percentage of bachelor’s degrees (or higher) in a block group could be a valuable predictor of median home value. A greater population of higher education degree holders may signify a more affluent population which could translate into increased housing demand and thus, higher home prices. Further, well-educated areas may attract neighborhood investment contributing to economic growth. Ultimately, we feel strongly that the education level of the block group could serve as a useful proxy for overall socioeconomic status and desirability of a neighborhood making it a significant factor to consider when building a predictive model. Another potentially significant characteristic we include in our model is the percentage of detached single-family housing units in a block group. Often, areas with higher proportions of detached single-family homes tend to be more suburban and larger in living space. Thus, commanding higher home prices. Additionally, larger homes may attract families, driving up demand which influences price. This highlights the interconnectedness between housing preferences or lifestyle characteristics and the real estate market.
+
+A higher prevalence of vacant lots may also help in predicting median house value by indicating underdeveloped or less desirable areas, which can potentially suppress property values. Conversely, a lower percentage of lot vacancy could suggest an in-demand neighborhood, translating into higher home values. Poverty is another crucial indicator affecting desirability and in turn, house value. A higher rate of poverty can be indicate the economic challenges in a block group - depressing housing demand and subsequently leading to lower median home values. This reflects the overall socioeconomic conditions of the community, affecting the residents purchasing power and desire to invest in quality housing. Additionally, areas with lower poverty rates tend to attract more economically stable residents who have the ability to invest in property. Ultimately, characteristics like lot vacancy and poverty are essential to the economic health of a place and may be significant when predicting median house value in Philadelphia, Pennsylvania.
+
+<br>
+
+# **METHODS** 
+
+<br>
+
+## **DATA CLEANING** 
+
+<br>
+
+In our analysis, we use a data set containing variables from the 2020 US Census for Philadelphia. The neighborhood characteristic variables found throughout the 1,720 block groups used for our analysis are:
+
+* POLY_ID: Census Block Group ID
+* MEDHVAL: Median Value of All Owner Occupied Housing Units
+* PCBACHMORE: Proportion of Residents in a Block Group with at Least a Bachelor’s Degree
+* PCTVACANT: Proportion of Housing Units that are Vacant
+* PCTSINGLES: Percent of Housing Units that are Detached Single Family Houses
+* NBELPOV100: Number of Households with Incomes Below 100% Poverty Level (Or the Number of Households Living in Poverty)
+* MEDHHINC: Median Household Income
+
+Note: Our initial raw data set included 1816 observations. We cleaned the data by removing the following block groups that strongly deviated from the average block group and constituted outliers.
+
+1) Block Groups Where Population < 40
+2) Block Groups Where There are No Housing Units
+3) Block Groups Where the Median House Value is Lower Than $10,000
+4) One North Philadelphia Block Group Which Had a High Median House Value (Over $800,000) and One With a Low Median Household Income (Less Than $8,000).
+
+<br>
+
+## **EXPLORATORY DATA ANALYSIS** 
+
+<br>
+
+We now gauge the Pearson correlation between the independent variables. A Pearson correlation between two variables is the standardized covariance of these variables. We say standardized in the sense that it can take values from -1 to 1 because we divide by the standard deviations of both independent variables. The covariance between two variables is the product of the deviation of each observation from the average of all observations in the data set. The Pearson correlation for a sample is given by
+
+$$
+Corr(x,y) =     \sum_{i = 1}^n \frac{(x_i-\overline{x}) (y_i-\overline{x})}{\sqrt{\sum_{i=1}^n(x_i - \overline{x})^2} \sqrt{\sum_{i=1}^n(y_i - \overline{y})^2}} = \frac{1}{n-1} \sum_{i=1}^n \frac{(x_i-\overline{x})}{s_x} \frac{(y_i-\overline{y})}{s_y} = \frac{Cov(x,y)}{s_xs_y}
+$$
+
+where $x_i, y_i$ are the i-th observations in our data set and $\overline{x}, \overline{y}$ are the respective average for each data set. Intuitively, correlation measures the degree of co-movement between two variables. 
+
+A correlation is positive if an increase in one variable, on average, comes with an increase in the other variable and vice versa. A perfectly positive correlation means that a one unit increase in one variable comes with a one unit increase in the other variable. This is a perfect linear relationship that can be represented as a line with slope 1 between the pair of observations in both data sets. Likewise, a correlation is negative if an increase in one variable, on average, comes with a decrease in the other variable and vice versa. A perfectly negative correlation means that a one unit increase in one variable comes with a one unit increase in the other variable. This is a perfect linear relationship that can be represented as a line with slope -1 between the pair of observations in both data sets. To not, we will revert to the presented matrix when we check for our OLS regression assumptions.
+
+```{r Pearson_Correlations}
+
+#cor(RegD$LN_MEDHVAL, RegD$PCTVACANT)
+
+#cor(RegD$LN_MEDHVAL, RegD$PCTSINGLES)
+
+#cor(RegD$LN_MEDHVAL, RegD$PCTBACHMOR)
+
+#cor(RegD$LN_MEDHVAL, RegD$BELPOV100)
+
+```
+
+<br>
+
+## **MULTIPLE REGRESSION ANALYSIS** 
+
+<br>
+
+### **METHODS OF REGRESSION** 
+
+<br>
+
+Multiple regression analysis is a statistical technique that inputs k independent variables to identify the unique surface in k+1 that minimizes the sum of squared residuals from our dependent variable observations. A residual is the shortest distance in k+1 dimensions from the best fit surface to the true observed data point in the dependent variable. Given that all assumptions for a multiple linear regression are fulfilled, the core idea is that given our historic data on our k independent variables, the best fit surface will be a reliable and robust predictor for future values of the dependent variable. In standard statistical literature terminology, we say that we have a good regression model if our k independent variables 'explain' much of the variation, that is; if our best fit surface is close to the observation of the dependent variable for each observation.
+
+Multiple regression analysis has some inherent limitations. Firstly, it by nature requires at least some degree of linearity in the data set of concern to have a chance to work. Additionally, it has many assumption violations of which can lead to severe damage to the quality of the work. Many of these assumptions are rarely found in real life data sets, such as homoscedasticity. Additionally, overfitting might occur, meaning that our model is extremely good on one data set but might (therefore) not be generalizable to other data sets on the same topic. Lastly, results might sometimes be difficult to causally explain. This is because it is difficult to understand how each variable interacts with another variable. Sometimes, a regression model with seemingly non-explanatory independent variables performs better than a model with well thought-out predictors.
+
+<br>
+
+### **EQUATION** 
+
+<br>
+
+The formula for multiple regression reads as follows for k independent variables:
+
+$$
+Dependent \ Variable = \beta_0+  \beta_1x_1 + \ldots + \beta_kx_k +  \epsilon
+$$
+
+where $\beta_0, \ldots, \beta_k$ are the coefficients, $x_1, \ldots, x_k$ are the observations in the dependent variable, and $\epsilon$ is the error or residual. We will explain each of these components in detail in Part IV.
+
+<br>
+
+### **REGRESSION ASSUMPTIONS** 
+
+<br>
+
+In order to use multiple regression analysis, we have to ensure that all assumptions are met. In the following, we will list and explain all assumptions:
+
+1. **Linearity**: There must be a linear relationship between the dependent variable and each of the k independent variables. This is crucial since our prediction model inherently tries to catch systematic patterns of the underlying data in a linear manner. If this is not granted, our independent variable is not useful.
+
+2. **Normality of Residuals**: Residuals must be normally distributed around 0 (symmetric with no skew or kurtosis) for each observation. This is important for two reasons. First, it implies that our regression captures the main trend of the data. Second, the symmetric distribution of the noise for each observation implies a greater accuracy of our prediction for each observation because it means that Y
+
+3. **Homoscedasticity of Residuals**: The residuals have fixed variance $\sigma ^2$ for all observations. Homoscedasticity can be seen as a further quality assurance on top of the normality of residuals assumption. In simple words, it means that our regression has the same accuracy for all observations rendering it equally generalizable for all observations in our data set (but not necessarily in unseen data). In contrast, if we had heteroscedasticity, it would mean that our regression is more accurate for some observation versus others.
+
+4. **No Multicolinearity**: The independent variables are not colinear meaning that they are not significantly correlated. Multicolinearity between two independent variables is measured by calculating the correlation between each independent variable and fixing a threshold such that each value above that threshold is considered a colinearity between the two independent variables. In this case, we would have to drop one of the independent variables, ideally the one that has less correlation with our dependent variable. The reason for this is that by keeping multicolinear variables, we skew the regression by essentially doubling the effect of one independent variable because we we allow for a second one that is highly correlated. In simple terms, we account twice for the same explanatory variable.
+
+5. **Continuity of Dependent Variable**: The dependent variable is continuous. If this weren't the case, it could be that our model predicts for values that don't exist. 
+
+6. **Residuals Are Random**: The residuals are randomly distributed, meaning that they are not dependent on each other. This is important for two reasons. First, if the residuals were linearly dependent, the uniqueness of the best fit surface would be lost. Second, this might imply that our regression didn't capture systematic data, qualifying the quality of our prediction model. One type of data that is susceptible to violations in the randomness of residuals is spatiotemporal data.
+
+7. **Assumption Of Independence**: The observations in our dependent variable are independent of each other. Violations in this would severely impact the generalizability of our model since our predictor will be biased. Another implication could be incorrect confidence intervals. 
+
+Even though not stated as a formal assumption, statistical literature recommends having at least 10 observations for each parameter estimated. More observations likely render our prediction more robust. Hence, decreasing the probability of Type II errors in hypothesis testing.
+
+<br>
+
+### **REGRESSION PARAMETERS** 
+
+<br>
+
+Previously, we mentioned that the goal of a regression model is to minimize the squared sum of residuals. More technically, this means that given n observations and k predictors $x_1, \ldots, x_k$, the estimates $\hat{\beta_0}, \ldots, \hat{\beta_k}$ are chosen such that the squared sum of residuals is minimized. The formula for the squared sum of residuals in multiple linear regression is given by
+
+$$
+SSE = \sum[y_i-(\hat{\beta_0}+\hat{\beta_1}x_{1i}+\ldots + \hat{\beta_kx_{ki}})]^2
+$$
+and is the sum of error of how far off our prediction is from the actual observed value for each value of each observation. For obvious reasons, models with lower SSE are preferred over models with higher SSE scores.
+
+Our respective beta coefficients in the above formula are the solutions to the optimization problem in the multiple regression equation presented in the equation section. In general, there is exactly one beta coefficient for each independent variable. Beta coefficients are unit-free and the sign of the beta coefficient indicates whether relationship between the dependent and independent variable is positive or negative in the context of our regression model. We specifically mention the context of the regression model because for each choice of independent variables, the value for $$b_i, \ 1 \leq i \leq k$$ might change. Intuitively, a beta coefficients tell us by how much the value the dependent variable increases when the predictor i goes up by one unit and all other predictors are kept equal. As such, the beta coefficient can be thought of a strength relationship between the dependent and independent variables in the context of our regression model.
+
+<br>
+
+### **ESTIMATION METHODS** 
+
+<br>
+
+The parameter $\sigma^2$ denotes the common error population variance and measures how accurate our regression is for each observation. Low values in $\sigma ^2$ imply that the observed values hug our regression line, whereas greater values imply that there is greater spread in the distribution of residuals for each observation. Since we are working with a sample, the best we can do is estimating $\sigma ^2$ by the following formula:
+
+$$
+MSE = \frac{SSE}{n-(k+1)}
+$$
+
+We loose k+1 degrees of freedom in the denominator because we have k independent variables in our regression model. The term in the nominator is the sum squared of residuals and therefore quantifies the amount of variance in the dependent variable unexplained by our k independent variables. Hence, the intuition behind the common error population variance estimate is that it quantifies the variability inherent in our model. Also note that we can only compute $sigma^2$ once we have estimated our coefficients $b_1, ..., b_k$.
+
+<br>
+
+### **COEFFICIENT OF MULTIPLE DETERMINATION**
+
+<br>
+
+The coefficient of multiple determination, $R^2$, is computed as follows:
+
+$$
+R^2 = 1-\frac{SSE}{\sum(y_i - \overline{y})} = 1-\frac{SSE}{SST}
+$$
+
+The term in the nominator is the SSE and was already explained in Part V. The term in the denominator is the SST. The SST is quantifies the total amount of variation inherent in our dependent variable. The ratio of these two measures therefore tells us what percentage of total variation in the dependent variable is explained by our regression model. It therefore follows that the term 1-SSR/SST is a measure of accuracy of our overall model. The higher the value for $R^2$, the more of the inherent variation in the dependent variable is explained by our regression model. Because additional predictors generally increase $R^2$, and because we have k > 1 predictors, we punish our $R^2$. In other words, we deflate $R^2$:
+
+$$
+R^2_adj. = \frac{(n-1)R^2-k}{n-(k+1)}
+$$
+
+<br>
+
+### **HYPOTHESIS TESTING**
+
+<br>
+
+We now move on to test the quality of our beta coefficients. We do so by employing both an F-Test and T-Test. The F-Test, also called model utility test, is a helpful preliminary goodness of fit measure. We say preliminary because we usually conduct it before going into the more tedious T-Test. The null hypothesis states that all beta coefficients are 0, with the alternative being that at least one beta coefficient is not zero. In mathematical terms:
+
+$$
+H_0: \beta_1 = \ldots = \beta_k = 0 \\
+H_a: \beta_1 \not= 0 \ \lor \ldots \lor \beta_k \not= 0
+$$
+
+We immediately see that in case we can't reject the null hypothesis, this means that none of our explanatory variables is a significant predictor of the dependent variable. If this were the case, our model would be utterly useless. This implies that we would not even have to start with the tedious T-Test, but could stop here and rework our independent variables. This is why the model utility test can be seen as a very general goodness of fit measure.
+
+With a T-Test, we aim for a more fine-grained hypothesis test that checks for significance in each individual explanatory variable. Usually, this test is employed if the null hypothesis in the F-Test could be rejected. For each predictor i, we have that
+
+$$
+\beta_i = \frac{\hat{\beta}_i-E[\beta_i]}{s_{\hat{\beta}_i}} = 0\\
+$$
+
+with a T-Distribution of n-k-1 degrees of freedom. Our estimated predictor is $$\hat{\beta_i}$$ while $$E[\beta_i]$$ is the expected value of that predictor and $$s_{\hat{\beta_i}}$$ is the standard deviation of our estimated predictor.
+
+Our hypotheses, which we test for each predictor i, are 
+
+$$
+H_0: \beta_i = 0 \\
+H_a: \beta_i \not= 0
+$$
+
+Ideally, all of our predictors reject the null hypothesis.
+
+<br>
+
+## **ADDITIONAL ANALYSES** 
+
+<br>
+
+In statistical policy analytics, predictive models are especially important. And whereas the traditional, theory driven approach to regression places an emphasis on highly significant of each predictor rather than the overall predictive ability of the model (i.e. R^2), many policy-driven use cases use a data mining paradigm to find the ideal model. We want a high prediction accuracy as measured by metrics like R^2 and root mean square error (RMSE) not only in our training data set but also on unseen data. In our analysis, we will employ the most commonly used data mining methods, namely k-fold cross validation and stepwise regression.
+
+<br>
+
+### **STEPWISE REGRESSION**
+
+<br>
+
+Stepwise regression is an algorithmic procedure that uses forward elimination, backward elimination, and bidirectional elimination to iterate tests (i.e. F-Tests) on independent variables to determine whether to remove or keep the variable based on pre-defined entry and exit significance levels. The idea is to algorithmically determine the set of 'best' predictors for the model. For this purpose, entry significance levels are usually kept low with $alpha_{entry} > 0,05$ whereas exit significance levels are usually kept higher at $alpha_{exit} > 0.10$. Stepwise regression optimizes for the best Akaike Information Criterion (AIC). This procedure is not without its limitations: Stepwise regression is by construction prone to Type I and Type II errors meaning that it could eliminate highly significant predictors. Since many t-tests on the coefficients are conducted, it could be that some important coefficients are eliminated and some unimportant coefficients are kept in the model.
+
+<br>
+
+### **K-FOLD CROSS VALIDATION**
+
+<br>
+
+K-fold cross validation is a statistical model validation technique to assess the generalizability of a model at hand. It divides data into k-folds and uses the data in the k-1 folds for training and then evaluates the result via the RMSE on the isolated fold, also called test fold. This process is repeated k times such that in each repetition, a different fold serves as the test fold. Consequently, the average RMSE is calculated and is used to summarize the results of our cross-validation. This metric is then used to benchmark the generalizabiilty of different models. RMSE is defined as the root of the mean squared error
+
+$$
+RMSE = \sqrt{MSE} = \sqrt{{\sum_{i = 1}^n}\frac{(y_i - \hat{y}_i)^2}{n}}
+$$
+
+where y_i is the observed value of the prediction and $$\hat{y}_i$$ is our predicted value.
+
+The mean squared error (MSE) is computed by taking the SSE and dividing it by the number of observations. Therefore, MSE is the average sum squared error per observation. We have to take the root of the MSE because the SSE is a squared measure. We can't simply take the average of the errors without squaring since this would result in 0. 
+
+It follows that the models with low RMSE are considered more generalizable. An obvious limitation to this approach is that the choice of the k-folds affects the training and validation data and therefore, we could have different averaged RMSE values depending on this split. This could affect our choice of the 'ideal' model. Additionally, it is computationally expensive and requires great amounts of data to be effective. One last remark is that while k-fold cross validation can help us choose a model that reduces overfitting, it is likely that we will not get completely rid of overfitting even if we happen to have great regression models that are extremely accurate for our test training data. This is because in this case, we might get a greater RMSE for our test fold.
+
+<br>
+
+## **SOFTWARE + TOOLS** 
+
+<br>
+
+All calculations and graphs were completed using R and its language packages.
+
+<br>
+
+## **INTERPRETATION** 
+
+<br>
+
+We use the term logged predictor to refer to the logarithmus naturalis of an independent variable. The interpretation for a one unit increase in an independent variable of the regression coefficient estimates for a logged dependent variable changes in that we have to transform the value of our beta coefficient by the formula:
+
+$$
+(e^{\beta_i}-1)*100, \ 1 \leq i \leq k.
+$$
+
+This gives us the percent change in the dependent variable. In case both the dependent and independent variables are logged, a one unit increase in the independent variable has the following percentage effect on the dependent variable:
+
+$$
+(1.01^{\beta_i}-1)*100, 1 \leq i \leq k.
+$$
+
+<br>
+
+# **RESULTS** 
+
+<br>
+
+## **EXPLORATORY DATA ANALYSIS**
+
+<br>
+
+### **SUMMARY TABLE**
+
+<br>
+
+The following table provides a concise overview of both the mean and standard deviation for the dependent variable (median house value) as well as four predictor variables. It is evident that two of the predictors, namely, the percentage of individuals with a Bachelor's degree and the percentage of single housing units, exhibit standard deviations that surpass their respective means. This signifies a notable degree of variability in their values. Further, the average median home value for census block groups in Philadelphia stands at $66,287.73, which is accompanied by a standard deviation of $60,006 USD. The proximity of the standard deviation to the median suggests a substantial level of variation in average home sale prices among the city's block groups. Subsequently, the information from this table will be presented graphically through histograms.
+
+```{r summary_table, warning = FALSE, fig.height=12, fig.width=12}
+
+summary_stats <- data.frame(
+  Variable = c(
+    "Median House Value",
+    "Percent Households Living in Poverty",
+    "Percent of Individuals with Bachelor's Degrees or Higher",
+    "Percent of Vacant Houses",
+    "Percent of Single House Units"
+  ),
+  Mean = c(
+    mean(RegD$MEDHVAL),
+    mean(RegD$NBELPOV100),
+    mean(RegD$PCTBACHMOR),
+    mean(RegD$PCTVACANT),
+    mean(RegD$PCTSINGLES)
+  ),
+  SD = c(
+    sd(RegD$MEDHVAL),
+    sd(RegD$NBELPOV100),
+    sd(RegD$PCTBACHMOR),
+    sd(RegD$PCTVACANT),
+    sd(RegD$PCTSINGLES)
+  )
+)
+
+summary_stats$Mean <- round(summary_stats$Mean, digits = 3)
+summary_stats$SD <- round(summary_stats$SD, digits = 3)
+
+kable(summary_stats) %>% 
+  kable_styling(font_size = 12, full_width = F,  
+                bootstrap_options = c("striped", "hover", "condensed")) %>%
+  footnote(general_title = "\n",
+           general = "")
+```
+
+<br>
+
+### **HISTOGRAMS**
+
+<br>
+
+```{r Distribution Histograms, results='hide'}
+#Dependent Variable
+hist(RegD$MEDHVAL, main = "Distribution of Median House Value", xlab = "MEDHVAL", breaks = 500)
+
+#Predictors
+hist(RegD$PCTBACHMOR, main = "Distribution Of Proportion Of Residents In Block With At Least A Bachelors", xlab = "PCTBACHMORE", breaks = 500)
+
+hist(RegD$PCTVACANT, main = "Proportion Of Vacant Housing Units", xlab = "PCTVACANT", breaks = 500)
+
+hist(RegD$PCTSINGLES, main = "Percent Of Housing Units That Are 'Detached Single Family Houses'", xlab = "PCTSINGLE", breaks = 500)
+
+hist(RegD$NBELPOV100, main = "Households Declared To Be In Poverty", xlab = "NBELPOV100", breaks = 500)
+
+hist(RegD$MEDHHINC, main = "Median Household Income", xlab = "MEDHHINC", breaks = 500)
+```
+
+```{r Means and Standard Deviation, message=FALSE, results='hide'}
+
+#Means and Standard Deviation 
+#Median House Value
+mean(RegD$MEDHVAL)
+sd(RegD$MEDHVAL)
+
+#Percent Bachelors
+mean(RegD$PCTBACHMOR)
+sd(RegD$PCTBACHMOR)
+
+#Percent Vacant
+mean(RegD$PCTVACANT)
+sd(RegD$PCTVACANT)
+
+#Percent Single Detached 
+mean(RegD$PCTSINGLES)
+sd(RegD$PCTSINGLES)
+
+#Households Below Poverty Line
+mean(RegD$NBELPOV100)
+sd(RegD$NBELPOV100)
+
+#Median Household Income
+mean(RegD$MEDHHINC)
+sd(RegD$MEDHHINC)
+```
+
+```{r Log Variables, results='hide'}
+
+filter(RegD, MEDHVAL == 0)
+RegD$LN_MEDHVAL <- log(RegD$MEDHVAL)
+
+RegD$LN_PCBACHMORE <- log(1+RegD$PCTBACHMOR)
+RegD$LN_BELPOV100 <- log(1+RegD$NBELPOV100)
+RegD$LN_PCTVACANT <- log(1+RegD$PCTVACANT)
+RegD$LN_PCTSINGLES <- log(1+RegD$PCTSINGLES)
+```
+
+```{r Log_Histograms, message=FALSE, results='hide'}
+
+hist(RegD$LN_MEDHVAL, main = "Log of Distribution of Median House Value", xlab = "LN MEDHVAL", breaks = 50)
+
+hist(RegD$LN_PCBACHMORE, main = "Log of Distribution of Residents in Block with at Least a Bachelors", xlab = "LN PCTBACHMOR", breaks = 50)
+
+hist(RegD$LN_PCTVACANT, main = "Log of Proportion of Vacant Housing Units", xlab = "LN PCTVACANT", breaks = 50)
+
+hist(RegD$LN_PCTSINGLES, main = "Log of Percent of Housing Units that are 'detached single family houses'", xlab = "LN PCTSINGLE", breaks = 50)
+
+hist(RegD$LN_BELPOV100, main = "Log of Households Declared to be in Poverty", xlab = "LN NBELPOV100", breaks = 50)
+
+```
+
+<br>
+
+#### **HISTOGRAMS: Dependent Variables**
+
+<br>
+
+**Median Household Value**: We observe that the histogram displaying the frequency distribution of median house values is strongly right-skewed implying that the vast majority of blocks in Philadelphia contain houses that are on median valued between 10.000 dollars and 180.000 dollars. The mean value is 66287 dollars. The standard deviation of 60006 dollars is comparably high and tells us that 68% of blocks contain houses that are on median valued between 10.000 dollars and 130.012 dollars. From both the visual representation in the histogram and the summary statistics, we can already infer a high spread in median house hold values for Philadelphia. 
+
+<br>
+
+#### **HISTOGRAMS: Independent Variables**
+
+<br>
+
+**Percentage with Bachelor's Degree**: We observe that the histogram displaying the frequency distribution of the proportion of block level residents with at least a Bachelor's degree is strongly right-skewed implying that the majority of blocks are populated by inhabitants of which less than 20 percent hold a Bachelor's degree. The distribution is zero-inflated (140 observations). The mean value is 16 percent. The standard deviation of 17.8 percent is comparably high and tells us that 68 percent of the blocks have residents whose block-level proportion of holding a Bachelor's degree is between 0 percent and 34.8 percent. The skew, whereas significant, is not as strong as the one for our dependent variable. This is hints to the fact that not all blocks with high degrees of education must display high median household values.
+
+**Percentage of Vacant Housing Units**: We observe that the histogram displaying the frequency distribution of the proportion of block level vacant housing units per block is strongly right-skewed implying that the vast majority of blocks contain less than 20 percent of vacant housing units. The distribution is severely zero-inflated (170 observations).  The mean value is 11.3. The standard deviation of 9.6 is medium high and tells us that 68 percent of the blocks have between 1.6 percent and 20.8 percent vacant housing units.
+
+**Number of Detached Single Housing Units**: We observe that the histogram displaying the frequency distribution of detached single housing units per block is strongly right-skewed implying that the vast majority of blocks contain fewer than 20 detached singe housing units. The distribution is zero-inflated (310 observations). The mean value is 9. The standard deviation of 13.2 is comparably high and tells us that 68 percent of the blocks have between 0 and 17.2 detached single housing units. 
+
+**Number of Households Declared to be in Poverty**: We observe that the histogram displaying the frequency distribution of households declared to be in poverty per block is strongly right-skewed implying that the vast majority of blocks contain fewer than 200 such households. We cannot infer from this that therefore, the general poverty level is low in the city since we have no relative measure of whether these frequencies are high or low. The distribution is zero-inflated (40 observations). The mean value is 190. The standard deviation of 164.3 is medium high and tells us that 68 percent of the blocks have between 25.4 and 354 households declated to be in poverty.
+
+**Median Household Income**: We observe that the histogram displaying the frequency distribution of median household income on a block level is mildly right-skewed, but also resembles a normal distribution if we we look at median house hold values to a maximum of 60.000 dollars. The mean value is 31542. The standard deviation of 16298.4 is medium high and tells us that 68 percent of the blocks have a median household income between 15243 and 47839.
+
+<br>
+
+### **OBSERVATIONS**
+
+<br>
+
+Given all of the information above, we already have a hypothesis that the positive outliers in the median house value histogram could well be explained by blocks that have a high percentage of residents with a Bachelor's degree, a high number of detached single households, a high median household income, and that are low in the number of households declared to be in poverty and the percentage of vacant housing units. Intuitively, such clustering makes sense since higher education is linked with higher incomes, and because wealthy neighborhoods usually have many single housing units as well as low vacancy. Conversely, low median household values could probably be linked with opposite markers, namely low education, high vacancy, and so on.
+
+The right-skewdness of many of the variables in this study invite for a ln (logarithmus naturalis) transformation to potentially achieve approximately normal distribution. For any variable for which this achieved, we will continue with the logged version of the variable. We will revert to reasons as to why we do this in first place where we discuss the assumptions for OLS regression.
+
+To transform our variables into ln-transformed variables, we add 1 to each 0 value in the respective data sets if there exist any zero values to avoid having the undefined expression ln(0). Below, we can see that the zero-inflated distributions are not normal and have a peak at zero. This is because ln(1) is equal to zero. We also see that the ln-transformation of our dependent variable looks approximately normal. We will now proceed to this logged transformation for our dependent variable. We will dive into each regression assumption and also explain why we prefer the logged transformation for the dependent variable.
+
+<br>
+
+### **CHOROPLETH MAPS**
+
+<br>
+
+```{r chloropleth_maps}
+
+par(mfrow = c(2, 2))
+ggplot() +
+  geom_sf(data = Reg_shp, aes(fill = LNMEDHVAL))+
+  labs(title = "LOG Median Home Value",
+       fill = "Value") +
+  scale_fill_gradient(low = "white", high = "red")+
+  theme_bw() +
+  theme(legend.position = "right",
+        axis.text.x = element_text(angle = 45, hjust = 1),
+        plot.subtitle = element_text(size = 12,face = "italic"),
+        plot.title = element_text(size = 14.5, face = "bold"),
+        panel.background = element_blank(),
+        panel.border = element_rect(colour = "#C8C8C8", fill=NA, linewidth =0.8))
+
+ggplot() +
+  geom_sf(data = Reg_shp, aes(fill = PCTVACANT))+
+  labs(title = "Proportion of Vacant Housing Units",
+       fill = "Value") +
+  scale_fill_gradient(low = "white", high = "blue")+
+  theme_bw() +
+  theme(legend.position = "right",
+        axis.text.x = element_text(angle = 45, hjust = 1),
+        plot.subtitle = element_text(size = 12,face = "italic"),
+        plot.title = element_text(size = 14.5, face = "bold"),
+        panel.background = element_blank(),
+        panel.border = element_rect(colour = "#C8C8C8", fill=NA, linewidth =0.8))
+
+ggplot() +
+  geom_sf(data = Reg_shp, aes(fill = PCTSINGLES))+
+  labs(title = "Amount of Houses Classified as Single Family Detached",
+       fill = "Value") +
+  scale_fill_gradient(low = "white", high = "darkgreen")+
+  theme_bw() +
+  theme(legend.position = "right",
+        axis.text.x = element_text(angle = 45, hjust = 1),
+        plot.subtitle = element_text(size = 12,face = "italic"),
+        plot.title = element_text(size = 14.5, face = "bold"),
+        panel.background = element_blank(),
+        panel.border = element_rect(colour = "#C8C8C8", fill=NA, linewidth =0.8)) 
+
+ggplot() +
+  geom_sf(data = Reg_shp, aes(fill = PCTBACHMOR))+
+  labs(title = "Percentage of People with at Least a Bachelors",
+       fill = "Value") +
+  scale_fill_gradient(low = "white", high = "orange")+
+  theme_bw() +
+  theme(legend.position = "right",
+        axis.text.x = element_text(angle = 45, hjust = 1),
+        plot.subtitle = element_text(size = 12,face = "italic"),
+        plot.title = element_text(size = 14.5, face = "bold"),
+        panel.background = element_blank(),
+        panel.border = element_rect(colour = "#C8C8C8", fill=NA, linewidth =0.8))
+
+ggplot() +
+  geom_sf(data = Reg_shp, aes(fill = LNNBELPOV))+
+  labs(title = "LOG of Households Below the Poverty Line",
+       fill = "Value") +
+  scale_fill_gradient(low = "white", high = "purple")+
+  theme_bw() +
+  theme(legend.position = "right",
+        axis.text.x = element_text(angle = 45, hjust = 1),
+        plot.subtitle = element_text(size = 12,face = "italic"),
+        plot.title = element_text(size = 14.5, face = "bold"),
+        panel.background = element_blank(),
+        panel.border = element_rect(colour = "#C8C8C8", fill=NA, linewidth =0.8))
+
+
+```
+
+We clearly see that high values in median house value, percentage of residents with at least a bachelors degree, and percentage of detached single household cluster in space in the same areas in the mid northwest and mid southeastern parts of Philadelphia. Given this clear spatial congruence, we assume that the independent variables have a strong positive correlation with ln median hh value. We also see that low values in these mentioned independent variables spatially cluster with high values in log poverty and log pctvacant. These findings are not surprising and corroborate our explanations and hypotheses for these findings in the last section. This visual representation, however, also propounds the issue of multicolinearity. It could be that percentage of detached and bachelor degree are strongly multicolinear. It could also be that ln below poverty and pct vacant are strongly multicolinear. We will later delve into the regression assumptions and explain why we must avoid multicolinearity. 
+
+<br>
+
+### **CORRELATION MATRIX**
+
+<br>
+
+```{r correlation_matrix}
+
+RegDnums = RegD |>
+                  st_drop_geometry() |>
+                  dplyr::select(
+                                PCTVACANT,
+                                PCTSINGLES,
+                                PCTBACHMOR,
+                                NBELPOV100)
+
+corrplot(cor(RegDnums), method = "number", type = "lower", tl.col = "black", tl.cex = 0.75, number.cex = 1)
+
+```
+
+Before we evaluate multicolinearity, we have to set a threshold value for it. Standard statistical literature proposes a value of 0.9 for this threshold, and we will apply this standard also to our study. We see that pct singles and pct pct bachelor have a correlation of 0.22. Therefore, these predictors are not colinear. We also see that ln poverty and pct vacant have a correlation of 0.25. Therefore, these predictors are not colinear. In total, the correlation matrix supports our hypotheses made on potential multicolinearity between our independent variables, but also shows that none of our predictors show sufficiently strong multicolinearity amongst each other such that they cross the threshold value of 0.9. This means that we don't have to drop any of our predictors for the regression model.
+
+<br>
+
+### **REGRESSION RESULTS**
+
+<br>
+
+```{r regression_partA}
+
+Regression <- lm(LNMEDHVAL ~ PCTVACANT + PCTSINGLES + PCTBACHMOR + LNNBELPOV, data = Reg_shp)
+
+summary(Regression)
+
+```
+
+We regressed the logged median household value on the % proportion of housing units that are vacant (PCTVACANT), % of residents with at least a Bachelor degree (PCTBACHMOR), % of housing units that are detached single family houses (PCTSINGLES), and on the logged percentage of households below the poverty line (LNNBELPOV). The coefficient of determination, $R^2$, tells us that 66.23% of the variance in the dependent variable LNMEDHVAL is explained by our model. This means that our measure has a decent, but not great accuracy predicting the dependent variable with our predictors. Note that we can't infer anything about the generalizability of the model from R^2.
+
+As laid out in the methods section, we have to penalize R^2 in multiple regression for the number of predictors. Our adjusted R^2 is 66.15% and has the same interpretation as R^2. The regression output tells us that PCTSINGLES and PCTBACHMOR are highly significant predictors (p<0.0001 for both variables) that are positively associated with the ln of median household income. A one unit (i.e., percentage point) increase in the % of detached single housing units in the block group is associated with a $β_1 = 0.3%$ increase in median house value. Similarly, a one unit (i.e., 1%) increase in the % of block group residents with a bachelor degree or higher is associated with a $β_2= 2%$ increase in median house value. The p-value of less than 0.0001 for PCTSINGLES tells us that if there is actually no relationship between PCTSINGLES and the dependent variable LNMEDHVAL (i.e., if the null hypothesis that $β_1=0$ is actually true), then the probability of getting a $β_1$ coefficient estimate of 0.0029 is less than 0.0001. The p-value of less than 0.0001 for PCTBACHMOR tells us that if there is actually no relationship between PCTBACHMOR and the dependent variable LNMEDHVALINC (i.e., if the null hypothesis that $β_2=0$ is actually true), then the probability of getting a $β_2$ coefficient estimate of 0.02 is less than 0.0001.
+
+The regression output also tells us that PCTVACANT, LNNBELPOV are highly significant predictors (p<0.001 for both variables) that are negatively associated with the ln of median household income. A one unit (i.e., percentage point) increase in the % of vacant housing units in the block group is associated with a $β_3 = 2%$ decrease in median house value. Similarly, a one unit (i.e., 1%) increase in the % of households living below the poverty line is associated with a $β_4= 8%$ decrease in median house value. The p-value of less than 0.0001 for PCTVACANT tells us that if there is actually no relationship between PCTVACANT and the dependent variable LNMEDHVAL (i.e., if the null hypothesis that $β_3=0$ is actually true), then the probability of getting a $β_3$ coefficient estimate of -0.019 is less than 0.0001. The p-value of less than 0.0001 for LNNBELPOV tells us that if there is actually no relationship between LNNBELPOV and the dependent variable LNMEDHVALINC (i.e., if the null hypothesis that $β_4=0$ is actually true), then the probability of getting a $β_4$ coefficient estimate of -0.078 is less than 0.0001.
+
+These low probabilities indicate that we can safely reject $H_0: β_1 = 0$ for $H_a: β_i ≠ 0$ where $1 \leq i \leq 4$ (at most reasonable levels of $α$ = P(Type I error)). The low p-value associated with the F-ratio shows that we can reject the null hypothesis that all coefficients in the model are 0.
+
+```{r anova_regression_partB}
+
+anova(Regression)
+```
+
+* The sum squared value of 180.383 for PCTVACANT is the amount of SSE reduced when the predictor PCTVACANT was added to the model.
+
+* The sum squared value of 24.543 for PCTSINGLES is the amount of SSE reduced when the predictor PCTSINGLES was added to the model.
+
+* The sum squared value of 235.111 for PCTBACHMOR is the amount of SSE reduced when the predictor PCTBACHMOR was added to the model.
+
+* The sum squared value of 11.692 for LNNBELPOV is the amount of SSE reduced when the predictor LNNBELPOV was added to the model.
+
+Clearly, PCTVACANT and PCTBACHMOR greatly contributed to our $R^2$.
+
+<br>
+
+## **REGRESSION ASSUMPTION CHECKS** 
+
+<br>
+
+In this section, we will check our regression assumptions as defined in our methods section. We saw earlier that our independent variables are not colinear. We also know that our dependent variable, ln medhh, is continuous and that observations are independent of each other. Even though not a strict assumption, we also know that we have sufficiently many data points for each of our variables, dependent or independent.
+
+<br>
+
+### **SCATTER PLOT - PREDICTORS**
+
+<br>
+
+```{r Scatter Plots between Median Home Value & Predictors, results='hide'}
+
+par(mfrow = c(2, 2))
+plot(RegD$LN_MEDHVAL, RegD$PCBACHMOR, main = "LN_MEDHVAL vs. PCBACHMORE", xlab = "LN_MEDHVAL", ylab = "PCBACHMORE") + theme_minimal()
+
+plot(RegD$LN_MEDHVAL, RegD$PCTVACANT, main = "LN_MEDHVAL vs. PCTVACANT", xlab = "LN_MEDHVAL", ylab = "PCTVACANT") + theme_minimal()
+
+plot(RegD$LN_MEDHVAL, RegD$LN_BELPOV100, main = "LN_MEDHVAL vs. LN_BELPOV100", xlab = "LN_MEDHVAL", ylab = "LN_BELPOV100") + theme_minimal()
+
+plot(RegD$LN_MEDHVAL, RegD$PCTSINGLES, main = "LN_MEDHVAL vs. PCTSINGLES", xlab = "LN_MEDHVAL", ylab = "PCTSINGLES") + theme_minimal()
+
+```
+
+We see that the relationship between ln medhh and pct vacant is not perfectly linear, but has a linear trend. The same observation can be made for the relationship between ln medhh and ln poverty. The reason that we use the log naturalis for these two variables is that their non-logged distribution is not normal with a heavy left skewed with few zero values. The linear relationship is not as clear for the relationship of LNMEDHVAL and pct singles. Especially the peak in y values for x values between 11 and 12 distort the notion of a linear relationship. 
+
+As for the relationship between LNMEDHVAL and pcbachelor, we see that there is clearly no linear relationship. This also corroborates our previously made hypotheses that it is likely that if a block contains many houses with high LNMEDHVAL, it also has a high density of residents with bachelors degrees, but not vice-versa. Even though none of our independent variables display a perfect linear relationship with the dependent variable, they still have a reasonable degree of at least some linear relationship with the dependent variable. We hence continue with this limitation in mind.
+
+<br>
+
+### **HISTOGRAM OF STANDARDIZED RESIDUALS**
+
+<br>
+
+```{r Part C}
+
+predictions <- fitted(Regression)
+
+residuals <- residuals(Regression)
+
+standardized_residuals <- rstandard(Regression)
+
+```
+
+```{r Question 4 set model}
+
+hist(standardized_residuals, breaks = 300, main = "")
+```
+
+<br>
+
+$$
+e^*_i \approx \frac{e_i}{\sqrt{SSE / (n-2)}}
+$$
+
+The equation above is used to calculate standardized residuals and is used to compare residuals for different observations with each other. 
+
+The histogram displays an approximately normal distribution but is weakly left-skewed with mean slightly greater than 0. This is good enough for out data set to imply normality of residuals but also means that our model on average is lightly underpredicting LNMEDHVAL. This is because our residuals are positive if and only if the standardized residual is positive.  Also note that standardized residuals which are more than two standardized deviations away from the mean can be considered outliers. This flattens the tails on both sides, inducing more normality into the distribution.
+
+<br>
+
+### **SCATTER PLOT - STANDARDIZED RESIDUALS BY PREDICTED VALUE**
+
+<br>
+
+```{r scatter_plot_predicted}
+
+# Create A Scatter Plot Of Standardized Residuals By Predicted Value
+
+plot(predictions, standardized_residuals,
+    xlab = "Predicted Values",
+    ylab = "Standardized Residuals",
+    main = "")
+    abline(0, 0, lty = 2)
+    title("")
+    
+```
+
+The scatter plot clearly shows that there is no severe homoscadescity. We see more and more outliers as our predicted ln median house values increase. We also see that for predicted ln median house values between 10 and 11, most of our $e_i^*$ are negative, implying that e_i is below 0. We also see that for predicted ln medhh above 11, we most of our $e_i^*$ are positive, implying that $e_i$ is greater than 0. We can infer from these two observations that we overpredict low ln medhh and underpredict high ln medhh. From the prior observations, we also know that in general, we tend to underpredict more frequently than we overpredict.
+
+The residuals also look randomly distributed. Some literature proposes that standardized residuals greater than two are outliers, whereas more conservative authors use three as threshold. For us, the number of outliers does not change drastically for a threshold value or two or three, showing that most of our data hugs 0. In total, we have shown that many regression assumptions don't hold, but are close enough to induce a high degree of validity in our approach. We will delve deeper into the limitations caused by these issues in the discussion section.
+
+We saw that our predictors were spatially clustered. This clustering could be an indication for spatial autocorrelation. Spatial autocorrelation can be measured by the Global Moran's I statistic. High values in Global Moran's I imply that observations similar in the independent variable of interest tend to cluster spatially. In simple terms, this means that observations are closer to similar observations than to non-similar observations with respect to the independent variable in question. We will now check for spatial autocorrelation by visualizing the spatial distribution of standardized residuals. Clustering in these implies that we missed accounting for a spatial process.
+
+<br>
+
+### **CHOROPLETH MAP**
+
+<br>
+
+```{r choropleth_map}
+
+# Create A Choropleth Map
+
+minimum_standard_residuals <- min(standardized_residuals)
+centered_standard_residuals <- standardized_residuals-minimum_standard_residuals
+
+ggplot()+
+  geom_sf(data=Reg_shp, aes(fill = centered_standard_residuals+1))+
+  labs(title = "Centered Standardized Residuals",
+       fill = "Value") +
+  scale_fill_gradient(low = "red", high = "white")+
+  theme_bw() +
+  theme(legend.position = "right",
+        axis.text.x = element_text(angle = 45, hjust = 1),
+        plot.subtitle = element_text(size = 12,face = "italic"),
+        plot.title = element_text(size = 14.5, face = "bold"),
+        panel.background = element_blank(),
+        panel.border = element_rect(colour = "#C8C8C8", fill=NA, linewidth =0.8))
+
+```
+
+The map of standardized regression residuals shows high errors in center northwest and mid southeast Philadelphia. These are the areas with high LNMEDHVAL. The high errors imply that the variables in our regression model did not account for a spatial process. We seem to have strong spatial autocorrelation in these areas, and medium strong spatial autocorrelation in the northeastern part of the city. Ideally, this spatial process is included in the regression of a future study.
+
+<br>
+
+## **ADDITIONAL MODELS** 
+
+<br>
+
+Throughout this additional models section, we perform stepwise regression and k-fold cross validation. Stepwise regression is a systematic variable selection technique that allows us to assess the significance of all four predictor variables in our model. K-fold cross validation is a method of evaluating/comparing the root mean square error (RMSE) between our initial model incorporating the four predictors with a revised model featuring only two. 
+
+<br>
+
+### **STEPWISE REGRESSION** 
+
+<br>
+
+As mentioned, we perform a stepwise regression on our model’s variables to produce a final model preserving all four original predictor variables. This outcome is a result of the predictors exhibiting P-values below 0.05 - a significant threshold. Further, we observe the AIC value was not lowered by removing the predictors. Therefore, the stepwise regression highlights the statistical significance of the four predictor variables, affirming their importance in our final model.
+
+```{r stepwise_regression}
+
+# Performing A Stepwise Regression
+
+MASS::stepAIC(Regression, direction="both")$anova
+
+```
+
+<br>
+
+### **K-FOLD CROSS VALIDATION** 
+
+<br>
+
+The k-fold cross validation is conducted on the original model featuring the four predictors and the new model comprising only two predictors: percent of vacant housing units and median household income. The results, a product of using five folds, are found in the table. By comparing the root mean squared error (RMSE) provided in the cross-validation outputs, we observe the original model outperforming the reduced model since it yields a lower RMSE. A lower RMSE as compared to a higher RMSE means our original model demonstrates greater generalizability across various data folds, making it a superior fit for our model.
+
+Further, our first observation was that all points lie close to each other and hug a line. This is a first good sign since this means that our values aren't extremely spread out for distinct folds, implying that our model could be generalizable. Additionally, we see that we tend to underpredict often for low median household values but overpredict for high median household values. This trend can also be seen in the standardized residuals plot of our regression model. Both of these observations support the idea that our model is generalizable. The RMSE across folds is at 0.366. 
+
+```{r cross_validation, fig.width=10, fig.height=10, results='hide'}
+ 
+# Performing A K-Fold Cross Validation
+
+cv_results <- DAAG::CVlm(data=as.data.frame(Reg_shp), Regression, m=5)
+mse <- attr(cv_results, "ms")
+rmse <- sqrt(mse)
+rmse
+
+```
+
+<br>
+
+# **DISCUSSION & LIMITATIONS** 
+
+<br>
+
+In this document, we constructed a multiple regression analysis predicting median house value in Philadelphia. We first explained the methodology employed and then went into exploratory data analysis to gauge whether our variables could make for good predictors from a pure data perspective. We also explained why our predictors make sense from a theoretical perspective. After checking for the regression assumptions, we ran our model and found that all of our chosen variables were significant predictors of median house hold value. Our regression had an accuracy of 66.23%, and all of our predictors are significant according to the T-Test. 
+
+These numbers tell us that our model has a certain minimum quality standard, even though our accuracy is surprisingly low. One reason for the low accuracy could be that we missed on picking variables that can explain more about our data. As we saw in the distribution of standardized residuals choropleth earlier, one of these variables could be the spatial process. We also have to mention that strictly speaking and as mentioned earlier, several regression assumptions like linearity and homoscedasticity were violated that could qualify the validity of our results. 
+
+Another more pressing limitation might be the use of the absolute number of households living below the poverty line in block groups as a predictor in our model. This is because block groups can have severe differences in the number of households. Block groups are statistical divisions of census tracts defined to have between 3000-6000 inhabitants. This is problematic because there could be block groups with multiple single person households that are below the poverty line paired with many wealthy, big households in one block group. Thus, confusing our regression model.
+
+In our framework of analysis, ridge and lasso regression could be valuable techniques employed to address the challenges and limitations identified throughout the study. For instance, ridge regression can help mitigate multicollinearity – a concern given the overlap of selected variables and their potential to exhibit high interdependence. Ridge regression minimizes the sum of squared errors (SSE). A constraint of the L2 norm is imposed, which corresponds to the square root of the sum of β coefficients. The cost function, in this regression technique, is altered by adding a penalty term (shrinkage term) which multiplies the λ (hyperparameter) with the squared weight of each feature. By introducing a penalty term counteracting model overfitting, ridge regression can also potentially improve the model’s generalizability and reduce the magnitude of the coefficients. This may be particularly beneficial in cases where predictors lack theoretical intuitiveness but still hold valuable information; and in cases where help is needed in decreasing the complexity of the model.
+
+Lasso stands for “Least Absolute and Selection Operator” and is another regression technique of regularization used to reduce model complexity purging potential irrelevant or noisy predictors. It is like ridge regression except the penalty term includes the absolute weight instead of the square of weights. Further, lasso regression can automatically shrink the coefficients of less important variables to zero, effectively excluding them from the model. This might lead to a more interpretable model – reducing the impact of significant variation in the block group characteristics on the model’s performance. Both ridge and lasso regression offer methods to enhance model robustness and accuracy, especially when dealing with multiple variable and assumption violations. However, upon further reflection regarding appropriateness, we determine both ridge and lasso regression techniques should not be used because they drop the assumption of multicollinearity. When this assumption is violated, we can get incorrect P-values and estimates of 𝛽𝑖.
