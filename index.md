@@ -41,7 +41,7 @@
 
 ### Statistics and Data Mining (Artificial Intelligence & Machine Learning)
 
-[Reading Sentiment using Artifical Intelligence](/projects/TODAssignment_Kapuvari.html)
+[Reading Emotion &  Sentiment using Artifical Intelligence](/projects/TODAssignment_Kapuvari.html)
 <img src="images/dummy_thumbnail.jpg?raw=true"/>
 
 ---
