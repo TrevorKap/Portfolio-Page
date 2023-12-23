@@ -19,7 +19,7 @@
 
 ---
 [Analyzing Probability of Housing Subsidy Users](/projects/TargetingaHousingSubsidyKapuvari.html)
-<img src="images/dummy_thumbnail.jpg?raw=true"/>
+<img src="images/housesubsidy.png?raw=true"/>
 
 ---
 [Measuring Risk Assessment of Crime](/projects/GeospatialRiskPredictionKapuvari.html)
