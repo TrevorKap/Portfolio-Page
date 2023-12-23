@@ -22,7 +22,7 @@
 <img src="images/housesubsidy.png?raw=true"/>
 
 ---
-[Measuring Risk Assessment of Crime](/projects/GeospatialRiskPredictionKapuvari.html)
+[Measuring Risk Assessment of Crime in Chicago](/projects/GeospatialRiskPredictionKapuvari.html)
 <img src="images/dummy_thumbnail.jpg?raw=true"/>
 
 ---
