@@ -29,7 +29,7 @@
 
 ### Python
 
-[Final Project lmao idk](/projects/TODAssignment_Kapuvari.html)
+[Final Project](/projects/TODAssignment_Kapuvari.html)
 <img src="images/dummy_thumbnail.jpg?raw=true"/>
 
 ###### (Downloadable Links, Only)
