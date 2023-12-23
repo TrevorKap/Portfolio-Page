@@ -45,7 +45,7 @@
 
 ### Statistics and Data Mining (Artificial Intelligence & Machine Learning)
 
-[Reading Emotion &  Sentiment using Artifical Intelligence](/projects/TODAssignment_Kapuvari.html)
+[Reading Emotion &  Sentiment using Artifical Intelligence](/projects/HW06_Statistics_MUSA5000.html)
 <img src="images/dummy_thumbnail.jpg?raw=true"/>
 
 ---
@@ -55,12 +55,12 @@
 
 ---
 
-[Predicting Alcohol-Related Car Accidents with Logisitical Regression](/projects/TargetingaHousingSubsidyKapuvari.html)
+[Predicting Alcohol-Related Car Accidents with Logisitical Regression](/projects/HW03_LogisticRegression_MUSA5000.html)
 <img src="images/homework1statspic.png?raw=true"/>
 
 ---
 
-[Cluster Analysis](/projects/TODAssignment_Kapuvari.html)
+[Categorizing a City using a Cluster Analysis](/projects/HW05_Statistics_MUSA5000.html)
 <img src="images/dummy_thumbnail.jpg?raw=true"/>
 
 ---
