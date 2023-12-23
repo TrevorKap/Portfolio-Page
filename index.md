@@ -50,7 +50,7 @@
 
 ---
 
-[Examining Housing Using Spatial Regression](/projects/MidtermAssignment.html)
+[Examining Housing Using Spatial Regression](/projects/HW02_SPATIALRegression_MUSA5000.html)
 <img src="images/dummy_thumbnail.jpg?raw=true"/>
 
 ---
