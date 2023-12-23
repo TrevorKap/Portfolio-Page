@@ -23,7 +23,7 @@
 
 ---
 [Measuring Risk Assessment of Crime in Chicago](/projects/GeospatialRiskPredictionKapuvari.html)
-<img src="images/dummy_thumbnail.jpg?raw=true"/>
+<img src="images/RiskAssessment.png?raw=true"/>
 
 ---
 
