@@ -1,5 +1,5 @@
 ## Portfolio
-
+* TOC {:toc}
 ---
 
 ### Public Policy Analytics (R)
