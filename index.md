@@ -1,5 +1,7 @@
 ## Portfolio
-* TOC {:toc}
+* Public Policy Analytics (R)
+* Python
+* Artifical Intelligence, Machine Learning, Statistics
 ---
 
 ### Public Policy Analytics (R)
