@@ -6,12 +6,6 @@ description: > # your text below (remove <br> elements if you don't need line br
   <br><br>
   <a href="https://www.linkedin.com/in/trevor-kapuvari-a25876253/">View My LinkedIn Profile</a> 
 
-<ol>
-  <li>Public Policy Analytics (R)</li>
-  <li>Python</li>
-  <li>Artifical Intelligence, Machine Learning, Statistics</li>
-</ol>
-  
   
 remote_theme: pages-themes/minimal@v0.2.0
 plugins:
