@@ -50,27 +50,27 @@
 
 ### Statistics and Data Mining (Artificial Intelligence & Machine Learning)
 
-[Reading Emotion &  Sentiment using Artifical Intelligence](/projects/HW06_Statistics_MUSA5000.html)
+[Reading Emotion &  Sentiment using Artifical Intelligence](/projects/emotionsentiment.html)
 <img src="images/GPTDashboard.png?raw=true"/>
 
 ---
 
-[Examining Housing Using Spatial Regression](/projects/HW02_SPATIALRegression_MUSA5000.html)
+[Examining Housing Using Spatial Regression](/projects/SPATIALRegression.html)
 <img src="images/SpatialRegressioDashboard.png?raw=true"/>
 
 ---
 
-[Predicting Alcohol-Related Car Accidents with Logisitical Regression](/projects/HW03_LogisticRegression_MUSA5000.html)
+[Predicting Alcohol-Related Car Accidents with Logisitical Regression](/projects/LogisticRegression.html)
 <img src="images/logisticdashboard.png?raw=true"/>
 
 ---
 
-[Categorizing a City using a Cluster Analysis](/projects/HW05_Statistics_MUSA5000.html)
+[Categorizing a City using a Cluster Analysis](/projects/kmeansclusters.html)
 <img src="images/ClustersDashboard.png?raw=true"/>
 
 ---
 
-[Leveraging Ordinary Least Squares Regression on House Prices](/projects/HW01_OLSRegression_MUSA5000.html)
+[Leveraging Ordinary Least Squares Regression on House Prices](/projects/OLSRegressionhtml)
 <img src="images/homework1statspic.png?raw=true"/>
 
 ---
