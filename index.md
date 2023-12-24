@@ -29,8 +29,8 @@
 
 ### Python
 
-[Final Project](/projects/TODAssignment_Kapuvari.html)
-<img src="images/dummy_thumbnail.jpg?raw=true"/>
+[Using Yelp Fusion API and Web-scraping to Create High-Resolution Neighborhood Amenity Profiles](http://luckylaharltim.GitHub.io/MUSA_5500_Final)
+<img src="images/AmenityDashboard.png?raw=true"/>
 
 ###### (Downloadable Links, Only)
 
@@ -46,22 +46,22 @@
 ### Statistics and Data Mining (Artificial Intelligence & Machine Learning)
 
 [Reading Emotion &  Sentiment using Artifical Intelligence](/projects/HW06_Statistics_MUSA5000.html)
-<img src="images/dummy_thumbnail.jpg?raw=true"/>
+<img src="images/GPTDashboard.png?raw=true"/>
 
 ---
 
 [Examining Housing Using Spatial Regression](/projects/HW02_SPATIALRegression_MUSA5000.html)
-<img src="images/dummy_thumbnail.jpg?raw=true"/>
+<img src="images/SpatialRegressioDashboard.png?raw=true"/>
 
 ---
 
 [Predicting Alcohol-Related Car Accidents with Logisitical Regression](/projects/HW03_LogisticRegression_MUSA5000.html)
-<img src="images/homework1statspic.png?raw=true"/>
+<img src="images/logisticdashboard.png?raw=true"/>
 
 ---
 
 [Categorizing a City using a Cluster Analysis](/projects/HW05_Statistics_MUSA5000.html)
-<img src="images/dummy_thumbnail.jpg?raw=true"/>
+<img src="images/ClustersDashboard.png?raw=true"/>
 
 ---
 
