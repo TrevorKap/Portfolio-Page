@@ -39,12 +39,12 @@
 
 ###### (Downloadable Links, Only)
 
-- [Measuring the Donut Effect in Philadelphia](/projects/assignment-1.ipynb)
-- [Visualizations using Matplotlib, Altair, & Seaborn](/projects/Assignment2Kapuvari.ipynb)
-- [Evaluating Evictions Across Philadelphia](/projects/assignment-3.ipynb)
-- [Creating Street Networks & Web-Scrapping](/projects/assignment-4.ipynb)
-- [Exploring Yelp Reviews](/projects/assignment-5.ipynb)
-- [Predictive Modeling of Housing Prices in Philadelphia](/projects/assignment-6.ipynb)
+- [Measuring the Donut Effect in Philadelphia](/projects/DonutEffect.ipynb)
+- [Visualizations using Matplotlib, Altair, & Seaborn](/projects/matplotseabornaltair.ipynb)
+- [Evaluating Evictions Across Philadelphia](/projects/evictions.ipynb)
+- [Creating Street Networks & Web-Scrapping](/projects/streetsandwebscrap.ipynb)
+- [Exploring Yelp Reviews](/projects/yelpreviews.ipynb)
+- [Predictive Modeling of Housing Prices in Philadelphia](/projects/predictionmodelling.ipynb)
 
 ---
 
