@@ -1,6 +1,6 @@
 # Portfolio
 
-* Machine Learning in Public Use-Cases (R)
+* Machine Learning in Public Use Cases (R)
 * Python
 * Artifical Intelligence, Predictive Modelling, and Statistics
 
