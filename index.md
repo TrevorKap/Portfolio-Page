@@ -7,7 +7,7 @@
 
 ---
 
-### Public Policy Analytics (R)
+### Machine Learning in Public Use Cases (R)
  
 [TrainTracker: Predicting Train Delays for New Jersey Transit & Amtrak](/projects/figuring-it-out-markdown.html)
 <img src="https://github.com/TrevorKap/Portfolio-Page/blob/master/images/TrainGraphs.jpg?raw=true"/>
