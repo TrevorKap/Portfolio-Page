@@ -1,8 +1,8 @@
 # Portfolio
 
-* Public Policy Analytics (R)
+* Machine Learning in Public Use-Cases (R)
 * Python
-* Artifical Intelligence, Machine Learning, Statistics
+* Artifical Intelligence, Predictive Modelling, and Statistics
 
 
 ---
