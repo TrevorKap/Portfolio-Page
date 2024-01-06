@@ -48,7 +48,7 @@
 
 ---
 
-### Statistics and Data Mining (Artificial Intelligence & Machine Learning)
+### Artifical Intelligence, Predictive Modelling, and Statistics
 
 [Reading Emotion &  Sentiment using Artifical Intelligence](/projects/emotionsentiment.html)
 <img src="images/GPTDashboard.png?raw=true"/>
