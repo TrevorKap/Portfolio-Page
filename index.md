@@ -70,7 +70,7 @@
 
 ---
 
-[Leveraging Ordinary Least Squares Regression on House Prices](/projects/OLSRegressionhtml)
+[Leveraging Ordinary Least Squares Regression on House Prices](/projects/OLSRegression.html)
 <img src="images/homework1statspic.png?raw=true"/>
 
 ---
