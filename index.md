@@ -9,7 +9,7 @@
 
 ### Machine Learning in Public Use Cases (R)
  
-[TrainTracker: Predicting Train Delays for New Jersey Transit & Amtrak](/projects/figuring-it-out-markdown.html) <br> </br> 
+[TrainTracker: Predicting Train Delays for New Jersey Transit & Amtrak](/projects/figuring-it-out-markdown.html) <br> 
 [TrainTracker: PowerPoint Presentation](https://drive.google.com/file/d/1-L7rZkTZ-m6oQc1FHyWHVvdZbQmpufME/view?usp=sharing)
 <img src="https://github.com/TrevorKap/Portfolio-Page/blob/master/images/TrainGraphs.jpg?raw=true"/>
 
