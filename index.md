@@ -3,6 +3,7 @@
 * Machine Learning in Public Use Cases (R)
 * Python
 * Artifical Intelligence, Predictive Modelling, and Statistics
+* ArcGIS 
 
 
 ---
@@ -38,7 +39,7 @@
 [Using Yelp Fusion API and Web-scraping to Create High-Resolution Neighborhood Amenity Profiles](http://luckylaharltim.GitHub.io/MUSA_5500_Final)
 <img src="images/AmenityDashboard.png?raw=true"/>
 
-###### (Downloadable Links, Only)
+##### (Downloadable Links, Only)
 
 - [Measuring the Donut Effect in Philadelphia](/projects/DonutEffect.ipynb)
 - [Visualizations using Matplotlib, Altair, & Seaborn](/projects/matplotseabornaltair.ipynb)
@@ -73,6 +74,11 @@
 
 [Leveraging Ordinary Least Squares Regression on House Prices](/projects/OLSRegression.html)
 <img src="images/homework1statspic.png?raw=true"/>
+
+---
+### ArcGIS 
+[Cornell Cooperative Extension of Suffolk County, Sample Work](https://drive.google.com/file/d/1ZrnhLNsfEhLysd7TSsmviwZy6pITgXXY/view?usp=sharing)
+
 
 ---
 <meta http-equiv='cache-control' content='no-cache'> 
