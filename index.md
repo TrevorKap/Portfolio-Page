@@ -39,14 +39,14 @@
 [Using Yelp Fusion API and Web-scraping to Create High-Resolution Neighborhood Amenity Profiles](http://luckylaharltim.GitHub.io/MUSA_5500_Final)
 <img src="images/AmenityDashboard.png?raw=true"/>
 
-##### (Downloadable Links, Only)
+##### (Github Previews, Only)
 
-- [Measuring the Donut Effect in Philadelphia](/projects/DonutEffect.ipynb)
-- [Visualizations using Matplotlib, Altair, & Seaborn](/projects/matplotseabornaltair.ipynb)
-- [Evaluating Evictions Across Philadelphia](/projects/evictions.ipynb)
-- [Creating Street Networks & Web-Scrapping](/projects/streetsandwebscrap.ipynb)
-- [Exploring Yelp Reviews](/projects/yelpreviews.ipynb)
-- [Predictive Modeling of Housing Prices in Philadelphia](/projects/predictionmodelling.ipynb)
+- [Measuring the Donut Effect in Philadelphia](https://github.com/TrevorKap/Portfolio-Page/blob/master/projects/DonutEffect.ipynb)
+- [Visualizations using Matplotlib, Altair, & Seaborn](https://github.com/TrevorKap/Portfolio-Page/blob/master/projects/matplotseabornaltair.ipynb)
+- [Evaluating Evictions Across Philadelphia (Rasterio, Numpy, Geopandas)](https://github.com/TrevorKap/Portfolio-Page/blob/master/projects/evictions.ipynb)
+- [Creating Street Networks & Web-Scrapping (Selenium, BeautifulSoup, OSM)](https://github.com/TrevorKap/Portfolio-Page/blob/master/projects/streetsandwebscrap.ipynb)
+- [Exploring Yelp Reviews & Census Data (Cenpy, Pygris, HuggingFace)](https://github.com/TrevorKap/Portfolio-Page/blob/master/projects/yelpreviews.ipynb)
+- [Predictive Modeling of Housing Prices in Philadelphia (scikit-learn, regressions, OneHotEncoder)](https://github.com/TrevorKap/Portfolio-Page/blob/master/projects/predictionmodelling.ipynb)
 
 ---
 
