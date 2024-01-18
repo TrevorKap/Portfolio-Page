@@ -19,6 +19,9 @@
 [Calculating Home Prices based on Zillow Data](/projects/MidtermAssignment.html)
 <img src="images/ZillowPredictionsDashboard.png?raw=true"/>
 
+---
+[Bike Share Monitoring in Washington D.C](/projects/PredictingBikeUseDC.html)
+<img src="images/RiskAssessment.png?raw=true"/>
 
 ---
 [Evaluating Transit-Oriented Development in San Francisco & Bay Area](/projects/TODAssignment_Kapuvari.html)
