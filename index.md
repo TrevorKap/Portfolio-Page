@@ -20,8 +20,8 @@
 <img src="images/ZillowPredictionsDashboard.png?raw=true"/>
 
 ---
-[Bike Share Monitoring in Washington D.C](/projects/PredictingBikeUseDC.html)
-<img src="images/RiskAssessment.png?raw=true"/>
+[Predicting Temporal Patterns and Bike Demand in Washington D.C](/projects/PredictingBikeUseDC.html)
+<img src="images/PredictingBikeShareDashboard.png?raw=true"/>
 
 ---
 [Evaluating Transit-Oriented Development in San Francisco & Bay Area](/projects/TODAssignment_Kapuvari.html)
