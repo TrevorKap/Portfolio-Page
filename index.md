@@ -80,7 +80,9 @@
 
 ---
 ### ArcGIS 
-[Cornell Cooperative Extension of Suffolk County, Sample Work](https://drive.google.com/file/d/1ZrnhLNsfEhLysd7TSsmviwZy6pITgXXY/view?usp=sharing)
+- [Cornell Cooperative Extension of Suffolk County, Sample Work](https://drive.google.com/file/d/1ZrnhLNsfEhLysd7TSsmviwZy6pITgXXY/view?usp=sharing)
+- [Golden Hour Travel Times in Kansas, Story Map](https://storymaps.arcgis.com/stories/b3830b9522fd42c1b05e21b473174709)
+- [California Earthquake, Story Map](https://storymaps.arcgis.com/stories/91e5819e95374b32aafdcb12d167ac87)
 
 
 ---
