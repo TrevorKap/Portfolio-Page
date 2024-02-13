@@ -49,7 +49,7 @@
 - [Evaluating Evictions Across Philadelphia (Rasterio, Numpy, Geopandas)](https://github.com/TrevorKap/Portfolio-Page/blob/master/projects/evictions.ipynb)
 - [Creating Street Networks & Web-Scrapping (Selenium, BeautifulSoup, OSM)](https://github.com/TrevorKap/Portfolio-Page/blob/master/projects/streetsandwebscrap.ipynb)
 - [Exploring Yelp Reviews & Census Data (Cenpy, Pygris, HuggingFace)](https://github.com/TrevorKap/Portfolio-Page/blob/master/projects/yelpreviews.ipynb)
-- [Predictive Modeling of Housing Prices in Philadelphia (scikit-learn, regressions, OneHotEncoder)](https://github.com/TrevorKap/Portfolio-Page/blob/master/projects/predictionmodelling.ipynb)
+- [Predictive Modeling of Housing Prices in Philadelphia (scikit-learn, RandomForest)](https://github.com/TrevorKap/Portfolio-Page/blob/master/projects/predictionmodelling.ipynb)
 
 ---
 
