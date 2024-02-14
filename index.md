@@ -1,5 +1,9 @@
 # Portfolio
 
+html {
+  scroll-behavior: smooth;
+}
+
 <ul>
 <li> <a href="#scroll5"> Machine Learning in Public Use Cases (R) </a> </li>
 <li> <a href="#scroll4"> Python </a> </li>
