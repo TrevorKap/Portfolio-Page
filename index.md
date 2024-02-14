@@ -4,7 +4,6 @@
 * Python
 * Artifical Intelligence, Predictive Modelling, and Statistics
 * ArcGIS
-* Financial Modelling (Excel)
 <a href="#scroll">* Financial Modelling (Excel)</a>
 
 ---
