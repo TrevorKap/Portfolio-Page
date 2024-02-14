@@ -1,10 +1,12 @@
 # Portfolio
 
-* Machine Learning in Public Use Cases (R)
-* Python
-* Artifical Intelligence, Predictive Modelling, and Statistics <br>
-<a href="#scroll2">ArcGIS </a> <br>
-<a href="#scroll1">Financial Modelling (Excel)</a>
+<ul>
+<li> Machine Learning in Public Use Cases (R) </li>
+<li> Python </li>
+<li> Artifical Intelligence, Predictive Modelling, and Statistics </li> 
+<li> <a href="#scroll2">ArcGIS </a> </li>
+<li> <a href="#scroll1">Financial Modelling (Excel)</a>  </li>
+</ul>
 
 ---
 
