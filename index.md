@@ -2,8 +2,8 @@
 
 * Machine Learning in Public Use Cases (R)
 * Python
-* Artifical Intelligence, Predictive Modelling, and Statistics
-* ArcGIS <br> </br>
+* Artifical Intelligence, Predictive Modelling, and Statistics <br>
+<a href="#scroll2">ArcGIS </a> <br>
 <a href="#scroll1">Financial Modelling (Excel)</a>
 
 ---
@@ -79,7 +79,9 @@
 <img src="images/homework1statspic.png?raw=true"/>
 
 ---
-### ArcGIS 
+<div>
+  <h3 id="scroll2"> ArcGIS </h3>
+</div>
 - [Cornell Cooperative Extension of Suffolk County, Sample Work](https://drive.google.com/file/d/1ZrnhLNsfEhLysd7TSsmviwZy6pITgXXY/view?usp=sharing)
 - [Golden Hour Travel Times in Kansas, Story Map](https://storymaps.arcgis.com/stories/b3830b9522fd42c1b05e21b473174709)
 - [California Earthquakes, Story Map](https://storymaps.arcgis.com/stories/91e5819e95374b32aafdcb12d167ac87)
