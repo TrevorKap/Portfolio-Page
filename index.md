@@ -3,8 +3,8 @@
 * Machine Learning in Public Use Cases (R)
 * Python
 * Artifical Intelligence, Predictive Modelling, and Statistics
-* ArcGIS
-<a href="#scroll1">* Financial Modelling (Excel)</a>
+* ArcGIS <br> </br>
+<a href="#scroll1">Financial Modelling (Excel)</a>
 
 ---
 
