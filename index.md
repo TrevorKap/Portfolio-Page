@@ -1,16 +1,17 @@
 # Portfolio
 
 <ul>
-<li> Machine Learning in Public Use Cases (R) </li>
-<li> Python </li>
-<li> Artifical Intelligence, Predictive Modelling, and Statistics </li> 
+<li> <a href="#scroll5"> Machine Learning in Public Use Cases (R) </a> </li>
+<li> <a href="#scroll4"> Python </a> </li>
+<li> <a href="#scroll3"> Artifical Intelligence, Predictive Modelling, and Statistics </a> </li> 
 <li> <a href="#scroll2">ArcGIS </a> </li>
 <li> <a href="#scroll1">Financial Modelling (Excel)</a>  </li>
 </ul>
 
 ---
-
-### Machine Learning in Public Use Cases (R)
+<div>
+  <h3 id="scroll5"> Machine Learning in Public Use Cases (R) </h3>
+</div>
  
 [TrainTracker: Predicting Train Delays for New Jersey Transit & Amtrak](/projects/figuring-it-out-markdown.html) <br> 
 [TrainTracker: PowerPoint Presentation](https://drive.google.com/file/d/1-L7rZkTZ-m6oQc1FHyWHVvdZbQmpufME/view?usp=sharing)
@@ -38,8 +39,9 @@
 <img src="images/RiskAssessment.png?raw=true"/>
 
 ---
-
-### Python
+<div>
+  <h3 id="scroll4"> Python </h3>
+</div>
 
 [Using Yelp Fusion API and Web-scraping to Create High-Resolution Neighborhood Amenity Profiles](http://luckylaharltim.GitHub.io/MUSA_5500_Final)
 <img src="images/AmenityDashboard.png?raw=true"/>
@@ -54,8 +56,9 @@
 - [Predictive Modeling of Housing Prices in Philadelphia (scikit-learn, RandomForest)](https://github.com/TrevorKap/Portfolio-Page/blob/master/projects/predictionmodelling.ipynb)
 
 ---
-
-### Artifical Intelligence, Predictive Modelling, and Statistics
+<div>
+  <h3 id="scroll3"> Artifical Intelligence, Predictive Modelling, and Statistics </h3>
+</div>
 
 [Reading Emotion &  Sentiment using Artifical Intelligence](/projects/emotionsentiment.html)
 <img src="images/GPTDashboard.png?raw=true"/>
