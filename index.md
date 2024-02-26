@@ -29,7 +29,7 @@
 
 
 ---
-[Calculating Home Prices based on Zillow Data (Ordinary Least Square Regression)](/projects/MidtermAssignment.html)
+[Calculating Home Prices based on Zillow Data (Ordinary Least Squares Regression)](/projects/MidtermAssignment.html)
 <img src="images/ZillowPredictionsDashboard.png?raw=true"/>
 
 ---
