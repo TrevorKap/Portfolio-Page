@@ -23,29 +23,29 @@
   <h3 id="scroll5"> Machine Learning in Public Use Cases (R) </h3>
 </div>
  
-[TrainTracker: Predicting Train Delays for New Jersey Transit & Amtrak](/projects/figuring-it-out-markdown.html) <br> 
+[TrainTracker: Predicting Train Delays for New Jersey Transit & Amtrak (Linear Regression)](/projects/figuring-it-out-markdown.html) <br> 
 [TrainTracker: PowerPoint Presentation](https://drive.google.com/file/d/1-L7rZkTZ-m6oQc1FHyWHVvdZbQmpufME/view?usp=sharing)
 <img src="https://github.com/TrevorKap/Portfolio-Page/blob/master/images/TrainGraphs.jpg?raw=true"/>
 
 
 ---
-[Calculating Home Prices based on Zillow Data](/projects/MidtermAssignment.html)
+[Calculating Home Prices based on Zillow Data (Ordinary Least Square Regression)](/projects/MidtermAssignment.html)
 <img src="images/ZillowPredictionsDashboard.png?raw=true"/>
 
 ---
-[Predicting Temporal Patterns and Bike Demand in Washington D.C](/projects/PredictingBikeUseDC.html)
+[Predicting Temporal Patterns and Bike Demand in Washington D.C (Time-Series Analysis)](/projects/PredictingBikeUseDC.html)
 <img src="images/PredictingBikeShareDashboard.png?raw=true"/>
 
 ---
-[Evaluating Transit-Oriented Development in San Francisco & Bay Area](/projects/TODAssignment_Kapuvari.html)
+[Evaluating Transit-Oriented Development in San Francisco & Bay Area (Vector-Based Quantiative Analysis)](/projects/TODAssignment_Kapuvari.html)
 <img src="images/TODSanFranBay.png?raw=true"/>
 
 ---
-[Analyzing Probability of Housing Subsidy Users](/projects/TargetingaHousingSubsidyKapuvari.html)
+[Analyzing Probability of Housing Subsidy Users (Logistic Regression)](/projects/TargetingaHousingSubsidyKapuvari.html)
 <img src="images/housesubsidy.png?raw=true"/>
 
 ---
-[Measuring Risk Assessment of Crime in Chicago](/projects/GeospatialRiskPredictionKapuvari.html)
+[Measuring Risk Assessment of Crime in Chicago (Geospatial Risk Assessment)](/projects/GeospatialRiskPredictionKapuvari.html)
 <img src="images/RiskAssessment.png?raw=true"/>
 
 ---
