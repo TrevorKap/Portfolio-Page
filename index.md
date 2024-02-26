@@ -108,6 +108,3 @@
 <meta http-equiv='pragma' content='no-cache'>
 
 ---
-</body>
-
-</html>
