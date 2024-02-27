@@ -5,7 +5,7 @@
 <li> <a href="#scroll5"> Machine Learning & Data Analytics </a> </li>
 <li> <a href="#scroll4"> Python </a> </li>
 <li> <a href="#scroll3"> Artifical Intelligence, Predictive Modelling, and Statistics </a> </li> 
-<li> <a href="#scroll1">Financial Modelling (Excel)</a>  </li>
+<li> <a href="#scroll1">Financial Modelling </a>  </li>
 </ul>
 
 ---
