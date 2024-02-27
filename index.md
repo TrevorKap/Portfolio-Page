@@ -28,23 +28,23 @@
 <img src="https://github.com/TrevorKap/Portfolio-Page/blob/master/images/TrainGraphs.jpg?raw=true"/>
 
 
----
+------
 [Calculating Home Prices based on Zillow Data (Ordinary Least Squares Regression)](/projects/MidtermAssignment.html)
 <img src="images/ZillowPredictionsDashboard.png?raw=true"/>
 
----
+------
 [Predicting Temporal Patterns and Bike Demand in Washington D.C (Time-Series Analysis)](/projects/PredictingBikeUseDC.html)
 <img src="images/PredictingBikeShareDashboard.png?raw=true"/>
 
----
+------
 [Evaluating Transit-Oriented Development in San Francisco & Bay Area (Vector-Based Quantiative Analysis)](/projects/TODAssignment_Kapuvari.html)
 <img src="images/TODSanFranBay.png?raw=true"/>
 
----
+------
 [Analyzing Probability of Housing Subsidy Users (Logistic Regression)](/projects/TargetingaHousingSubsidyKapuvari.html)
 <img src="images/housesubsidy.png?raw=true"/>
 
----
+------
 [Measuring Risk Assessment of Crime in Chicago (Geospatial Risk Assessment)](/projects/GeospatialRiskPredictionKapuvari.html)
 <img src="images/RiskAssessment.png?raw=true"/>
 
@@ -73,22 +73,22 @@
 [Reading Emotion &  Sentiment using Artifical Intelligence](/projects/emotionsentiment.html)
 <img src="images/GPTDashboard.png?raw=true"/>
 
----
+------
 
 [Examining Housing Using Spatial Regression](/projects/SPATIALRegression.html)
 <img src="images/SpatialRegressioDashboard.png?raw=true"/>
 
----
+------
 
 [Predicting Alcohol-Related Car Accidents with Logisitical Regression](/projects/LogisticRegression.html)
 <img src="images/logisticdashboard.png?raw=true"/>
 
----
+------
 
 [Categorizing a City using a Cluster Analysis](/projects/kmeansclusters.html)
 <img src="images/ClustersDashboard.png?raw=true"/>
 
----
+------
 
 [Leveraging Ordinary Least Squares Regression on House Prices](/projects/OLSRegression.html)
 <img src="images/homework1statspic.png?raw=true"/>
