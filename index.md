@@ -2,7 +2,7 @@
 
 <ul>
 <li> <a href="#scroll2">ArcGIS </a> </li>
-<li> <a href="#scroll5"> Machine Learning & Data Analytics </a> </li>
+<li> <a href="#scroll5"> Machine Learning & Policy Analytics </a> </li>
 <li> <a href="#scroll4"> Python </a> </li>
 <li> <a href="#scroll3"> Artifical Intelligence, Predictive Modelling, and Statistics </a> </li> 
 <li> <a href="#scroll1">Financial Modelling </a>  </li>
@@ -20,7 +20,7 @@
 
 ---
 <div>
-  <h3 id="scroll5"> Machine Learning & Data Analytics  </h3>
+  <h3 id="scroll5"> Machine Learning & Policy Analytics  </h3>
 </div>
  
 [TrainTracker: Predicting Train Delays for New Jersey Transit & Amtrak (Linear Regression)](/projects/figuring-it-out-markdown.html) <br> 
