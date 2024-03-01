@@ -28,16 +28,24 @@
 Trains are a timeless mode of transportation that has revolutionized the world. This linear & logistic regression model serves as an experimental use-case that can be replicated to other transit regions in the United States and further enable inter-state travel in order to efficiently utilize train networks. Our study processes previous train delays from 2017-2019 and predict the length of the average delay the train has per trip and the probability of the delay occuring. 
 
 * [Report](/projects/figuring-it-out-markdown.html) 
-* [PowerPoint Presentation](https://drive.google.com/file/d/1-L7rZkTZ-m6oQc1FHyWHVvdZbQmpufME/view?usp=sharing)
+* [Mobile App Concept Presentation](https://drive.google.com/file/d/1-L7rZkTZ-m6oQc1FHyWHVvdZbQmpufME/view?usp=sharing)
 <img src="https://github.com/TrevorKap/Portfolio-Page/blob/master/images/TrainGraphs1.jpg?raw=true"/>
 
 
 ------
-* [Calculating Home Prices based on Zillow Data (Ordinary Least Squares Regression)](/projects/MidtermAssignment.html)
+<h3> Calculating Home Prices based on Zillow Data </h3>
+
+Developed an Ordinary Leased Squared (OLS) Linear regression model to predict real estate prices in the Philadelphia area. Our model relies on a combination of data on the internal characteristics and external data including Philadelphia Open Data and the American Community Survey from the U.S Census Bureau to gather comprehensive information in order to create an accurate and generalizable model for home sales prices in the a sample housing market.
+
+* [Report](/projects/MidtermAssignment.html)
 <img src="images/ZillowPredictionsDashboard.png?raw=true"/>
 
 ------
-* [Predicting Temporal Patterns and Bike Demand in Washington D.C (Time-Series Analysis)](/projects/PredictingBikeUseDC.html)
+<h3> Predicting Temporal Patterns and Bike Demand in Washington D.C </h3>
+
+A significant challenge faced by bikeshare systems is the optimal redistribution of bikes within the network. Ensuring the availability of at least one bike and one open slot at every station is crucial, as a station without bikes or bike parking inconveniences riders, compelling them to seek alternative transportation. In this initiative, we focus on developing a predictive model for Capital Bikeshare in the District of Columbia. The model aims to facilitate bike redistribution by forecasting demand in 15-minute intervals for the upcoming week. Departing from traditional truck-based resupply methods, which are resource-intensive, we propose a novel approach—offering dynamic incentives to riders for redistributing bikes across the network.
+
+* [Report](/projects/PredictingBikeUseDC.html)
 <img src="images/PredictingBikeShareDashboard.png?raw=true"/>
 
 ------
