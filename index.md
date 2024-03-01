@@ -10,7 +10,7 @@
 
 ---
 <div>
-  <h3 id="scroll2"> ArcGIS </h3>
+  <h2 id="scroll2"> ArcGIS </h2>
 </div>
 
 - [Cornell Cooperative Extension of Suffolk County, Sample Work](https://drive.google.com/file/d/1ZrnhLNsfEhLysd7TSsmviwZy6pITgXXY/view?usp=sharing)
@@ -20,12 +20,16 @@
 
 ---
 <div>
-  <h3 id="scroll5"> Machine Learning & Policy Analytics  </h3>
+  <h2 id="scroll5"> Machine Learning & Policy Analytics  </h2>
 </div>
- 
-* [TrainTracker: Predicting Train Delays for New Jersey Transit & Amtrak (Linear Regression)](/projects/figuring-it-out-markdown.html) <br> 
-* [TrainTracker: PowerPoint Presentation](https://drive.google.com/file/d/1-L7rZkTZ-m6oQc1FHyWHVvdZbQmpufME/view?usp=sharing)
-<img src="https://github.com/TrevorKap/Portfolio-Page/blob/master/images/TrainGraphs.jpg?raw=true"/>
+
+<h3> TrainTracker: Predicting Train Delays for New Jersey Transit & Amtrak </h3>
+
+Trains are a timeless mode of transportation that has revolutionized the world. This linear & logistic regression model serves as an experimental use-case that can be replicated to other transit regions in the United States and further enable inter-state travel in order to efficiently utilize train networks. Our study understands previous train delays from 2017-2018 and predict the length of the average delay the train has per trip and the probability of the delay occuring. 
+
+* [Report](/projects/figuring-it-out-markdown.html) 
+* [PowerPoint Presentation](https://drive.google.com/file/d/1-L7rZkTZ-m6oQc1FHyWHVvdZbQmpufME/view?usp=sharing)
+<img src="https://github.com/TrevorKap/Portfolio-Page/blob/master/images/TrainGraphs1.jpg?raw=true"/>
 
 
 ------
@@ -50,7 +54,7 @@
 
 ---
 <div>
-  <h3 id="scroll4"> Python </h3>
+  <h2 id="scroll4"> Python </h2>
 </div>
 
 * [Using Yelp Fusion API and Web-scraping to Create High-Resolution Neighborhood Amenity Profiles](http://luckylaharltim.GitHub.io/MUSA_5500_Final)
@@ -67,7 +71,7 @@
 
 ---
 <div>
-  <h3 id="scroll3"> Artifical Intelligence, Predictive Modelling, and Statistics </h3>
+  <h2 id="scroll3"> Artifical Intelligence, Predictive Modelling, and Statistics </h2>
 </div>
 
 * [Reading Emotion &  Sentiment using Artifical Intelligence](/projects/emotionsentiment.html)
@@ -95,7 +99,7 @@
 
 ---
 <div>
-  <h3 id="scroll1"> Financial Modelling </h3>
+  <h2 id="scroll1"> Financial Modelling </h2>
 </div>
 
 - [Real Estate Pro Forma Sample](https://drive.google.com/file/d/1SbKRN3aR0iZuVeNruVqtcZ5DZfqUGHYT/view?usp=sharing)
