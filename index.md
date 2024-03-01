@@ -57,13 +57,20 @@ This Vector-Based Quantiative Analysis examines San Francisco and the greater Ba
 <img src="images/TODSanFranBay1.png?raw=true"/>
 
 ------
-* [Analyzing Probability of Housing Subsidy Users (Logistic Regression)](/projects/TargetingaHousingSubsidyKapuvari.html)
-<img src="images/housesubsidy.png?raw=true"/>
+<h3> Allocating Home Repair Subsidies </h3>
+
+I developed an algorithm to assist with allocating marketing resources for a home repair tax credit program. Based on logistic regression, credit distributors can identify the homeowners most likely to accept the credit and increase their home and general neighborhood house value.
+
+* [Report](/projects/TargetingaHousingSubsidyKapuvari.html)
+<img src="images/housesubsidy1.png?raw=true"/>
 
 ------
-* [Measuring Risk Assessment of Crime in Chicago (Geospatial Risk Assessment)](/projects/GeospatialRiskPredictionKapuvari.html)
-<img src="images/RiskAssessment.png?raw=true"/>
+<h3> Measuring Risk Assessment of Crime in Chicago </h3>
 
+I developed this Geospatial Risk Assessment to predict future arrest risk in Chicago, Illinois. The goal is to identify communities which are projected to experience a high incidence of arrests and allocate social services to these hot-spots.
+
+* [Report](/projects/GeospatialRiskPredictionKapuvari.html)
+<img src="images/RiskAssessment1.png?raw=true"/>
 ---
 <div>
   <h2 id="scroll4"> Python </h2>
