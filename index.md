@@ -25,7 +25,7 @@
 
 <h3> TrainTracker: Predicting Train Delays for New Jersey Transit & Amtrak </h3>
 
-Trains are a timeless mode of transportation that has revolutionized the world. This linear & logistic regression model serves as an experimental use-case that can be replicated to other transit regions in the United States and further enable inter-state travel in order to efficiently utilize train networks. Our study understands previous train delays from 2017-2018 and predict the length of the average delay the train has per trip and the probability of the delay occuring. 
+Trains are a timeless mode of transportation that has revolutionized the world. This linear & logistic regression model serves as an experimental use-case that can be replicated to other transit regions in the United States and further enable inter-state travel in order to efficiently utilize train networks. Our study processes previous train delays from 2017-2019 and predict the length of the average delay the train has per trip and the probability of the delay occuring. 
 
 * [Report](/projects/figuring-it-out-markdown.html) 
 * [PowerPoint Presentation](https://drive.google.com/file/d/1-L7rZkTZ-m6oQc1FHyWHVvdZbQmpufME/view?usp=sharing)
