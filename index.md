@@ -43,14 +43,18 @@ Developed an Ordinary Leased Squared (OLS) Linear regression model to predict re
 ------
 <h3> Predicting Temporal Patterns and Bike Demand in Washington D.C </h3>
 
-A significant challenge faced by bikeshare systems is the optimal redistribution of bikes within the network. Ensuring the availability of at least one bike and one open slot at every station is crucial, as a station without bikes or bike parking inconveniences riders, compelling them to seek alternative transportation. In this initiative, we focus on developing a predictive model for Capital Bikeshare in the District of Columbia. The model aims to facilitate bike redistribution by forecasting demand in 15-minute intervals for the upcoming week. Departing from traditional truck-based resupply methods, which are resource-intensive, we propose a novel approach—offering dynamic incentives to riders for redistributing bikes across the network.
+A significant challenge faced by bikeshare systems is the optimal redistribution of bikes within the network. Ensuring the availability of at least one bike and one open slot at every station is crucial, as a station without bikes or bike parking inconveniences riders, compelling them to seek alternative transportation. In this initiative, we focus on developing a predictive model for Capital Bikeshare in the District of Columbia. The model & time-series analysis aims to facilitate bike redistribution by forecasting demand in 15-minute intervals for the upcoming week. Departing from traditional truck-based resupply methods, which are resource-intensive, we propose a novel approach—offering dynamic incentives to riders for redistributing bikes across the network.
 
 * [Report](/projects/PredictingBikeUseDC.html)
 <img src="images/PredictingBikeShareDashboard.png?raw=true"/>
 
 ------
-* [Evaluating Transit-Oriented Development in San Francisco & Bay Area (Vector-Based Quantiative Analysis)](/projects/TODAssignment_Kapuvari.html)
-<img src="images/TODSanFranBay.png?raw=true"/>
+<h3> Evaluating Transit-Oriented Development in San Francisco & Bay Area </h3>
+
+This Vector-Based Quantiative Analysis examines San Francisco and the greater Bay Area as it has evolved to into a tech-capital cosmopolitan that has struggled with managing affordability, sustainability, and traffic congestion. Transit-Oriented Development (TOD) has been a nation-wide urban planning practice that aims to alleviate these issues which has impacted every metropolitan area differently. Here, we are assessing that impact of Bay Area Rapid Transit (BART) and surrounding development from 2009 to 2017.
+
+* [Report](/projects/TODAssignment_Kapuvari.html)
+<img src="images/TODSanFranBay1.png?raw=true"/>
 
 ------
 * [Analyzing Probability of Housing Subsidy Users (Logistic Regression)](/projects/TargetingaHousingSubsidyKapuvari.html)
