@@ -96,28 +96,33 @@ Last semester, alongside Anna Duan and Timothy Oliver, I explored Philadelphia's
 <div>
   <h2 id="scroll3"> Artifical Intelligence, Predictive Modelling, and Statistics </h2>
 </div>
+<h3>Reading Emotion &  Sentiment using Artifical Intelligence</h3>
 
-* [Reading Emotion &  Sentiment using Artifical Intelligence](/projects/emotionsentiment.html)
+* [Report](/projects/emotionsentiment.html)
 <img src="images/GPTDashboard.png?raw=true"/>
 
 ------
+<h3>Examining Housing Using Spatial Regression</h3>
 
-* [Examining Housing Using Spatial Regression](/projects/SPATIALRegression.html)
+* [Report](/projects/SPATIALRegression.html)
 <img src="images/SpatialRegressioDashboard.png?raw=true"/>
 
 ------
+<h3>Predicting Alcohol-Related Car Accidents with Logisitical Regression</h3>
 
-* [Predicting Alcohol-Related Car Accidents with Logisitical Regression](/projects/LogisticRegression.html)
+* [Report](/projects/LogisticRegression.html)
 <img src="images/logisticdashboard.png?raw=true"/>
 
 ------
+<h3>Categorizing a City using a Cluster Analysis</h3>
 
-* [Categorizing a City using a Cluster Analysis](/projects/kmeansclusters.html)
+* [Report](/projects/kmeansclusters.html)
 <img src="images/ClustersDashboard.png?raw=true"/>
 
 ------
+<h3>Ordinary Least Squares Regression on House Prices</h3>
 
-* [Leveraging Ordinary Least Squares Regression on House Prices](/projects/OLSRegression.html)
+* [Report](/projects/OLSRegression.html)
 <img src="images/homework1statspic.png?raw=true"/>
 
 ---
