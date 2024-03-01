@@ -23,29 +23,29 @@
   <h3 id="scroll5"> Machine Learning & Policy Analytics  </h3>
 </div>
  
-[TrainTracker: Predicting Train Delays for New Jersey Transit & Amtrak (Linear Regression)](/projects/figuring-it-out-markdown.html) <br> 
-[TrainTracker: PowerPoint Presentation](https://drive.google.com/file/d/1-L7rZkTZ-m6oQc1FHyWHVvdZbQmpufME/view?usp=sharing)
+* [TrainTracker: Predicting Train Delays for New Jersey Transit & Amtrak (Linear Regression)](/projects/figuring-it-out-markdown.html) <br> 
+* [TrainTracker: PowerPoint Presentation](https://drive.google.com/file/d/1-L7rZkTZ-m6oQc1FHyWHVvdZbQmpufME/view?usp=sharing)
 <img src="https://github.com/TrevorKap/Portfolio-Page/blob/master/images/TrainGraphs.jpg?raw=true"/>
 
 
 ------
-[Calculating Home Prices based on Zillow Data (Ordinary Least Squares Regression)](/projects/MidtermAssignment.html)
+* [Calculating Home Prices based on Zillow Data (Ordinary Least Squares Regression)](/projects/MidtermAssignment.html)
 <img src="images/ZillowPredictionsDashboard.png?raw=true"/>
 
 ------
-[Predicting Temporal Patterns and Bike Demand in Washington D.C (Time-Series Analysis)](/projects/PredictingBikeUseDC.html)
+* [Predicting Temporal Patterns and Bike Demand in Washington D.C (Time-Series Analysis)](/projects/PredictingBikeUseDC.html)
 <img src="images/PredictingBikeShareDashboard.png?raw=true"/>
 
 ------
-[Evaluating Transit-Oriented Development in San Francisco & Bay Area (Vector-Based Quantiative Analysis)](/projects/TODAssignment_Kapuvari.html)
+* [Evaluating Transit-Oriented Development in San Francisco & Bay Area (Vector-Based Quantiative Analysis)](/projects/TODAssignment_Kapuvari.html)
 <img src="images/TODSanFranBay.png?raw=true"/>
 
 ------
-[Analyzing Probability of Housing Subsidy Users (Logistic Regression)](/projects/TargetingaHousingSubsidyKapuvari.html)
+* [Analyzing Probability of Housing Subsidy Users (Logistic Regression)](/projects/TargetingaHousingSubsidyKapuvari.html)
 <img src="images/housesubsidy.png?raw=true"/>
 
 ------
-[Measuring Risk Assessment of Crime in Chicago (Geospatial Risk Assessment)](/projects/GeospatialRiskPredictionKapuvari.html)
+* [Measuring Risk Assessment of Crime in Chicago (Geospatial Risk Assessment)](/projects/GeospatialRiskPredictionKapuvari.html)
 <img src="images/RiskAssessment.png?raw=true"/>
 
 ---
@@ -53,7 +53,7 @@
   <h3 id="scroll4"> Python </h3>
 </div>
 
-[Using Yelp Fusion API and Web-scraping to Create High-Resolution Neighborhood Amenity Profiles](http://luckylaharltim.GitHub.io/MUSA_5500_Final)
+* [Using Yelp Fusion API and Web-scraping to Create High-Resolution Neighborhood Amenity Profiles](http://luckylaharltim.GitHub.io/MUSA_5500_Final)
 <img src="images/AmenityDashboard.png?raw=true"/>
 
 ##### (Github Previews, Only)
@@ -70,27 +70,27 @@
   <h3 id="scroll3"> Artifical Intelligence, Predictive Modelling, and Statistics </h3>
 </div>
 
-[Reading Emotion &  Sentiment using Artifical Intelligence](/projects/emotionsentiment.html)
+* [Reading Emotion &  Sentiment using Artifical Intelligence](/projects/emotionsentiment.html)
 <img src="images/GPTDashboard.png?raw=true"/>
 
 ------
 
-[Examining Housing Using Spatial Regression](/projects/SPATIALRegression.html)
+* [Examining Housing Using Spatial Regression](/projects/SPATIALRegression.html)
 <img src="images/SpatialRegressioDashboard.png?raw=true"/>
 
 ------
 
-[Predicting Alcohol-Related Car Accidents with Logisitical Regression](/projects/LogisticRegression.html)
+* [Predicting Alcohol-Related Car Accidents with Logisitical Regression](/projects/LogisticRegression.html)
 <img src="images/logisticdashboard.png?raw=true"/>
 
 ------
 
-[Categorizing a City using a Cluster Analysis](/projects/kmeansclusters.html)
+* [Categorizing a City using a Cluster Analysis](/projects/kmeansclusters.html)
 <img src="images/ClustersDashboard.png?raw=true"/>
 
 ------
 
-[Leveraging Ordinary Least Squares Regression on House Prices](/projects/OLSRegression.html)
+* [Leveraging Ordinary Least Squares Regression on House Prices](/projects/OLSRegression.html)
 <img src="images/homework1statspic.png?raw=true"/>
 
 ---
