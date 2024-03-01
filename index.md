@@ -71,12 +71,16 @@ I developed this Geospatial Risk Assessment to predict future arrest risk in Chi
 
 * [Report](/projects/GeospatialRiskPredictionKapuvari.html)
 <img src="images/RiskAssessment1.png?raw=true"/>
+
 ---
 <div>
   <h2 id="scroll4"> Python </h2>
 </div>
+<h3>Using Yelp Fusion API and Web-scraping to Create High-Resolution Neighborhood Amenity Profiles</h3>
 
-* [Using Yelp Fusion API and Web-scraping to Create High-Resolution Neighborhood Amenity Profiles](http://luckylaharltim.GitHub.io/MUSA_5500_Final)
+Last semester, alongside Anna Duan and Timothy Oliver, I explored Philadelphia's amenity landscape for our Geospatial Data Science in Python class project. We analyzed Yelp API data and Zillow listings to uncover a diverse mix of businesses, public spaces, and activities in Philadelphia neighborhoods. Using k-means cluster analysis, we identified six unique amenity clusters, each grouping neighborhoods with similar amenities. 
+
+* [Quarto Website](http://luckylaharltim.GitHub.io/MUSA_5500_Final)
 <img src="images/AmenityDashboard.png?raw=true"/>
 
 ##### (Github Previews, Only)
