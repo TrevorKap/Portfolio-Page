@@ -131,9 +131,26 @@ We analyze the correlation between select neighborhood socioeconomic variables a
   <h2 id="scroll6"> Spatial Optimization Research </h2>
 </div>
 
+<h3> Maximum Covering Location Problem </h3>
+
+In this study, we use ArcGIS Pro, Power BI, and CPLEX to solve the Maximum Location Coverage Problem in theory and in real-life use. We examine how a person's willingness to travel to bus stops determines the coverage of transit stations in a sample town. 
+
 * [Report](/projects/SO_HW1.html)
+<img src="images/SO11.png?raw=true"/>
+------
+<h3> Detecting Redundancy in Transit Stops & Measuring Accessability vs Converage </h3>
+
+Transportation planners often are challenged to balance accessibility through location stops versus maintaining or increasing efficiency to ensure the route is practical. We will specifically use a sample bus line in Charlotte to analyse the sensitivity of the coverage model by varying the willingness of agents to commute to travel nodes. Graphics were created using ArcGIS & Power BI. 
+
 * [Report](/projects/SO_BackupCoverage_Charlotte.html)
+<img src="images/BackUpCoverage.png?raw=true"/>
+------
+<h3> Location Allocation </h3>
+
+Location-Allocation optimization is a method used to ideally situate facilities with the goal to satisfy all demand with the shortest path possible to each site. We measure the difference in distance traveled (as a collective) when there are a specified number of pharmacies in a given area. Graphics were created using ArcGIS & Power BI. 
+
 * [Report](/projects/LocationAllocation.html)
+<img src="images/LocationAllo.png?raw=true"/>
 
 ---
 <div>
