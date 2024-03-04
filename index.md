@@ -35,7 +35,7 @@ Trains are a timeless mode of transportation that has revolutionized the world. 
 ------
 <h3> Calculating Home Prices based on Zillow Data </h3>
 
-Developed an Ordinary Leased Squared (OLS) Linear regression model to predict real estate prices in the Philadelphia area. Our model relies on a combination of data on the internal characteristics and external data including Philadelphia Open Data and the American Community Survey from the U.S Census Bureau to gather comprehensive information in order to create an accurate and generalizable model for home sales prices in the a sample housing market.
+Developed a Ordinary Leased Squared (OLS) Linear regression model to predict real estate prices in the Philadelphia area. Our model relies on a combination of data on the internal characteristics and external data including Philadelphia Open Data and the American Community Survey from the U.S Census Bureau to gather comprehensive information in order to create an accurate and generalizable model for home sales prices in the a sample housing market.
 
 * [Report](/projects/MidtermAssignment.html)
 <img src="images/ZillowPredictionsDashboard.png?raw=true"/>
@@ -78,7 +78,7 @@ I developed this Geospatial Risk Assessment to predict future arrest risk in Chi
 </div>
 <h3>Using Yelp Fusion API and Web-scraping to Create High-Resolution Neighborhood Amenity Profiles</h3>
 
-Last semester, alongside Anna Duan and Timothy Oliver, I explored Philadelphia's amenity landscape for our Geospatial Data Science in Python class project. We analyzed Yelp API data and Zillow listings to uncover a diverse mix of businesses, public spaces, and activities in Philadelphia neighborhoods. Using k-means cluster analysis, we identified six unique amenity clusters, each grouping neighborhoods with similar amenities. 
+Alongside Anna Duan and Timothy Oliver, I explored Philadelphia's amenity landscape for our Geospatial Data Science in Python class project. We analyzed Yelp API data and Zillow listings to uncover a diverse mix of businesses, public spaces, and activities in Philadelphia neighborhoods. Using k-means cluster analysis, we identified six unique amenity clusters, each grouping neighborhoods with similar amenities. 
 
 * [Quarto Website](http://luckylaharltim.GitHub.io/MUSA_5500_Final)
 <img src="images/AmenityDashboard.png?raw=true"/>
@@ -98,11 +98,15 @@ Last semester, alongside Anna Duan and Timothy Oliver, I explored Philadelphia's
 </div>
 <h3>Reading Emotion &  Sentiment using Artifical Intelligence</h3>
 
+Our objective is to assess variations in people’s differing viewpoints regarding specific parks and compile a comprehensive perspective on the parks and recreational facilities in Philadelphia. Examining emotion and gauging sentiment concerning community amenities enables additional research along with surveying efforts focused on publicly reviewed entities.
+
 * [Report](/projects/emotionsentiment.html)
 <img src="images/GPTDashboard.png?raw=true"/>
 
 ------
-<h3>Examining Housing Using Spatial Regression</h3>
+<h3>Examining Housing Using a Three-Model Apporach</h3>
+
+We comapre three modeling approaches in when evaluating the Philadelphia Real Estate markeet: Spatial Lag, Spatial Error, and Geographically Weighted Regression. 
 
 * [Report](/projects/SPATIALRegression.html)
 <img src="images/SpatialRegressioDashboard.png?raw=true"/>
@@ -110,17 +114,23 @@ Last semester, alongside Anna Duan and Timothy Oliver, I explored Philadelphia's
 ------
 <h3>Predicting Alcohol-Related Car Accidents with Logisitical Regression</h3>
 
+Ultimately, this investigation sheds light on the critical issue of drunk driving, a national problem claiming lives daily, as reported by the US Department of Transportation. By understanding the predictors associated with drunk driving accidents in Philadelphia, we gain valuable insights into the nature of these incidents and the potential outcomes linked to specific driver behaviors.
+
 * [Report](/projects/LogisticRegression.html)
 <img src="images/logisticdashboard.png?raw=true"/>
 
 ------
 <h3>Categorizing a City using a Cluster Analysis</h3>
 
+To further identify potential spatial autocorrelation in these indicators at the block group level, we will run a k-means cluster analysis to inform us on an optimal number of block group clusters within the city.
+
 * [Report](/projects/kmeansclusters.html)
 <img src="images/ClustersDashboard.png?raw=true"/>
 
 ------
 <h3>Ordinary Least Squares Regression on House Prices</h3>
+
+We analyze the correlation between select neighborhood socioeconomic variables and median house value in Philadelphia, Pennsylvania.
 
 * [Report](/projects/OLSRegression.html)
 <img src="images/homework1statspic.png?raw=true"/>
