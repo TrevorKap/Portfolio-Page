@@ -1,22 +1,13 @@
 # Portfolio
 
 <ul>
-<li> <a href="#scroll2">ArcGIS </a> </li>
 <li> <a href="#scroll5"> Machine Learning & Policy Analytics </a> </li>
 <li> <a href="#scroll4"> Python </a> </li>
 <li> <a href="#scroll3"> Artifical Intelligence, Predictive Modelling, and Statistics </a> </li> 
+<li> <a href="#scroll6"> Spatial Optimization Research </a> </li> 
 <li> <a href="#scroll1">Financial Modelling </a>  </li>
+<li> <a href="#scroll2"> Storymaps </a> </li>
 </ul>
-
----
-<div>
-  <h2 id="scroll2"> ArcGIS </h2>
-</div>
-
-- [Cornell Cooperative Extension of Suffolk County, Sample Work](https://drive.google.com/file/d/1ZrnhLNsfEhLysd7TSsmviwZy6pITgXXY/view?usp=sharing)
-- [Golden Hour Travel Times in Kansas, Story Map](https://storymaps.arcgis.com/stories/b3830b9522fd42c1b05e21b473174709)
-- [California Earthquakes, Story Map](https://storymaps.arcgis.com/stories/91e5819e95374b32aafdcb12d167ac87)
-
 
 ---
 <div>
@@ -137,11 +128,28 @@ We analyze the correlation between select neighborhood socioeconomic variables a
 
 ---
 <div>
+  <h2 id="scroll6"> Spatial Optimization Research </h2>
+</div>
+
+* [Report](/projects/SO_HW1.html)
+* [Report](/projects/SO_BackupCoverage_Charlotte.html)
+* [Report](/projects/LocationAllocation.html)
+
+---
+<div>
   <h2 id="scroll1"> Financial Modelling </h2>
 </div>
 
 - [Real Estate Pro Forma Sample](https://drive.google.com/file/d/1SbKRN3aR0iZuVeNruVqtcZ5DZfqUGHYT/view?usp=sharing)
 - [Real Estate Proposal Sample](https://drive.google.com/file/d/1GDl2h8u4B8e8uVVPUcwVJiPy9M303eXm/view?usp=sharing)
+  
+---
+<div>
+  <h2 id="scroll2"> Storymaps (ArcGIS) </h2>
+</div>
+
+- [Golden Hour Travel Times in Kansas, Story Map](https://storymaps.arcgis.com/stories/b3830b9522fd42c1b05e21b473174709)
+- [California Earthquakes, Story Map](https://storymaps.arcgis.com/stories/91e5819e95374b32aafdcb12d167ac87)
 
 
 ---
