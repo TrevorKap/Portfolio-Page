@@ -1,4 +1,4 @@
-Hello! 👋
+#### Hello! 👋
 
 Dedicated public service professional with 4+ years of experience in GIS and urban planning. Skilled in machine learning, data & policy analysis, visualization, cloud computing, database management, and financial modelling. Passions include real estate, sustainability, and transportation.
 
@@ -6,3 +6,4 @@ I’m passionate about geospatial science, machine learning, and mapping. My fav
 
 Contact: kapuvarit@gmail.com
 
+<img src="images/LinkedInBanner00.png?raw=true"/>
