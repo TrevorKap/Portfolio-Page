@@ -81,6 +81,7 @@ All python projects and demonstrations can be found on this quarto website! My e
 * [Website](https://trevorkap.github.io/Quarto-Python-Website/)
   
 <img src="images/PythWeb.png?raw=true"/>
+
 ---
 <div>
   <h2 id="scroll3"> Artifical Intelligence, Predictive Modelling, and Statistics </h2>
