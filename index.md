@@ -7,6 +7,7 @@
 <li> <a href="#scroll6"> Spatial Optimization </a> </li> 
 <li> <a href="#scroll1">Financial Modelling </a>  </li>
 <li> <a href="#scroll2"> Storymaps </a> </li>
+<li> <a href="#scroll7"> Writing Samples </a> </li>
 </ul>
 
 ---
@@ -171,6 +172,12 @@ Location-Allocation optimization is a method used to ideally situate facilities 
 - [Golden Hour Travel Times in Kansas, Story Map](https://storymaps.arcgis.com/stories/b3830b9522fd42c1b05e21b473174709)
 - [California Earthquakes, Story Map](https://storymaps.arcgis.com/stories/91e5819e95374b32aafdcb12d167ac87)
 
+---
+<div>
+  <h2 id="scroll7"> Writing Samples </h2>
+</div>
+
+- [Recidivism Algorithm, NYC Memo](https://drive.google.com/file/d/1I9NkRrCg3C8CGkKsDVTRBiN1O7KemTAj/view?usp=sharing)
 
 ---
 <meta http-equiv='cache-control' content='no-cache'> 
