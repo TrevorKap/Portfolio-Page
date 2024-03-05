@@ -4,7 +4,7 @@
 <li> <a href="#scroll5"> Machine Learning & Policy Analytics </a> </li>
 <li> <a href="#scroll4"> Python </a> </li>
 <li> <a href="#scroll3"> Artifical Intelligence, Predictive Modelling, and Statistics </a> </li> 
-<li> <a href="#scroll6"> Spatial Optimization Research </a> </li> 
+<li> <a href="#scroll6"> Spatial Optimization </a> </li> 
 <li> <a href="#scroll1">Financial Modelling </a>  </li>
 <li> <a href="#scroll2"> Storymaps </a> </li>
 </ul>
@@ -128,7 +128,7 @@ We analyze the correlation between select neighborhood socioeconomic variables a
 
 ---
 <div>
-  <h2 id="scroll6"> Spatial Optimization Research </h2>
+  <h2 id="scroll6"> Spatial Optimization </h2>
 </div>
 
 <h3> Maximum Covering Location Problem </h3>
