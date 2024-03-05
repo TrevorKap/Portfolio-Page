@@ -146,7 +146,7 @@ Transportation planners often are challenged to balance accessibility through lo
 
 * [Report](/projects/SO_BackupCoverage_Charlotte.html)
   
-<img src="images/BackUpCoverage.png?raw=true"/>
+<img src="images/BackUpCoverage1.png?raw=true"/>
 
 ------
 <h3> Location Allocation </h3>
