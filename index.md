@@ -74,14 +74,11 @@ Alongside Anna Duan and Timothy Oliver, I explored Philadelphia's amenity landsc
 * [Quarto Website](http://luckylaharltim.GitHub.io/MUSA_5500_Final)
 <img src="images/AmenityDashboard.png?raw=true"/>
 
-##### (Github Previews, Only)
+<h3> Python Demonstrations</h3>
 
-- [Measuring the Donut Effect in Philadelphia](https://github.com/TrevorKap/Portfolio-Page/blob/master/projects/DonutEffect.ipynb)
-- [Visualizations using Matplotlib, Altair, & Seaborn](https://github.com/TrevorKap/Portfolio-Page/blob/master/projects/matplotseabornaltair.ipynb)
-- [Evaluating Evictions Across Philadelphia (Rasterio, Numpy, Geopandas)](https://github.com/TrevorKap/Portfolio-Page/blob/master/projects/evictions.ipynb)
-- [Creating Street Networks & Web-Scrapping (Selenium, BeautifulSoup, OSM)](https://github.com/TrevorKap/Portfolio-Page/blob/master/projects/streetsandwebscrap.ipynb)
-- [Exploring Yelp Reviews & Census Data (Cenpy, Pygris, HuggingFace)](https://github.com/TrevorKap/Portfolio-Page/blob/master/projects/yelpreviews.ipynb)
-- [Predictive Modeling of Housing Prices in Philadelphia (scikit-learn, RandomForest)](https://github.com/TrevorKap/Portfolio-Page/blob/master/projects/predictionmodelling.ipynb)
+All python projects and demonstrations can be found on this quarto website! My experience in the language has a heavy focus on geospatial analysis, data visualizations and remote sensing.
+
+* [Website](https://trevorkap.github.io/Quarto-Python-Website/)
 
 ---
 <div>
