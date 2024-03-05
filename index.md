@@ -79,7 +79,6 @@ Alongside Anna Duan and Timothy Oliver, I explored Philadelphia's amenity landsc
 All python projects and demonstrations can be found on this quarto website! My experience in the language has a heavy focus on geospatial analysis, data visualizations and remote sensing.
 
 * [Website](https://trevorkap.github.io/Quarto-Python-Website/)
-  
 <img src="images/PythWeb.png?raw=true"/>
 
 ---
