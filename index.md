@@ -65,7 +65,7 @@ I developed this Geospatial Risk Assessment to predict future arrest risk in Chi
 
 ---
 <div>
-  <h2 id="scroll4"> Python </h2>
+  <h2 id="scroll4"> Python Websites </h2>
 </div>
 <h3>Using Yelp Fusion API and Web-scraping to Create High-Resolution Neighborhood Amenity Profiles</h3>
 
@@ -79,7 +79,8 @@ Alongside Anna Duan and Timothy Oliver, I explored Philadelphia's amenity landsc
 All python projects and demonstrations can be found on this quarto website! My experience in the language has a heavy focus on geospatial analysis, data visualizations and remote sensing.
 
 * [Website](https://trevorkap.github.io/Quarto-Python-Website/)
-
+  
+<img src="images/PythWeb.png?raw=true"/>
 ---
 <div>
   <h2 id="scroll3"> Artifical Intelligence, Predictive Modelling, and Statistics </h2>
