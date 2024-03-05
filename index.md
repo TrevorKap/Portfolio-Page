@@ -2,7 +2,7 @@
 
 <ul>
 <li> <a href="#scroll5"> Machine Learning & Policy Analytics </a> </li>
-<li> <a href="#scroll4"> Python </a> </li>
+<li> <a href="#scroll4"> Python Websites </a> </li>
 <li> <a href="#scroll3"> Artifical Intelligence, Predictive Modelling, and Statistics </a> </li> 
 <li> <a href="#scroll6"> Spatial Optimization </a> </li> 
 <li> <a href="#scroll1">Financial Modelling </a>  </li>
