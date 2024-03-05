@@ -97,7 +97,7 @@ Our objective is to assess variations in people’s differing viewpoints regardi
 ------
 <h3>Examining Housing Using a Three-Model Apporach</h3>
 
-We comapre three modeling approaches in when evaluating the Philadelphia Real Estate markeet: Spatial Lag, Spatial Error, and Geographically Weighted Regression. 
+We compare three modeling approaches in when evaluating the Philadelphia Real Estate markeet: Spatial Lag, Spatial Error, and Geographically Weighted Regression. 
 
 * [Report](/projects/SPATIALRegression.html)
 <img src="images/SpatialRegressioDashboard.png?raw=true"/>
