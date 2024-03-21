@@ -102,7 +102,7 @@ We compare three modeling approaches in when evaluating the Philadelphia Real Es
 <img src="images/SpatialRegressioDashboard.png?raw=true"/>
 
 ------
-<h3>Predicting Alcohol-Related Car Accidents with Logisitical Regression</h3>
+<h3>Predicting Alcohol-Related Car Accidents with Logistic Regression</h3>
 
 Ultimately, this investigation sheds light on the critical issue of drunk driving, a national problem claiming lives daily, as reported by the US Department of Transportation. By understanding the predictors associated with drunk driving accidents in Philadelphia, we gain valuable insights into the nature of these incidents and the potential outcomes linked to specific driver behaviors.
 
