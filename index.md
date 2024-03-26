@@ -160,7 +160,7 @@ Location-Allocation optimization is a method used to ideally situate facilities 
 ------
 <h3> Dispersion Theory </h3>
 
-The p-dispersion problem is a technique to maximize the distance between the two closest pair of points in a network. The function of this optimization technique is to disseminate a value, or object, as far as possible from others of the same type.
+The p-dispersion problem is a technique to maximize the distance between the two closest pair of points in a network. The function of this optimization technique is to disseminate a value, or object, as far as possible from others of the same type. Graphs were created using Tableau. 
 
 * [Report](/projects/DispersionAbstract.html)
   
@@ -170,7 +170,7 @@ The p-dispersion problem is a technique to maximize the distance between the two
 ------
 <h3> Dispersion Location Analysis </h3>
 
-In this practice study, we leverage the p-dispersion problem to a political analysis regarding homeowner eligibility for former convicts.
+In this practice study, we leverage the p-dispersion problem to a political analysis regarding homeowner eligibility for former convicts. Graphics were created using ArcGIS Pro & Tableau. 
 
 * [Report](/projects/Abstract_Dispersion_2.html)
   
