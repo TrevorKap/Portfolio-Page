@@ -176,6 +176,15 @@ In this practice study, we leverage the p-dispersion problem to a political anal
   
 <img src="images/DispersionTwo.png?raw=true"/>
 
+------
+<h3> Maximum Species Coverage Optimization </h3>
+
+We will look into endangered species protection in concept, and how the algorithm works to find parcels that are critical for protection.Then identify how this applies to Mecklenburg County, North Carolina, and the parallel between the abstract function’s behavior and the real-world application. Graphs were made using Power BI & ArcGIS Pro. 
+
+* [Report](/projects/HW_7.html)
+  
+<img src="images/HW7MAP.png?raw=true"/>
+
 ---
 <div>
   <h2 id="scroll1"> Financial Modelling </h2>
