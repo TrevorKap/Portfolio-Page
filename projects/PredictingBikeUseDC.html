@@ -2068,7 +2068,7 @@ model_pred &lt;- function(dat, fit){
 week_predictions &lt;- 
   ride.Test.weekNest %&gt;% 
     mutate(Model1_TimeOnly = map(.x = data, fit = reg1, .f = model_pred),
-           Model2_TimeOnly = map(.x = data, fit = reg2, .f = model_pred),
+           Model2_SpaceOnly = map(.x = data, fit = reg2, .f = model_pred),
            Model3_Time_Space = map(.x = data, fit = reg3, .f = model_pred),
            Model4_TimeSpaceLag = map(.x = data, fit = reg4, .f = model_pred),
            Model5_All = map(.x = data, fit = reg5, .f = model_pred)) %&gt;% 
@@ -2084,8 +2084,8 @@ week_predictions</code></pre>
 ##    &lt;dbl&gt; &lt;list&gt; &lt;chr&gt;             &lt;list&gt;     &lt;list&gt;   &lt;list&gt;         &lt;dbl&gt; &lt;dbl&gt;
 ##  1    18 &lt;sf&gt;   Model1_TimeOnly    &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl [47,232]&gt; 0.684 0.978
 ##  2    19 &lt;sf&gt;   Model1_TimeOnly    &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl [55,104]&gt; 0.612 0.929
-##  3    18 &lt;sf&gt;   Model2_TimeOnly   &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl [47,232]&gt; 0.636 0.892
-##  4    19 &lt;sf&gt;   Model2_TimeOnly   &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl [55,104]&gt; 0.608 0.826
+##  3    18 &lt;sf&gt;   Model2_SpaceOnly   &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl [47,232]&gt; 0.636 0.892
+##  4    19 &lt;sf&gt;   Model2_SpaceOnly   &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl [55,104]&gt; 0.608 0.826
 ##  5    18 &lt;sf&gt;   Model3_Time_Spac… &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl [47,232]&gt; 0.643 0.871
 ##  6    19 &lt;sf&gt;   Model3_Time_Spac… &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl [55,104]&gt; 0.606 0.809
 ##  7    18 &lt;sf&gt;   Model4_Time_Spac… &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl [47,232]&gt; 0.532 0.811
