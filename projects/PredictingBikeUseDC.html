@@ -1663,9 +1663,8 @@ palette4 &lt;- c(&quot;#D2FBD4&quot;,&quot;#92BCAB&quot;,&quot;#527D82&quot;,&qu
 palette2 &lt;- c(&quot;#6baed6&quot;,&quot;#08519c&quot;)</code></pre>
 <div id="import-data" class="section level2">
 <h2>Import Data</h2>
-<p>Our model development process involves utilizing a 5-week dataset
-from Capital Bikeshare. We extract information on all bikeshare trips
-that occurred in May 2021, including the names and coordinates of pickup
+<p>Our model development process involves utilizing a bike-trip dataset
+from Capital Bikeshare. We extract information on all bikeshare trips, including the names and coordinates of pickup
 and dropoff locations for each trip.</p>
 <pre class="r"><code>data &lt;- read.csv(&quot;C:/Users/Owner/Documents/RStudio/PublicPolicyAnalytics/BikeShare/202105-capitalbikeshare-tripdata.csv&quot;)</code></pre>
 <pre class="r"><code>data2 &lt;- data %&gt;%
@@ -1738,7 +1737,7 @@ dat_census &lt;- st_join(data2 %&gt;%
 <div id="engineering-feaures-weather-data" class="section level2">
 <h2>Engineering Feaures, Weather Data</h2>
 <p>Since climate conditions are important to whether a commuter decides
-to travel by bicycle or not, we import May 2021 data from the weather
+to travel by bicycle or not, we import 2021 data from the weather
 station at Reagan National Airport to create temperature and
 precipitation variables for our model. We visualize these data below. We
 see a cyclical pattern in temperature and can expect bike ridership to
