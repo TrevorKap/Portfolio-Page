@@ -2067,11 +2067,11 @@ model_pred &lt;- function(dat, fit){
 
 week_predictions &lt;- 
   ride.Test.weekNest %&gt;% 
-    mutate(Model1_Time_FE = map(.x = data, fit = reg1, .f = model_pred),
-           Model2_Space_FE = map(.x = data, fit = reg2, .f = model_pred),
-           Model3_Time_Space_FE = map(.x = data, fit = reg3, .f = model_pred),
-           Model4_Time_Space_FE_timeLags = map(.x = data, fit = reg4, .f = model_pred),
-           Model5_Full = map(.x = data, fit = reg5, .f = model_pred)) %&gt;% 
+    mutate(Model1_TimeOnly = map(.x = data, fit = reg1, .f = model_pred),
+           Model2_TimeOnly = map(.x = data, fit = reg2, .f = model_pred),
+           Model3_Time_Space = map(.x = data, fit = reg3, .f = model_pred),
+           Model4_TimeSpaceLag = map(.x = data, fit = reg4, .f = model_pred),
+           Model5_All = map(.x = data, fit = reg5, .f = model_pred)) %&gt;% 
     gather(Regression, Prediction, -data, -week) %&gt;%
     mutate(Observed = map(data, pull, Trip_Count),
            Absolute_Error = map2(Observed, Prediction,  ~ abs(.x - .y)),
@@ -2082,16 +2082,16 @@ week_predictions</code></pre>
 <pre><code>## # A tibble: 10 × 8
 ##     week data   Regression        Prediction Observed Absolute_Error   MAE sd_AE
 ##    &lt;dbl&gt; &lt;list&gt; &lt;chr&gt;             &lt;list&gt;     &lt;list&gt;   &lt;list&gt;         &lt;dbl&gt; &lt;dbl&gt;
-##  1    18 &lt;sf&gt;   Model1_Time_FE    &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl [47,232]&gt; 0.684 0.978
-##  2    19 &lt;sf&gt;   Model1_Time_FE    &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl [55,104]&gt; 0.612 0.929
-##  3    18 &lt;sf&gt;   Model2_Space_FE   &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl [47,232]&gt; 0.636 0.892
-##  4    19 &lt;sf&gt;   Model2_Space_FE   &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl [55,104]&gt; 0.608 0.826
+##  1    18 &lt;sf&gt;   Model1_TimeOnly    &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl [47,232]&gt; 0.684 0.978
+##  2    19 &lt;sf&gt;   Model1_TimeOnly    &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl [55,104]&gt; 0.612 0.929
+##  3    18 &lt;sf&gt;   Model2_TimeOnly   &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl [47,232]&gt; 0.636 0.892
+##  4    19 &lt;sf&gt;   Model2_TimeOnly   &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl [55,104]&gt; 0.608 0.826
 ##  5    18 &lt;sf&gt;   Model3_Time_Spac… &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl [47,232]&gt; 0.643 0.871
 ##  6    19 &lt;sf&gt;   Model3_Time_Spac… &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl [55,104]&gt; 0.606 0.809
 ##  7    18 &lt;sf&gt;   Model4_Time_Spac… &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl [47,232]&gt; 0.532 0.811
 ##  8    19 &lt;sf&gt;   Model4_Time_Spac… &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl [55,104]&gt; 0.509 0.769
-##  9    18 &lt;sf&gt;   Model5_Full       &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl [47,232]&gt; 0.532 0.811
-## 10    19 &lt;sf&gt;   Model5_Full       &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl [55,104]&gt; 0.509 0.769</code></pre>
+##  9    18 &lt;sf&gt;   Model5_All       &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl [47,232]&gt; 0.532 0.811
+## 10    19 &lt;sf&gt;   Model5_All       &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl [55,104]&gt; 0.509 0.769</code></pre>
 </div>
 <div id="examining-model-errors" class="section level2">
 <h2>Examining Model Errors</h2>
@@ -2144,7 +2144,7 @@ exacerbated if using any other model.</p>
            from_longitude = map(data, pull, from_longitude)) %&gt;%
     select(interval60, start_station_id, from_longitude, from_latitude, Observed, Prediction, Regression) %&gt;%
     unnest() %&gt;%
-  filter(Regression == &quot;Model5_Full&quot;) %&gt;%
+  filter(Regression == &quot;Model5_All&quot;) %&gt;%
   group_by(start_station_id, from_longitude, from_latitude) %&gt;%
   summarize(MAE = mean(abs(Observed-Prediction), na.rm = TRUE))%&gt;%
 ggplot(.)+
@@ -2177,7 +2177,7 @@ reflected in bikeshare activity.</p>
            from_latitude, Observed, Prediction, Regression,
            dotw) %&gt;%
     unnest() %&gt;%
-  filter(Regression == &quot;Model5_Full&quot;)%&gt;%
+  filter(Regression == &quot;Model5_All&quot;)%&gt;%
   mutate(weekend = ifelse(dotw %in% c(&quot;Sun&quot;, &quot;Sat&quot;), &quot;Weekend&quot;, &quot;Weekday&quot;),
          time_of_day = case_when(hour(interval60) &lt; 7 | hour(interval60) &gt; 18 ~ &quot;Overnight&quot;,
                                  hour(interval60) &gt;= 7 &amp; hour(interval60) &lt; 10 ~ &quot;AM Rush&quot;,
@@ -2215,7 +2215,7 @@ socio-economic factors.</p>
            from_latitude, Observed, Prediction, Regression,
            dotw) %&gt;%
     unnest() %&gt;%
-  filter(Regression == &quot;Model5_Full&quot;)%&gt;%
+  filter(Regression == &quot;Model5_All&quot;)%&gt;%
   mutate(weekend = ifelse(dotw %in% c(&quot;Sun&quot;, &quot;Sat&quot;), &quot;Weekend&quot;, &quot;Weekday&quot;),
          time_of_day = case_when(hour(interval60) &lt; 7 | hour(interval60) &gt; 18 ~ &quot;Overnight&quot;,
                                  hour(interval60) &gt;= 7 &amp; hour(interval60) &lt; 10 ~ &quot;AM Rush&quot;,
@@ -2255,7 +2255,7 @@ income.</p>
            from_latitude, Observed, Prediction, Regression,
            dotw, Percent_Taking_Public_Trans, Median_Income, Percent_White) %&gt;%
     unnest() %&gt;%
-  filter(Regression == &quot;Model5_Full&quot;)%&gt;%
+  filter(Regression == &quot;Model5_All&quot;)%&gt;%
   mutate(weekend = ifelse(dotw %in% c(&quot;Sun&quot;, &quot;Sat&quot;), &quot;Weekend&quot;, &quot;Weekday&quot;),
          time_of_day = case_when(hour(interval60) &lt; 7 | hour(interval60) &gt; 18 ~ &quot;Overnight&quot;,
                                  hour(interval60) &gt;= 7 &amp; hour(interval60) &lt; 10 ~ &quot;AM Rush&quot;,
