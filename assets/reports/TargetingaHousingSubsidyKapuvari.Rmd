@@ -1,0 +1,615 @@
+---
+title: "Targetting a Housing Subsidy"
+author: "Trevor Kapuvari"
+date: "October 30,2023"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    code_folding: hide
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+options(scipen = 5)
+
+library(tidyverse)
+library(caret)
+library(ckanr)
+library(FNN)
+library(knitr)
+library(kableExtra)
+library(grid)
+library(viridisLite)
+library(viridis)
+library(gridExtra)
+library(jtools)
+library(kableExtra)
+library(jtools)     
+library(ggstance) 
+library(ggpubr)   
+library(broom.mixed) 
+library(pscl)
+library(pROC)
+library(plotROC)
+library(DT)
+
+palette5 <- c("#981FAC","#CB0F8B","#FF006A","#FE4C35","#FE9900")
+palette4 <- c("#981FAC","#FF006A","#FE4C35","#FE9900")
+palette2 <- c("#981FAC","#FF006A")
+
+source("https://raw.githubusercontent.com/urbanSpatial/Public-Policy-Analytics-Landing/master/functions.r")
+
+```
+
+# Motivation of Analysis 
+
+Emil City's Home Repair Tax Credit Program has consistently under performed from their desired goals of reaching out to eligible homeowners for housing repairs and direct community benefit. The strategy of contacting residents by random sampling simply leaves their success rate to chance.
+
+The purpose of the tax credit as a whole is to redevelop neighborhoods without displacing people or changing the character of the neighborhoods, and provide direct community support. Our goal is to develop a model that will increase the chances of identifying individuals who are most likely to take the credit. 
+
+
+```{r data import, include=FALSE}
+housing_data <- 
+  read_csv("https://raw.githubusercontent.com/urbanSpatial/Public-Policy-Analytics-Landing/master/DATA/Chapter6/housingSubsidy.csv") %>%
+  mutate(pdays = as.numeric(ifelse(pdays == '999','0',pdays)))
+```
+
+
+
+```{r data exploration numeric, include=FALSE}
+housing_data_numeric <- housing_data %>% 
+                        na.omit() %>%
+                        select(y, 
+                               age, 
+                               previous, 
+                               unemploy_rate, 
+                               cons.price.idx, 
+                               cons.conf.idx,
+                               inflation_rate, 
+                               spent_on_repairs,
+                               campaign,
+                               pdays) %>%
+                               pivot_longer(cols = -y,
+                                             names_to = "variable")
+  
+housing_data_numeric_summary <- housing_data_numeric %>%
+                                group_by(y, variable) %>%
+                                summarise(mean = mean(value))
+```
+
+
+# Recording Attributes of Campaigns, Residents, and External Metrics
+
+Every campaign provides extra data that can be used to identify potential beneficiaries. Analyzing the times they say yes, while few, enhance our model in predicting future success. 
+
+## Distribution by Percentage and Response
+
+The lines graphs below represent the frequency of respondents accepting or declining to the tax credit. Majority of these features provide little to no insight on when the respondent will accept the credit. Notably when looking at unemployment rate, consumer confidence index, and inflation, there are indices where there are more times they say "yes" than "no". Factors like these become indicators for our model later on, where we measure if a variable is at a specific index or value, then they are more likely to take the credit. 
+
+It must be noted that these graphs are only capable of measuring numeric data, nominal data is addressed using an alternative method. 
+
+```{r data visualization numeric2, fig.width = 8}
+
+ggplot()+
+  geom_density(data=housing_data_numeric,aes(x=value,color=y))+
+  facet_wrap(~variable,scales = "free")+
+  scale_color_manual(values=c('orange','lightgreen'),name='Response')+
+    labs(x="Recorded Factors of Contacted Resident", y="Density Distribution", 
+      title = "Distribution Success by Feature")+
+  theme_bw()
+
+```
+
+## Distribution by Count
+
+The bar graphs below displays the amount of people contacted by each measured feature. Each graph creates an understanding of the sample size of each attribute and verifies that, when examining a relative difference between response amounts, that it is less susceptible to random chance and proves a reasonably observed correlation. 
+
+```{r histograms,  fig.width=8}
+ggplot()+
+  geom_histogram(data=housing_data_numeric,aes(x=value),bins=30)+
+  facet_wrap(~variable,scales = "free")+
+  labs(x="Recorded Factors of Contacted Resident", y="Count")+
+  theme_light()
+```
+# Correlations and Importance 
+
+Similar to the graphs above, understanding the mean value of each attribute between "yes" and "no" informs us of a "sweet spot" that can further indicate when a respondent will become a beneficiary. Graphs that show two similarly sized bars indicate that the attribute does not show a difference on the resident's response. We notice that the inflation rate, unemployment rate, and pdays(number of days after last contact) are factors the city can use to indicate when they are going to have people applying to the program. 
+
+
+```{r data_visualization_numeric}
+
+ggplot(data=housing_data_numeric_summary,aes(x=y,y=mean,fill=y))+
+  geom_bar(stat='identity')+
+  facet_wrap(~variable,scales = "free")+
+  scale_fill_manual(values=c('orange','lightgreen'),name='Response')+
+  labs(x="Recorded Factors of Contacted Resident", y="Mean Value", 
+      title = "Measuring Likelihood to Enter the Housing Subsidy Program")+
+  theme_bw()
+``` 
+
+# Feature Engineering 
+
+For this nominal data, we first looked at each and every category and comparing the responses to such. Then we feature engineer the categories by "binning" them into grouped features, some by intuitive, and others by their "yes" rate. Examples include binning jobs by "employed or unemployed" and the most successful months grouped as "high-rate months". The purpose of the binning is to hone in on when they have the largest success rate, regardless of sample size. 
+
+## Aggregating Correlated Features 
+
+``` {r feature_engineer}
+housing_data <- housing_data %>% mutate(
+    education_group = ifelse(education %in% c("university.degree", "professional.course", "unkown"),"degree","no_degree"),
+    job_group = ifelse(job %in% c("retired", "student","unemployed","unkown"),"un-employed","employed"),
+    season = case_when(month %in% c("mar", "apr", "may") ~ "spring",
+                      month %in% c("jun", "jul", "aug") ~ "summer",
+                      month %in% c("sep", "oct") ~ "autumn",
+                      month %in% c("nov", "dec") ~ "autumn"),
+    inflation_bucket = case_when(
+                      inflation_rate > 2.5 ~ "More than 2.5",
+                      inflation_rate <= 2.5 ~ "Less than 2.5"),
+    spent_on_repairs_bucket = case_when(
+                      spent_on_repairs >= 5100 ~ "More than 5100",
+                      spent_on_repairs < 5100 ~ "Less than 5100"),
+    pdays_0 = ifelse(pdays == 0,"New Contact","Not New Target"),
+    campaign_log = log(campaign),
+    unemploy_rate_bucket = ifelse(unemploy_rate < -0.5,"Less than -0.5","More than -0.5"),
+    month_high = ifelse(month %in% c("mar","dec","oct",'sep'),"high_rate_month","low_rate_month"),
+    cons.conf.idx_bucket = (ifelse(cons.conf.idx > -42, "More than -42","Less than -42"))
+    )
+
+```
+
+
+```{r select_cat_cols, include=FALSE}
+
+housing_data_cat <- housing_data %>% 
+                    select(-age,
+                           -previous, 
+                           -(unemploy_rate:spent_on_repairs),
+                           -y_numeric,
+                           -...1,
+                           -pdays,
+                           -campaign)
+
+housing_data_cat_long <- housing_data_cat %>%
+  gather(variable, value, -y, -campaign_log, -job) 
+
+housing_data_cat_summ <- housing_data_cat_long %>%
+  count(variable,value,y) %>%
+  left_join(., housing_data_cat_long %>% count(variable,value), by=c('variable','value'), suffix=c('value_count','total_count')) %>%
+  mutate(percent = nvalue_count / ntotal_count * 100)
+``` 
+
+
+### Recorded Attributes by Percentage 
+
+After binning the categorical variables to what we believe show the greatest discrepancy in responses, we visualize that discrepancy through the percentages in the graph below. We observe noticeable differences when picking the successful months exclusively, grouping the unemployed together, and when inflation is less than 2.5.
+
+We note that previously contacted people who said yes also have a higher success rate, while it is factored in the model, may limit the program's scalability and defeat the objective of reaching out to new residents. 
+
+```{r data visualization categorical_percent, fig.height=7,fig.width=10}
+
+ggplot(data=housing_data_cat_summ, aes(x = value, y = percent, fill = y)) + 
+  geom_bar(stat = "identity")+
+  facet_wrap(~variable,scales = "free")+
+  labs(y = "Percentage", fill = "Response", title="Recorded Attributes for Contacted Homeowners")+
+  scale_fill_manual(values=c('orange','lightgreen'))+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+### Recorded Attributes by Count
+
+Regardless of success rates by features, arbitrary or calculated, the sample size is important to factor as a high success rate with a small sample size can cause a sampling error and not provide insight when scaled. Despite this consideration, we are working with few "yes" responses to begin with, so any assumptions, feature engineering, or experimental speculation may be useful. 
+
+We see that some samples are so small they cannot be displayed in the graphs, and the yes count on any bar is far overshadowed by the no's and total count. This lack of "successful" data points emphasizes that, in order to create any improvement in outreach strategy, we need to understand the circumstances from the few times a respondent takes the tax credit, not for causation but correlation. 
+
+```{r data visualization categorical2, fig.height=7,fig.width=10}
+
+ggplot(data=housing_data_cat_summ, aes(x = value, y = nvalue_count, fill = y)) + 
+  geom_bar(stat = "identity")+
+  facet_wrap(~variable,scales = "free")+
+  labs(y = "Total Number", fill = "Response", title="Recorded Attributes for Contacted Homeowners")+
+  scale_fill_manual(values=c('orange','lightgreen'))+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+# Kitchen Sink Logistic Regression Model 
+
+ The purpose of the logistic regression model is to predict the probability of a variable being 1 or 0. In this case, it is not necessarily predicting if a respondent says yes or no, but what is the probability they will say yes (or no), represented as a percent. A kitchen sink model is when we take all variables available and use them as calculations for the regression. The purpose of adding all variables available is meant for experimental insight, regardless of statistical assumptions or cautions. We see what variables improve or degrade the model, and then create a new model of filtered variables accordingly. 
+
+```{r data partition, include=FALSE}
+set.seed(3456)
+housing_index <- createDataPartition(y = paste(housing_data$job, housing_data$education,housing_data$previous, housing_data$y_numeric), p = .65,
+                                  list = FALSE,
+                                  times = 1)
+
+housing_train <- housing_data[housing_index,] %>%  transform(y_numeric = as.numeric(y_numeric)) 
+housing_test  <- housing_data[-housing_index,] %>% transform(y_numeric = as.numeric(y_numeric))
+
+```
+
+The results below provide us the summary of the regression, primarily showing the correlation between the probability of a "yes" and the variables measured. The statistic we analyze most is the Z score, which measures the relationship between the variable and the average score of the collective.
+
+
+```{r logistic regression kitchen_sink}
+
+housing_model <- glm(y_numeric ~ .,
+                     data = housing_train %>% 
+                     select(-y,-...1,-job_group,-education_group,-season, -cons.conf.idx_bucket, -unemploy_rate_bucket, -month_high, -campaign_log, -pdays_0, -spent_on_repairs_bucket, -inflation_bucket),
+                     family="binomial" (link="logit"))
+
+ 
+summary(housing_model)$coefficients %>%
+  kbl(col.names = c('Beta Coefficient','Standard Error','Z value','p-value')) %>%
+  kable_classic()
+
+
+```
+
+## Results 
+
+Here we look specifically at the McFadden Score, this index measures the log of the probability that the model's success rate is not due to chance. A higher score is ideal but because of the data we are working with, we can prioritize other readings such as sensitivity and specificity. 
+
+``` {r macfadden_kitchensink}
+pR2(housing_model) %>%
+  kbl(col.name=c("Value")) %>%
+  kable_classic()
+pR2(housing_model)
+```
+
+```{r predict_kitchensink, message = FALSE, warning = FALSE}
+
+testProbs <- data.frame(Outcome = as.factor(housing_test$y_numeric),
+                        Probs = predict(housing_model, housing_test, type= "response"))
+```
+
+### Confusion Matrix
+
+A confusion matrix measures the outcome of whether we reached out, and if the respondent did or would have taken the tax credit. 
+
+Reference is the real outcome while Prediction is what the model predicts. Reference represents if we reach out, while the prediction is if they take the credit or not with all factors considered. 
+
+We see there are plenty of people we do not reach out to and do not take the credit (0,0). There are 19 that we reach out to and accept the tax credit (1,1), then we have those we do not reach out to but need the tax credit (0,1), and those we reach out to but say no (1,0).
+
+We define (1,0) as false positive and (0,1) as false negative. 
+Because of the overwhelming negatives, the model has a higher specificity rate. But what is important for the program is minimizing false negatives and maximizing the specificity rate (true positives). 
+
+```{r confusion_matrix_kitchensink}
+
+testProbs <- 
+  testProbs %>%
+  mutate(predOutcome  = as.factor(ifelse(testProbs$Probs > 0.5 , 1, 0)))
+
+kitchensink_confuse <- caret::confusionMatrix(testProbs$predOutcome, testProbs$Outcome, 
+                       positive = "1")
+
+kitchensink_confuse$table %>%
+  data.frame() %>%
+  spread(key=Reference,value=Freq) %>%
+  rename('Not_Take_Subsidy' = '0', 'Take_Subsidy' = '1') %>%
+  mutate(Total = Not_Take_Subsidy + Take_Subsidy,
+         Prediction = c('Not Take Subsidy','Take Subsidy')) %>%
+  kbl() %>%
+  add_header_above(header=c(" " = 1,"Actual" = 3)) %>%
+  kable_minimal()
+
+
+```
+# Personalized Logistic Regression Model
+
+We create out own logistic regression model that utilizes the grouped variables and removes the individual variables that would otherwise be considered on their own. For example, instead of each month as a variable in the model, we have "high month vs low month" as an indicator instead, simplifying the categories. Taking each variable, binned or grouped, that had the highest discrepancy in success rates helps the model predict likelihood of a yes, even if the sample is small. The ultimate goal is to minimize the rate of false negatives because those represent people who want the tax credit but are not reached out to. 
+
+
+```{r logistic regression own_model}
+
+housing_model2 <- glm(y_numeric ~ .,
+                     data = housing_data %>% select(-y, -...1),
+                     family="binomial" (link="logit"))
+
+summary(housing_model2)$coefficients %>%
+  kbl(col.names = c('Beta Coefficient','Standard Error','Z value','p-value')) %>%
+  kable_classic()
+
+
+```
+## Results 
+
+Even though the McFadden score is lower indicating there is higher likelihood of chance in our model, the 0.2 difference is negligible. 
+
+``` {r mcfadden_own_model}
+pR2(housing_model2) %>%
+  kbl(col.name=c("Value")) %>%
+  kable_classic()
+pR2(housing_model2)
+
+```
+
+```{r predict_own_model, message = FALSE, warning = FALSE}
+
+testProbs2 <- data.frame(Outcome = as.factor(housing_test$y_numeric),
+                        Probs = predict(housing_model2, housing_test, type= "response"))
+```
+
+# Comparing Sensitivity and Specificity 
+
+When looking at the specificity rate (0,1), we notice there is 54% fewer false negatives in our model. That means there are 11 fewer people that need the credit yet were not contacted compared to the kitchen sink model. 
+
+```{r confusion_matrix_own_model}
+
+testProbs2 <- 
+  testProbs %>%
+  mutate(predOutcome  = as.factor(ifelse(testProbs2$Probs > 0.5 , 1, 0)))
+
+ownmodel_confuse <- caret::confusionMatrix(testProbs2$predOutcome, testProbs2$Outcome, 
+                       positive = "1")
+
+ownmodel_confuse$table %>%
+  data.frame() %>%
+  spread(key=Reference,value=Freq) %>%
+  rename('Not_Take_Subsidy' = '0', 'Take_Subsidy' = '1') %>%
+  mutate(Total = Not_Take_Subsidy + Take_Subsidy,
+         Prediction = c('Not_Take_Subsidy','Take_Subsidy')) %>%
+  kbl() %>%
+  add_header_above(header=c(" " = 1,"Actual" = 3)) %>%
+  kable_minimal()
+```
+
+## Distribution of Predicted Observed Outcomes 
+
+The density distribution of predicted probability by observed outcomes displays a large right skew for the "0" outcome, meaning they did not accept the tax credit. That means our model is excellent in predicting when they are going to say no. But this is only half of the ideal model we would look for. We want a left skew for our "1" outcome distribution, meaning they took the credit. That way we can find the optimal threshold to use as a cut-off for when we decide to call or not, even further increasing our odds. 
+
+This distribution does not provide us the best estimate, we have alternative ways to find the optimal threshold. 
+
+
+```{r density plot predictions}
+ggplot(testProbs2, aes(x = Probs, fill = as.factor(Outcome))) + 
+  geom_density() +
+  facet_grid(Outcome ~ .) +
+  scale_fill_manual(values = palette2) +
+  labs(x = "Probability", y = "Density of Outcome",
+       title = "Distribution of Predicted Probabilities by Observed Outcome") +
+  theme(strip.text.x = element_text(size = 18),
+        legend.position = "none")
+```
+
+
+
+# Optimizing The Threshold, Cost-Benefit Analysis
+
+It is important to understand the purpose of the housing subsidy program, beyond people simply taking the tax credit to repair their home. The purpose of the subsidy is to inject funding back to communities that raise property value without gentrifying the area, supporting homeowners, and uplifting the quality of life in the city. 
+
+The purpose of eliminating the false-negatives is to ensure that those who want the subsidy are contacted. And the efforts it takes the city to reach those people inherently costs money too, so the goal is to be as efficient as possible in sorting when someone will or will not take that subsidy. 
+
+The optimal threshold tells us when the credits allocated benefit the community the most, and create the largest return on investment. Every person that wants the credit but wasn't contacted is foregone benefit to the city. The city's purpose of the program is not a tangible profit but to rebuild communities efficiently, minimizing the net loss it has when spending their budget. Now we look at where that line is drawn. 
+
+For every $5,000 credit subsidize, we create an average of $10,000 in value to the home directly, and an accumulated aggregate average of $56,000 for surrounding homes. That is a 1,320% return on investment. While the city itself loses tangible budget for searching, calling, allocating, the "profits" are at the homeowner level. Hence the importance providing these allocations. 
+
+```{r optimal threshold function, warning=FALSE, message=FALSE}
+results_sens_10 <- vector()
+
+for (i in seq(1,10,1)){
+  print(i)
+   
+  t <- testProbs %>% mutate(predOutcome  = as.factor(ifelse(testProbs2$Probs > 1-(i/10) , 1, 0)))
+  results_sens_10[i] <-  caret::confusionMatrix(t$predOutcome, t$Outcome, positive = "1")$table[2]
+}
+
+results_sens_10
+
+
+results_sens_01 <- vector()
+
+for (i in seq(1,10,1)){
+  print(i)
+   
+  t <- testProbs %>% mutate(predOutcome  = as.factor(ifelse(testProbs2$Probs > 1-(i/10) , 1, 0)))
+  results_sens_01[i] <-  caret::confusionMatrix(t$predOutcome, t$Outcome, positive = "1")$table[3]
+}
+
+results_sens_01
+
+
+results_sens_11 <- vector()
+
+for (i in seq(1,10,1)){
+  print(i)
+   
+  t <- testProbs %>% mutate(predOutcome  = as.factor(ifelse(testProbs2$Probs > 1-(i/10) , 1, 0)))
+  results_sens_11[i] <-  caret::confusionMatrix(t$predOutcome, t$Outcome, positive = "1")$table[4]
+}
+
+results_sens_11
+
+
+
+total_rev_11 <- results_sens_11*250 + results_sens_11*10000 + results_sens_11*20000
+total_rev_11
+
+total_cost_11 <- -(results_sens_11*2850)
+total_cost_11
+
+#01 is the foregone revenue which we will treat as cost
+total_cost_01 <- -(results_sens_01*250 + results_sens_01*10000 + results_sens_01*20000)
+total_cost_01
+
+total_cost_10 <- -(results_sens_10*2850)
+total_cost_10
+
+net <- total_rev_11 + total_cost_11 + total_cost_01 + total_cost_10
+
+
+cost <- total_cost_11 + total_cost_01 + total_cost_10
+revenue <- total_rev_11
+net_cost <- revenue + cost
+data.frame()
+
+total_credits_given <- results_sens_11
+total_credits_given
+
+data.frame(threshold_in_pct = seq(10,100,10),revenue,cost,net_cost) %>%
+  kbl(col.name=c("Treshold Percentage","Revenue (USD)","Cost (USD)","Net Cost (USD)")) %>%
+  kable_classic()
+```
+
+As shown from the table above, the 90% mark has the smallest net lose of only $308,300. While revenue gained from the program does increase even at 100%, it starts to cost even more because of the excess credits given that do not add to the city's value anymore. We will use 90% threshold. 
+
+## Foregone Benefit and Credit Allocation 
+
+With public interest in mind, we see that 90% proves itself as the "sweet-spot" because of the dip as seen in the foregone benefit chart. The 90% mark (second bar to the right) is smaller than the 100% mark despite the fact the pattern throughout the rest of the graph would indicate it between the $750,000 and $500,000 mark (between 80% and 90%). Yet the pattern expect by credit allocations is linear and predictable, with the 90% providing 61 credits, in-between its neighboring values. The outlier shown in foregone benefit yet uniformity with the credit allocation proves that this model found the optimal threshold to create the most value per credit. 
+
+We understand intuition would assume 50% would be optimal, especially without analysis and in theory alone. We must compare in order to analyze its viability. 
+
+``` {r make_chart}
+results_final <- data.frame(threshold_in_pct = seq(10,100,10),
+                            net_public_loss = -1*net ,
+                            total_credits_given = total_credits_given)
+results_final
+
+grid.arrange(ncol=2,
+ggplot(data = results_final, aes(x = threshold_in_pct, y = net_public_loss)) +
+  geom_bar(stat='identity',fill='orange4')+
+  labs(title = "Foregone Benefit")+
+  theme_bw()+
+  labs(y='Opportunity Cost',x='Treshold'),
+ggplot(data = results_final, aes(x = threshold_in_pct, y = total_credits_given)) +
+  geom_bar(stat='identity',fill='lightblue')+
+  labs(title = "Credit Allocation")+
+  theme_bw()+
+  labs(y='Total Credits Given',x='Treshold')
+)
+
+```
+## Comparing 50% to the Optimized Threshold
+
+The table below puts 50% and 90% side-by-side. When using 50% as the threshold to contact a resident, the city loses over $2.1 million dollars in total, making each credit an average lose of $114,713. 
+
+Now look at 90%, 61 credit given while losing $308,300 means a net loss of $5,054 per credit, a significant improve that is relatively more affordable as a housing subsidy. 
+
+This means that decrease net public loss by 7x and increase credits given by 3x. However, alone the house appreciation of the real estate and its surrounding houses is at approximately 2 million dollars if 61 credits were given. 
+
+
+```{r table}
+
+results_final %>%
+  dplyr::filter(threshold_in_pct %in% c(90,50)) %>%
+  kbl(col.names = c("Treshold Precentage","Net Public Loss","Credits Given")) %>%
+  kable_classic()
+```
+
+### Optimized Threshold Confusion Matrix, Visualized 
+
+The histogram below shows sensitivity and false predictions from the model. We removed true negatives due to the overwhelming count on the display. The graphs shows that at the optimal threshold (90%), there is a slight uptick in true positives, and a larger amount of false positives. 
+
+The graph, specifically the 90% mark, has the fewest false negatives*, meaning the most distressed homeowners who want the subsidy, are contacted using this model. 
+
+* While the 100% mark has no recorded false negatives, the benefits are negated by the false positives. 
+
+```{r chart_positives}
+
+results <- data.frame(threshold_in_pct = seq(10,100,10),
+                     True_positive=results_sens_11,
+                     False_negative=results_sens_01,
+                     False_positive=results_sens_10) %>%
+  gather(variable,value,-threshold_in_pct)
+
+ggplot(results, aes(x = threshold_in_pct, y= value, fill = variable)) + 
+  labs(x = "Threshold Percentage", y = "Count", fill = "Confusion Matrix Outcomes")+
+  geom_bar(stat='identity')+
+  scale_fill_viridis_d()+
+  theme_bw()
+```
+
+### Optimal Threshold Confusion Matrix, By the Numbers
+
+The model below shows the results using our optimal threshold.
+
+```{r confusion_matrix own optimal threshold}
+testProbs3 <- data.frame(Outcome = as.factor(housing_test$y_numeric),
+                        Probs = predict(housing_model2, housing_test, type= "response"))
+
+testProbs3 <- 
+  testProbs %>%
+  mutate(predOutcome  = as.factor(ifelse(testProbs3$Probs > 0.1 , 1, 0)))
+
+test3table <- caret::confusionMatrix(testProbs3$predOutcome, testProbs3$Outcome, 
+                       positive = "1")
+
+test3table$table %>%
+  data.frame() %>%
+  spread(key=Reference,value=Freq) %>%
+  rename('Not_Take_Subsidy' = '0', 'Take_Subsidy' = '1') %>%
+  mutate(Total = Not_Take_Subsidy + Take_Subsidy,
+         Prediction = c('Not_Take_Subsidy','Take_Subsidy')) %>%
+  kbl() %>%
+  add_header_above(header=c(" " = 1,"Actual" = 3)) %>%
+  kable_minimal()
+
+```
+
+### Optimal Threshold Density Plot Distribution
+
+The density distribution of predicted probabilities by observed outcomes shows a large right skew distribution for negative outcomes. This means that our model still does a great job of predicting true negatives.
+
+In an ideal scenario, we would want our positive outcome density distribution to be heavily right skewed. The reason behind this is that we could then choose a more ideal threshold for the cut off and thereby further increase the quality of our model. 
+
+Given the quality of the data we had, we applied all relevant feature engineering techniques to isolate correct positive outcomes. Our biggest lever, however, as this graph displays, is the choice of optimal threshold.
+
+```{r optimal threshold density plot predictions}
+ggplot(testProbs3, aes(x = Probs, fill = as.factor(Outcome))) + 
+  geom_density() +
+  facet_grid(Outcome ~ .) +
+  scale_fill_manual(values = palette2) +
+  labs(x = "Probability", y = "Density of Predicted Outcomes",
+       title = "Distribution of Predicted Probabilities by Observed Outcome") +
+  theme(strip.text.x = element_text(size = 18),
+        legend.position = "none")
+```
+
+# Reciever Operating Characteristic Curve
+
+The Area under the curve indicates how good our model is compared to random chance. Since random chance would indicate 50%, we are 24 points higher than random chance, showing our model is excellent but imperfect. The imperfections also emphasize scalability, and that the model is not overfitted to only this situation, and can expand as necessary. 
+
+
+```{r auc, message = FALSE, warning = FALSE}
+auc(testProbs3$Outcome, testProbs3$Probs)
+```
+
+```{r roc_curve, warning = FALSE, message = FALSE}
+ggplot(testProbs3, aes(d = as.numeric(Outcome), m = Probs)) +
+  geom_roc(n.cuts = 50, labels = FALSE, colour = "mediumorchid2") +
+  style_roc(theme = theme_grey) +
+  geom_abline(slope = 1, intercept = 0, size = 1.5, color = 'grey40') +
+  labs(title = "Reciever Operating Characteristic Curve")
+```
+
+
+
+# CV Fit
+```{r cv, message = FALSE, warning = FALSE}
+
+ctrl <- trainControl(method = "cv", number = 100, classProbs=TRUE, summaryFunction=twoClassSummary)
+
+cvFit <- train(y ~ ., data = housing_data %>% select(-y_numeric, -...1), method="glm", family="binomial",  metric="ROC", trControl = ctrl)
+
+cvFit
+```
+
+
+```{r goodness_metrics, message = FALSE, warning = FALSE}
+
+dplyr::select(cvFit$resample, -Resample) %>%  gather(metric, value) %>%  left_join(gather(cvFit$results[2:4], metric, mean)) %>%  ggplot(aes(value)) +     geom_histogram(bins=35, fill = "#FF006A") +    facet_wrap(~metric) +    geom_vline(aes(xintercept = mean), colour = "#981FAC", linetype = 3, size = 1.5) +    scale_x_continuous(limits = c(0, 1)) +    labs(x="Goodness of Fit", y="Count", title="CV Goodness of Fit Metrics",         subtitle = "Across-fold mean reprented as dotted lines")
+```
+
+The results of a model evaluation using a technique called 100-fold cross-validation. It emphasizes the importance of looking at the variation in performance across different folds to assess the model's generalizability.
+
+Instead of focusing on the means, we will focus on the across folds distribution for each metric. This is because tighter across folds distribution implies a higher degree of generalizability for the model.
+
+The ROC metric, which measures the model's ability to distinguish between positive and negative cases, shows a consistent performance around a score of 0.76.
+
+The specificity metric, performs very well because the dataset originally had a majority of negative cases. However, the sensitivity metric has a wider variation across folds, with values ranging from 0.25 to 0.75. This suggests that the model captures some trends in the data but not consistently across all cases. The small sample size of positive cases in the initial dataset makes sensitivity results sensitive to small differences in how many positive cases the model predicts. 
+
+Overall, the model performs reasonably well, but there are challenges in achieving consistent sensitivity due to the dataset's imbalance.
+
+# Results & Recommendation
+
+Our model successfully meets its intended objective of reducing false negatives while maintaining an acceptable level of false positives. Achieving this outcome required extensive feature engineering, which fine-tuned our logistic regression model to identify subsidy beneficiaries. Considering the limited number of beneficiaries in the dataset, our model can be deemed effective. This success is also evident in the significant increase in distributed credits and overall public benefits.
+
+As a result, we recommend using this model compared to the current technique of randomness, and advise that more data is gathering to continue enhancing the model. 

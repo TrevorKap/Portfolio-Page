@@ -1,0 +1,12 @@
+_site/
+.sass-cache/
+.jekyll-cache/
+.jekyll-metadata
+.bundle/
+vendor/
+node_modules/
+.DS_Store
+
+# Local Claude Code / dev tooling, not part of the site
+.claude/
+serve.bat

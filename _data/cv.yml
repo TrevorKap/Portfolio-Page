@@ -1,0 +1,104 @@
+- title: General Information
+  type: map
+  contents:
+    - name: Full Name
+      value: Trevor Kapuvari
+    - name: Location
+      value: Massapequa Park, NY
+    - name: Email
+      value: kapuvarit@gmail.com
+
+- title: Education
+  type: time_table
+  contents:
+    - title: M.S. in Urban Spatial Analytics
+      institution: University of Pennsylvania, Weitzman School of Design
+      year: 2024
+      description:
+        - "GPA: 3.83 / 4.00"
+        - "Relevant coursework: Remote Sensing, Cloud Computing, Data Mining & Statistics, Public Policy Analytics, Python"
+    - title: B.A. in Environmental Design, Policy, and Planning
+      institution: Stony Brook University
+      year: 2023
+      description:
+        - "GPA: 3.89 / 4.00"
+        - "Minor: Geospatial Sciences"
+
+- title: Experience
+  type: time_table
+  contents:
+    - title: Data Scientist
+      institution: National Grid, Melville, NY
+      year: Nov 2025 - Present
+      description:
+        - Spearheaded development of a spatial risk classification model, incorporating 30 variables into a bi-annual infrastructure assessment.
+        - Optimized data architectures by consolidating 3 siloed databases into a unified system, improving data accessibility, integration, and use.
+        - Adapted GIS tools, scripts, and workflows based on ad-hoc needs for 4 engineering teams, improving operational scalability.
+    - title: Spatial Data Scientist
+      institution: Con Edison, Brooklyn, NY
+      year: Jun 2025 - Nov 2025
+      description:
+        - Led an AI initiative to integrate large language models into GIS for automated data quality review, decreasing manual output by 30%.
+        - Coordinated with 3 stakeholder teams to develop technical infrastructure, secure approval, and source high-quality training data.
+        - Designed and executed a full machine learning pipeline, including data preparation, feature engineering, and model evaluation.
+    - title: Geographic Information System Specialist
+      institution: Con Edison, Brooklyn, NY
+      year: May 2024 - Jun 2025
+      description:
+        - Supported design, implementation, and integration of 6 electric information systems into enterprise geospatial technology.
+        - Implemented data validation protocols and quality control measures for data integrity during migration processes.
+        - Led efforts to modify and adapt GIS tools to meet organizational needs in energy resource management, mapping, and data analysis.
+    - title: Data Analyst
+      institution: U.S. Department of the Interior - Geological Survey, Coram, NY
+      year: May 2023 - May 2024
+      description:
+        - Transformed raw data into comprehensive reports detailing water quality metrics, incorporated into environmental impact statements.
+        - Implemented efficient data processing workflows using Model Builder and ArcPy, leading to a 15% increase in overall efficiency.
+        - Analyzed groundwater and surface water data to create interactive visualizations, highlighting geological and hydrological trends.
+    - title: Transportation Planning Intern
+      institution: Suffolk County Department of Economic Development, Hauppauge, NY
+      year: Jun 2022 - Aug 2022
+      description:
+        - Researched and compiled data on micromobility legal codes, presenting findings to state-wide committees on traffic safety.
+        - Assisted in designing downtown corridors by analyzing usage data and collaborating with planning staff to create shared pathways.
+
+- title: Project Experience
+  type: time_table
+  contents:
+    - title: Data-Driven Interdiction of Marine Plastic Pollution
+      institution: Ocean Conservancy
+      year: Jan 2024 - May 2024
+      description:
+        - Developed a customized machine learning algorithm to analyze data for 12 clients, leading to identification of optimal site locations.
+        - Implemented predictive modelling approaches to determine resource allocation and capital distribution for conservation efforts.
+        - Provided data-driven recommendations to stakeholders, utilizing visualization techniques to present findings and solutions.
+    - title: Identifying Neighborhood Amenities via Web Scraping and APIs
+      institution: Wharton-Weitzman Future of Cities Conference 2024
+      year: Nov 2023 - Feb 2024
+      description:
+        - Conducted classification analysis to develop contemporary amenity profiles of cities to aid urban planning research.
+        - Web-scraped Zillow & Yelp for real estate descriptions and community feedback using Python Selenium & Beautiful Soup.
+
+- title: Honors and Awards
+  type: list
+  contents:
+    - Eagle Scout, Project on Nature Preserve Mapping
+    - Phi Beta Kappa Honor Society
+
+- title: Skills & Software
+  type: nested_list
+  contents:
+    - title: Programming Languages
+      items:
+        - "Python (Scikit-learn, Keras, TensorFlow, pandas, geopandas, NumPy)"
+        - "R (tidyverse)"
+        - SQL, HTML, CSS
+    - title: Software
+      items:
+        - ArcGIS Pro / Online, CARTO, CPLEX
+        - ChatGPT, Jupyter, Microsoft Office Suite
+        - Power BI, Tableau
+    - title: Database Management
+      items:
+        - PostgreSQL, pgAdmin
+        - Google Cloud Platform
