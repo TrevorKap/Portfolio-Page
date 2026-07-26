@@ -9,4 +9,4 @@ category: statistics-research
 
 Drunk driving remains a critical national problem, claiming lives daily according to the U.S. Department of Transportation. This investigation uses logistic regression to identify the predictors associated with alcohol-related driving accidents in Philadelphia, providing insight into the nature of these incidents and the driver behaviors most linked to their outcomes.
 
-[View full report](/assets/reports/LogisticRegression.html)
+[View full report]({{ '/assets/reports/LogisticRegression.html' | relative_url }})

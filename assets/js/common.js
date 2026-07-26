@@ -57,4 +57,40 @@ $(document).ready(function () {
   $('[data-toggle="popover"]').popover({
     trigger: "hover",
   });
+
+  // clicking the email social icon copies the address instead of opening a mail client
+  $(".social a[href^='mailto:']").on("click", function (e) {
+    e.preventDefault();
+    const $link = $(this);
+    const email = $link.attr("href").replace(/^mailto:/, "");
+
+    const originalTitle = $link.attr("title") || "Email";
+    const showCopiedTooltip = function () {
+      $link.tooltip("dispose");
+      // Bootstrap 4's tooltip plugin copies the element's `title` attribute into
+      // `data-original-title` on init and prefers that over the `title` config
+      // option, so setting `data-original-title` directly is what actually sticks.
+      $link.attr("data-original-title", "Copied!").attr("title", "");
+      $link
+        .tooltip({
+          trigger: "manual",
+          placement: "bottom",
+        })
+        .tooltip("show");
+      setTimeout(function () {
+        $link.tooltip("dispose");
+        $link.attr("title", originalTitle).removeAttr("data-original-title");
+      }, 1200);
+    };
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(email).then(showCopiedTooltip);
+    } else {
+      // fallback for browsers without the Clipboard API
+      const $tmp = $("<textarea>").val(email).appendTo("body").select();
+      document.execCommand("copy");
+      $tmp.remove();
+      showCopiedTooltip();
+    }
+  });
 });

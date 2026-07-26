@@ -1,0 +1,20 @@
+<div class="col">
+  <a href="https://github.com/{{ include.repo }}">
+    <div class="card h-100 hoverable">
+      {% if include.img %}
+        {%
+          include figure.liquid
+          loading="eager"
+          path=include.img
+          sizes="250px"
+          alt="repository thumbnail"
+          class="card-img-top"
+        %}
+      {% endif %}
+      <div class="card-body">
+        <h2 class="card-title">{{ include.title }}</h2>
+        <p class="card-text">{{ include.description }}</p>
+      </div>
+    </div>
+  </a>
+</div>
