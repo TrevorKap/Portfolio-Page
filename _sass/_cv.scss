@@ -15,6 +15,26 @@ table.table-cv {
   }
 }
 
+// The date/duration table in the experience & education timeline.
+// Long ranges like "Nov 2025 - Present" were overflowing their narrow
+// column (~75-90px) and visually overlapping the entry title next to it,
+// since the badge's default `white-space: nowrap` forced it wider than
+// its container. Force it to wrap within the column instead.
+table.table-cv-date {
+  width: 100%;
+  table-layout: fixed;
+}
+
+span.date-badge {
+  display: inline-block;
+  width: 100%;
+  white-space: normal;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  line-height: 1.3;
+  text-align: center;
+}
+
 a.btncv {
   color: var(--global-text-color) !important;
   border: 1px solid var(--global-text-color) !important;

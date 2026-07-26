@@ -95,10 +95,19 @@
         - SQL, HTML, CSS
     - title: Software
       items:
-        - ArcGIS Pro / Online, CARTO, CPLEX
+        - ArcGIS Pro / Online, CARTO, CPLEX, Google Earth Engine
         - ChatGPT, Jupyter, Microsoft Office Suite
         - Power BI, Tableau
     - title: Database Management
       items:
         - PostgreSQL, pgAdmin
-        - Google Cloud Platform
+        - Google Cloud Platform (BigQuery, Cloud Functions, Cloud Workflows)
+    - title: Cloud & DevOps Tools
+      items:
+        - Git, GitHub
+        - Docker, Kubernetes, MLflow
+    - title: Analytical Methods
+      items:
+        - A/B Testing & Hypothesis Testing
+        - LLM / GenAI Integration
+        - Statistical Modeling & Probability

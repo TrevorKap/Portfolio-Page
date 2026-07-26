@@ -3,8 +3,8 @@ layout: page
 title: High-Resolution Neighborhood Amenity Profiles
 description: Yelp API and web-scraping analysis clustering Philadelphia neighborhoods by amenity mix
 img: assets/img/portfolio/AmenityDashboard.png
-importance: 9
-category: statistics-research
+importance: 2
+category: ai-ml-use-cases
 redirect: http://luckylaharltim.github.io/MUSA_5500_Final
 ---
 

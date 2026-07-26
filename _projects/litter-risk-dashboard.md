@@ -3,7 +3,7 @@ layout: page
 title: Litter Risk Dashboard
 description: A machine learning dashboard predicting and visualizing litter risk hotspots
 img: assets/img/portfolio/LitterRiskDashboard.png
-importance: 3
+importance: 1
 category: ai-ml-use-cases
 redirect: https://xxiaofan-98.github.io/Litter-risk-dashboard/
 ---

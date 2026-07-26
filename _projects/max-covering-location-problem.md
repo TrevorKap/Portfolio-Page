@@ -9,4 +9,4 @@ category: spatial-optimization-studies
 
 Using ArcGIS Pro, Power BI, and CPLEX, I solved the Maximum Covering Location Problem both in theory and in a real-world use case: examining how a person's willingness to travel to bus stops determines the effective coverage of transit stations in a sample town. The optimization identifies stop placements that maximize the population served under a given travel-distance constraint.
 
-[View full report](/assets/reports/SO_HW1.html)
+[View full report]({{ '/assets/reports/SO_HW1.html' | relative_url }})

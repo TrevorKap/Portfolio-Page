@@ -3,7 +3,7 @@ layout: page
 title: "Auditing Algorithmic Bias in a Predictive Policing Model"
 description: A geospatial risk model for arrest prediction in Chicago, examined for racial bias in its outputs
 img: assets/img/portfolio/RiskAssessment1.png
-importance: 2
+importance: 4
 category: ai-ml-use-cases
 ---
 
@@ -13,4 +13,4 @@ category: ai-ml-use-cases
 
 **Result.** The audit surfaced a clear disparity: in neighborhoods with the highest non-white population share, predicted arrest risk for certain offense categories was more than twice as high as in comparable white neighborhoods with similar underlying conditions — a systemic bias inherited directly from the historical arrest data used to train the model. The finding reframes the project from a pure prediction exercise into a case for why predictive policing outputs need bias auditing before any operational use.
 
-[View full report](/assets/reports/GeospatialRiskPredictionKapuvari.html)
+[View full report]({{ '/assets/reports/GeospatialRiskPredictionKapuvari.html' | relative_url }})

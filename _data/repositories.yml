@@ -1,7 +1,26 @@
-github_users:
-  - TrevorKap
-
-repo_description_lines_max: 2
-
-github_repos:
-  - TrevorKap/Portfolio-Page
+# Group/coursework projects hosted under teammates' GitHub accounts.
+# title/description are hand-written, pulled from each repo's own README.
+group_repos:
+  - repo: LuckyLaharlTim/pipeline-elevation-project
+    title: "Proposal for Optimizing CO2 Transportation Routes: A Multimodal Approach"
+    img: assets/img/portfolio/CO2Pipeline.png
+    description: >-
+      The escalating impacts of climate change necessitate innovative strategies for
+      carbon management. Among these, Carbon Capture and Storage (CCS) technologies
+      are pivotal. Our project aims to optimize CO2 transport from capture sites to
+      storage locations across the western United States, focusing on minimizing
+      both costs and socio-environmental risks.
+  - repo: YinanLi-15/MUSA509_Marine_Pollution
+    title: "MUSA509 Marine Pollution — Litter Risk Dashboard"
+    img: assets/img/portfolio/LitterRiskDashboard.png
+    description: >-
+      A graduate capstone project predicting marine litter accumulation for
+      Chennai and powering an interactive dashboard that helps the Ocean
+      Conservancy's Urban Ocean program site zero-waste pilots across twelve
+      partner cities in the Resilient Cities Network.
+  - repo: LuckyLaharlTim/MUSA_5500_Final
+    title: "Using Yelp and Zillow Data to Find Commercial Corridors in Philadelphia"
+    img: assets/img/portfolio/Philly.png
+    description: >-
+      An academic project combining webscraped Yelp and Zillow data to identify
+      and analyze commercial corridors across Philadelphia neighborhoods.
